@@ -1,0 +1,116 @@
+[
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\first_app.cpp.obj -c E:\\Vulkan-Learning\\first_app.cpp",
+  "file": "E:/Vulkan-Learning/first_app.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/first_app.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\keyboard_movement_controller.cpp.obj -c E:\\Vulkan-Learning\\keyboard_movement_controller.cpp",
+  "file": "E:/Vulkan-Learning/keyboard_movement_controller.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/keyboard_movement_controller.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_buffer.cpp.obj -c E:\\Vulkan-Learning\\lve_buffer.cpp",
+  "file": "E:/Vulkan-Learning/lve_buffer.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/lve_buffer.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_camera.cpp.obj -c E:\\Vulkan-Learning\\lve_camera.cpp",
+  "file": "E:/Vulkan-Learning/lve_camera.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/lve_camera.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_descriptors.cpp.obj -c E:\\Vulkan-Learning\\lve_descriptors.cpp",
+  "file": "E:/Vulkan-Learning/lve_descriptors.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/lve_descriptors.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_device.cpp.obj -c E:\\Vulkan-Learning\\lve_device.cpp",
+  "file": "E:/Vulkan-Learning/lve_device.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/lve_device.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_gameobject.cpp.obj -c E:\\Vulkan-Learning\\lve_gameobject.cpp",
+  "file": "E:/Vulkan-Learning/lve_gameobject.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/lve_gameobject.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_material.cpp.obj -c E:\\Vulkan-Learning\\lve_material.cpp",
+  "file": "E:/Vulkan-Learning/lve_material.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/lve_material.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_model.cpp.obj -c E:\\Vulkan-Learning\\lve_model.cpp",
+  "file": "E:/Vulkan-Learning/lve_model.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_pipeline.cpp.obj -c E:\\Vulkan-Learning\\lve_pipeline.cpp",
+  "file": "E:/Vulkan-Learning/lve_pipeline.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/lve_pipeline.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_renderer.cpp.obj -c E:\\Vulkan-Learning\\lve_renderer.cpp",
+  "file": "E:/Vulkan-Learning/lve_renderer.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/lve_renderer.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_swap_chain.cpp.obj -c E:\\Vulkan-Learning\\lve_swap_chain.cpp",
+  "file": "E:/Vulkan-Learning/lve_swap_chain.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/lve_swap_chain.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_texture.cpp.obj -c E:\\Vulkan-Learning\\lve_texture.cpp",
+  "file": "E:/Vulkan-Learning/lve_texture.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/lve_texture.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_window.cpp.obj -c E:\\Vulkan-Learning\\lve_window.cpp",
+  "file": "E:/Vulkan-Learning/lve_window.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/lve_window.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\main.cpp.obj -c E:\\Vulkan-Learning\\main.cpp",
+  "file": "E:/Vulkan-Learning/main.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/main.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\systems\\lve_point_light_system.cpp.obj -c E:\\Vulkan-Learning\\systems\\lve_point_light_system.cpp",
+  "file": "E:/Vulkan-Learning/systems/lve_point_light_system.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/systems/lve_point_light_system.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\systems\\lve_simple_renderer_system.cpp.obj -c E:\\Vulkan-Learning\\systems\\lve_simple_renderer_system.cpp",
+  "file": "E:/Vulkan-Learning/systems/lve_simple_renderer_system.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/systems/lve_simple_renderer_system.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\systems\\lve_skybox_system.cpp.obj -c E:\\Vulkan-Learning\\systems\\lve_skybox_system.cpp",
+  "file": "E:/Vulkan-Learning/systems/lve_skybox_system.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/systems/lve_skybox_system.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\systems\\lve_vegetation_system.cpp.obj -c E:\\Vulkan-Learning\\systems\\lve_vegetation_system.cpp",
+  "file": "E:/Vulkan-Learning/systems/lve_vegetation_system.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/systems/lve_vegetation_system.cpp.obj"
+}
+]

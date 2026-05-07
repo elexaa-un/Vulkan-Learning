@@ -1,0 +1,3 @@
+C:\msys64\ucrt64\bin\cmake.exe -E rm -f CMakeFiles\Vulkan_Learning.dir/objects.a
+C:\msys64\ucrt64\bin\ar.exe qc CMakeFiles\Vulkan_Learning.dir/objects.a @CMakeFiles\Vulkan_Learning.dir\objects1.rsp
+C:\msys64\ucrt64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\Vulkan_Learning.dir/objects.a -Wl,--no-whole-archive -o Vulkan_Learning.exe -Wl,--out-implib,libVulkan_Learning.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\Vulkan_Learning.dir\linkLibs.rsp
