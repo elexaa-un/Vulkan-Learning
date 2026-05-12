@@ -49,6 +49,8 @@ namespace lve
         VkQueue graphicsQueue() { return graphicsQueue_; }
         VkQueue presentQueue() { return presentQueue_; }
         VkPhysicalDevice getPhysicalDevice() { return physicalDevice; }
+        VkInstance getInstance() { return instance; }
+        uint32_t getGraphicsQueueFamilyIndex() { return findQueueFamilies(physicalDevice).graphicsFamily; }
 
         SwapChainSupportDetails getSwapChainSupport() { return querySwapChainSupport(physicalDevice); }
         uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);

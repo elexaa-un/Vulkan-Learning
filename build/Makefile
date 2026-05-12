@@ -128,6 +128,174 @@ Vulkan_Learning/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/build
 .PHONY : Vulkan_Learning/fast
 
+ImGui/imgui.obj: ImGui/imgui.cpp.obj
+.PHONY : ImGui/imgui.obj
+
+# target to build an object file
+ImGui/imgui.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui.cpp.obj
+.PHONY : ImGui/imgui.cpp.obj
+
+ImGui/imgui.i: ImGui/imgui.cpp.i
+.PHONY : ImGui/imgui.i
+
+# target to preprocess a source file
+ImGui/imgui.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui.cpp.i
+.PHONY : ImGui/imgui.cpp.i
+
+ImGui/imgui.s: ImGui/imgui.cpp.s
+.PHONY : ImGui/imgui.s
+
+# target to generate assembly for a file
+ImGui/imgui.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui.cpp.s
+.PHONY : ImGui/imgui.cpp.s
+
+ImGui/imgui_draw.obj: ImGui/imgui_draw.cpp.obj
+.PHONY : ImGui/imgui_draw.obj
+
+# target to build an object file
+ImGui/imgui_draw.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_draw.cpp.obj
+.PHONY : ImGui/imgui_draw.cpp.obj
+
+ImGui/imgui_draw.i: ImGui/imgui_draw.cpp.i
+.PHONY : ImGui/imgui_draw.i
+
+# target to preprocess a source file
+ImGui/imgui_draw.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_draw.cpp.i
+.PHONY : ImGui/imgui_draw.cpp.i
+
+ImGui/imgui_draw.s: ImGui/imgui_draw.cpp.s
+.PHONY : ImGui/imgui_draw.s
+
+# target to generate assembly for a file
+ImGui/imgui_draw.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_draw.cpp.s
+.PHONY : ImGui/imgui_draw.cpp.s
+
+ImGui/imgui_impl_glfw.obj: ImGui/imgui_impl_glfw.cpp.obj
+.PHONY : ImGui/imgui_impl_glfw.obj
+
+# target to build an object file
+ImGui/imgui_impl_glfw.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_glfw.cpp.obj
+.PHONY : ImGui/imgui_impl_glfw.cpp.obj
+
+ImGui/imgui_impl_glfw.i: ImGui/imgui_impl_glfw.cpp.i
+.PHONY : ImGui/imgui_impl_glfw.i
+
+# target to preprocess a source file
+ImGui/imgui_impl_glfw.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_glfw.cpp.i
+.PHONY : ImGui/imgui_impl_glfw.cpp.i
+
+ImGui/imgui_impl_glfw.s: ImGui/imgui_impl_glfw.cpp.s
+.PHONY : ImGui/imgui_impl_glfw.s
+
+# target to generate assembly for a file
+ImGui/imgui_impl_glfw.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_glfw.cpp.s
+.PHONY : ImGui/imgui_impl_glfw.cpp.s
+
+ImGui/imgui_impl_vulkan.obj: ImGui/imgui_impl_vulkan.cpp.obj
+.PHONY : ImGui/imgui_impl_vulkan.obj
+
+# target to build an object file
+ImGui/imgui_impl_vulkan.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_vulkan.cpp.obj
+.PHONY : ImGui/imgui_impl_vulkan.cpp.obj
+
+ImGui/imgui_impl_vulkan.i: ImGui/imgui_impl_vulkan.cpp.i
+.PHONY : ImGui/imgui_impl_vulkan.i
+
+# target to preprocess a source file
+ImGui/imgui_impl_vulkan.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_vulkan.cpp.i
+.PHONY : ImGui/imgui_impl_vulkan.cpp.i
+
+ImGui/imgui_impl_vulkan.s: ImGui/imgui_impl_vulkan.cpp.s
+.PHONY : ImGui/imgui_impl_vulkan.s
+
+# target to generate assembly for a file
+ImGui/imgui_impl_vulkan.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_vulkan.cpp.s
+.PHONY : ImGui/imgui_impl_vulkan.cpp.s
+
+ImGui/imgui_impl_win32.obj: ImGui/imgui_impl_win32.cpp.obj
+.PHONY : ImGui/imgui_impl_win32.obj
+
+# target to build an object file
+ImGui/imgui_impl_win32.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_win32.cpp.obj
+.PHONY : ImGui/imgui_impl_win32.cpp.obj
+
+ImGui/imgui_impl_win32.i: ImGui/imgui_impl_win32.cpp.i
+.PHONY : ImGui/imgui_impl_win32.i
+
+# target to preprocess a source file
+ImGui/imgui_impl_win32.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_win32.cpp.i
+.PHONY : ImGui/imgui_impl_win32.cpp.i
+
+ImGui/imgui_impl_win32.s: ImGui/imgui_impl_win32.cpp.s
+.PHONY : ImGui/imgui_impl_win32.s
+
+# target to generate assembly for a file
+ImGui/imgui_impl_win32.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_win32.cpp.s
+.PHONY : ImGui/imgui_impl_win32.cpp.s
+
+ImGui/imgui_tables.obj: ImGui/imgui_tables.cpp.obj
+.PHONY : ImGui/imgui_tables.obj
+
+# target to build an object file
+ImGui/imgui_tables.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_tables.cpp.obj
+.PHONY : ImGui/imgui_tables.cpp.obj
+
+ImGui/imgui_tables.i: ImGui/imgui_tables.cpp.i
+.PHONY : ImGui/imgui_tables.i
+
+# target to preprocess a source file
+ImGui/imgui_tables.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_tables.cpp.i
+.PHONY : ImGui/imgui_tables.cpp.i
+
+ImGui/imgui_tables.s: ImGui/imgui_tables.cpp.s
+.PHONY : ImGui/imgui_tables.s
+
+# target to generate assembly for a file
+ImGui/imgui_tables.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_tables.cpp.s
+.PHONY : ImGui/imgui_tables.cpp.s
+
+ImGui/imgui_widgets.obj: ImGui/imgui_widgets.cpp.obj
+.PHONY : ImGui/imgui_widgets.obj
+
+# target to build an object file
+ImGui/imgui_widgets.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_widgets.cpp.obj
+.PHONY : ImGui/imgui_widgets.cpp.obj
+
+ImGui/imgui_widgets.i: ImGui/imgui_widgets.cpp.i
+.PHONY : ImGui/imgui_widgets.i
+
+# target to preprocess a source file
+ImGui/imgui_widgets.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_widgets.cpp.i
+.PHONY : ImGui/imgui_widgets.cpp.i
+
+ImGui/imgui_widgets.s: ImGui/imgui_widgets.cpp.s
+.PHONY : ImGui/imgui_widgets.s
+
+# target to generate assembly for a file
+ImGui/imgui_widgets.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_widgets.cpp.s
+.PHONY : ImGui/imgui_widgets.cpp.s
+
 first_app.obj: first_app.cpp.obj
 .PHONY : first_app.obj
 
@@ -295,6 +463,30 @@ lve_gameobject.s: lve_gameobject.cpp.s
 lve_gameobject.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/lve_gameobject.cpp.s
 .PHONY : lve_gameobject.cpp.s
+
+lve_imgui.obj: lve_imgui.cpp.obj
+.PHONY : lve_imgui.obj
+
+# target to build an object file
+lve_imgui.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/lve_imgui.cpp.obj
+.PHONY : lve_imgui.cpp.obj
+
+lve_imgui.i: lve_imgui.cpp.i
+.PHONY : lve_imgui.i
+
+# target to preprocess a source file
+lve_imgui.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/lve_imgui.cpp.i
+.PHONY : lve_imgui.cpp.i
+
+lve_imgui.s: lve_imgui.cpp.s
+.PHONY : lve_imgui.s
+
+# target to generate assembly for a file
+lve_imgui.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/lve_imgui.cpp.s
+.PHONY : lve_imgui.cpp.s
 
 lve_material.obj: lve_material.cpp.obj
 .PHONY : lve_material.obj
@@ -593,6 +785,27 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... Vulkan_Learning
+	@echo ... ImGui/imgui.obj
+	@echo ... ImGui/imgui.i
+	@echo ... ImGui/imgui.s
+	@echo ... ImGui/imgui_draw.obj
+	@echo ... ImGui/imgui_draw.i
+	@echo ... ImGui/imgui_draw.s
+	@echo ... ImGui/imgui_impl_glfw.obj
+	@echo ... ImGui/imgui_impl_glfw.i
+	@echo ... ImGui/imgui_impl_glfw.s
+	@echo ... ImGui/imgui_impl_vulkan.obj
+	@echo ... ImGui/imgui_impl_vulkan.i
+	@echo ... ImGui/imgui_impl_vulkan.s
+	@echo ... ImGui/imgui_impl_win32.obj
+	@echo ... ImGui/imgui_impl_win32.i
+	@echo ... ImGui/imgui_impl_win32.s
+	@echo ... ImGui/imgui_tables.obj
+	@echo ... ImGui/imgui_tables.i
+	@echo ... ImGui/imgui_tables.s
+	@echo ... ImGui/imgui_widgets.obj
+	@echo ... ImGui/imgui_widgets.i
+	@echo ... ImGui/imgui_widgets.s
 	@echo ... first_app.obj
 	@echo ... first_app.i
 	@echo ... first_app.s
@@ -614,6 +827,9 @@ help:
 	@echo ... lve_gameobject.obj
 	@echo ... lve_gameobject.i
 	@echo ... lve_gameobject.s
+	@echo ... lve_imgui.obj
+	@echo ... lve_imgui.i
+	@echo ... lve_imgui.s
 	@echo ... lve_material.obj
 	@echo ... lve_material.i
 	@echo ... lve_material.s

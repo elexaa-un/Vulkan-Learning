@@ -1,0 +1,60 @@
+CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_vulkan.cpp.obj: \
+ E:\Vulkan-Learning\ImGui\imgui_impl_vulkan.cpp \
+ E:\Vulkan-Learning\ImGui\imgui.h E:\Vulkan-Learning\ImGui\imconfig.h \
+ C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/float.h \
+ C:/msys64/ucrt64/include/float.h C:/msys64/ucrt64/include/crtdefs.h \
+ C:/msys64/ucrt64/include/corecrt.h C:/msys64/ucrt64/include/_mingw.h \
+ C:/msys64/ucrt64/include/_mingw_mac.h \
+ C:/msys64/ucrt64/include/_mingw_secapi.h \
+ C:/msys64/ucrt64/include/vadefs.h \
+ C:/msys64/ucrt64/include/sdks/_mingw_ddk.h \
+ C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/stdarg.h \
+ C:/msys64/ucrt64/include/stdarg.h \
+ C:/msys64/ucrt64/include/_mingw_stdarg.h \
+ C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/stddef.h \
+ C:/msys64/ucrt64/include/stddef.h C:/msys64/ucrt64/include/string.h \
+ C:/msys64/ucrt64/include/sec_api/string_s.h \
+ C:/msys64/ucrt64/include/assert.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/stdlib.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/cstdlib \
+ C:/msys64/ucrt64/include/c++/15.2.0/x86_64-w64-mingw32/bits/c++config.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/x86_64-w64-mingw32/bits/os_defines.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/x86_64-w64-mingw32/bits/cpu_defines.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/pstl/pstl_config.h \
+ C:/msys64/ucrt64/include/stdlib.h \
+ C:/msys64/ucrt64/include/corecrt_wstdlib.h \
+ C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/limits.h \
+ C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/syslimits.h \
+ C:/msys64/ucrt64/include/limits.h \
+ C:/msys64/ucrt64/include/sec_api/stdlib_s.h \
+ C:/msys64/ucrt64/include/malloc.h \
+ C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/mm_malloc.h \
+ C:/msys64/ucrt64/include/errno.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/std_abs.h \
+ E:\Vulkan-Learning\ImGui\imgui_impl_vulkan.h \
+ E:/VulkanSDK/include/vulkan/vulkan.h \
+ E:/VulkanSDK/include/vulkan/vk_platform.h \
+ C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/stdint.h \
+ C:/msys64/ucrt64/include/stdint.h \
+ E:/VulkanSDK/include/vulkan/vulkan_core.h \
+ E:/VulkanSDK/include/vk_video/vulkan_video_codec_h264std.h \
+ E:/VulkanSDK/include/vk_video/vulkan_video_codecs_common.h \
+ E:/VulkanSDK/include/vk_video/vulkan_video_codec_h264std_encode.h \
+ E:/VulkanSDK/include/vk_video/vulkan_video_codec_h264std.h \
+ E:/VulkanSDK/include/vk_video/vulkan_video_codec_h265std.h \
+ E:/VulkanSDK/include/vk_video/vulkan_video_codec_h265std_encode.h \
+ E:/VulkanSDK/include/vk_video/vulkan_video_codec_h265std.h \
+ E:/VulkanSDK/include/vk_video/vulkan_video_codec_h264std_decode.h \
+ E:/VulkanSDK/include/vk_video/vulkan_video_codec_h265std_decode.h \
+ E:/VulkanSDK/include/vk_video/vulkan_video_codec_av1std.h \
+ E:/VulkanSDK/include/vk_video/vulkan_video_codec_av1std_decode.h \
+ E:/VulkanSDK/include/vk_video/vulkan_video_codec_av1std.h \
+ E:/VulkanSDK/include/vk_video/vulkan_video_codec_av1std_encode.h \
+ E:/VulkanSDK/include/vk_video/vulkan_video_codec_vp9std.h \
+ E:/VulkanSDK/include/vk_video/vulkan_video_codec_vp9std_decode.h \
+ E:/VulkanSDK/include/vk_video/vulkan_video_codec_vp9std.h \
+ C:/msys64/ucrt64/include/stdio.h \
+ C:/msys64/ucrt64/include/corecrt_stdio_config.h \
+ C:/msys64/ucrt64/include/_mingw_off_t.h \
+ C:/msys64/ucrt64/include/swprintf.inl \
+ C:/msys64/ucrt64/include/sec_api/stdio_s.h

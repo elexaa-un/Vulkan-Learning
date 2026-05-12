@@ -1,6 +1,48 @@
 [
 {
   "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\ImGui\\imgui.cpp.obj -c E:\\Vulkan-Learning\\ImGui\\imgui.cpp",
+  "file": "E:/Vulkan-Learning/ImGui/imgui.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\ImGui\\imgui_draw.cpp.obj -c E:\\Vulkan-Learning\\ImGui\\imgui_draw.cpp",
+  "file": "E:/Vulkan-Learning/ImGui/imgui_draw.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_draw.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\ImGui\\imgui_impl_glfw.cpp.obj -c E:\\Vulkan-Learning\\ImGui\\imgui_impl_glfw.cpp",
+  "file": "E:/Vulkan-Learning/ImGui/imgui_impl_glfw.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_glfw.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\ImGui\\imgui_impl_vulkan.cpp.obj -c E:\\Vulkan-Learning\\ImGui\\imgui_impl_vulkan.cpp",
+  "file": "E:/Vulkan-Learning/ImGui/imgui_impl_vulkan.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_vulkan.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\ImGui\\imgui_impl_win32.cpp.obj -c E:\\Vulkan-Learning\\ImGui\\imgui_impl_win32.cpp",
+  "file": "E:/Vulkan-Learning/ImGui/imgui_impl_win32.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_win32.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\ImGui\\imgui_tables.cpp.obj -c E:\\Vulkan-Learning\\ImGui\\imgui_tables.cpp",
+  "file": "E:/Vulkan-Learning/ImGui/imgui_tables.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_tables.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\ImGui\\imgui_widgets.cpp.obj -c E:\\Vulkan-Learning\\ImGui\\imgui_widgets.cpp",
+  "file": "E:/Vulkan-Learning/ImGui/imgui_widgets.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_widgets.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
   "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\first_app.cpp.obj -c E:\\Vulkan-Learning\\first_app.cpp",
   "file": "E:/Vulkan-Learning/first_app.cpp",
   "output": "CMakeFiles/Vulkan_Learning.dir/first_app.cpp.obj"
@@ -40,6 +82,12 @@
   "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_gameobject.cpp.obj -c E:\\Vulkan-Learning\\lve_gameobject.cpp",
   "file": "E:/Vulkan-Learning/lve_gameobject.cpp",
   "output": "CMakeFiles/Vulkan_Learning.dir/lve_gameobject.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_imgui.cpp.obj -c E:\\Vulkan-Learning\\lve_imgui.cpp",
+  "file": "E:/Vulkan-Learning/lve_imgui.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/lve_imgui.cpp.obj"
 },
 {
   "directory": "E:/Vulkan-Learning/build",

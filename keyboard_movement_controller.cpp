@@ -15,11 +15,11 @@ namespace lve
         }
         if (glfwGetKey(window, keys.lookUp) == GLFW_PRESS)
         {
-            rotation.x += 1.f;
+            rotation.x -= 1.f;
         }
         if (glfwGetKey(window, keys.lookDown) == GLFW_PRESS)
         {
-            rotation.x -= 1.f;
+            rotation.x += 1.f;
         }
 
         if (glfwGetKey(window, keys.rotateLeft) == GLFW_PRESS) // Q ¼üÏò×óÐý×ª
@@ -62,11 +62,11 @@ namespace lve
         }
         if (glfwGetKey(window, keys.moveUp) == GLFW_PRESS)
         {
-            moveDir.y += 1.0f;
+            moveDir.y -= 1.0f;
         }
         if (glfwGetKey(window, keys.moveDown) == GLFW_PRESS)
         {
-            moveDir.y -= 1.0f;
+            moveDir.y += 1.0f;
         }
 
         if (glm::dot(moveDir, moveDir) > std::numeric_limits<float>::epsilon())

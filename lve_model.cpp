@@ -83,8 +83,6 @@ namespace lve
             VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
         lveDevice.copyBuffer(stagingBuffer.getBuffer(), indexBuffer->getBuffer(), bufferSize);
-
-        lveDevice.copyBuffer(stagingBuffer.getBuffer(), indexBuffer->getBuffer(), bufferSize);
     }
 
     void LveModel::draw(VkCommandBuffer commandBuffer)
@@ -158,14 +156,15 @@ namespace lve
                         attrib.vertices[3 * index.vertex_index + 1],
                         attrib.vertices[3 * index.vertex_index + 2],
                     };
-
+                }
+                if (attrib.colors.size() > 0)
+                {
                     vertex.color = {
                         attrib.colors[3 * index.vertex_index + 0],
                         attrib.colors[3 * index.vertex_index + 1],
                         attrib.colors[3 * index.vertex_index + 2],
                     };
                 }
-
                 if (index.normal_index >= 0)
                 {
                     vertex.normal = {

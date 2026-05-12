@@ -36,7 +36,7 @@ void main() {
     // 如果相机在背面，可以翻转法线（简化：不处理也能凑合）
 
     // 3. 环境光分量（使用 ubo.ambientColor）
-    vec3 ambient = ubo.ambientColor.rgb * ubo.ambientColor.w * texColor.rgb;
+    vec3 ambient = ubo.ambientColor.rgb * ubo.ambientColor.w;  // 先不乘texColor，避免后续重复相乘
 
     // 4. 漫反射光照累加
     vec3 diffuseSum = vec3(0.0);

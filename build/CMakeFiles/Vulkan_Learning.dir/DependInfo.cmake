@@ -8,6 +8,13 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "E:/Vulkan-Learning/ImGui/imgui.cpp" "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui.cpp.obj.d"
+  "E:/Vulkan-Learning/ImGui/imgui_draw.cpp" "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_draw.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_draw.cpp.obj.d"
+  "E:/Vulkan-Learning/ImGui/imgui_impl_glfw.cpp" "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_glfw.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_glfw.cpp.obj.d"
+  "E:/Vulkan-Learning/ImGui/imgui_impl_vulkan.cpp" "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_vulkan.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_vulkan.cpp.obj.d"
+  "E:/Vulkan-Learning/ImGui/imgui_impl_win32.cpp" "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_win32.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_impl_win32.cpp.obj.d"
+  "E:/Vulkan-Learning/ImGui/imgui_tables.cpp" "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_tables.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_tables.cpp.obj.d"
+  "E:/Vulkan-Learning/ImGui/imgui_widgets.cpp" "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_widgets.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/ImGui/imgui_widgets.cpp.obj.d"
   "E:/Vulkan-Learning/first_app.cpp" "CMakeFiles/Vulkan_Learning.dir/first_app.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/first_app.cpp.obj.d"
   "E:/Vulkan-Learning/keyboard_movement_controller.cpp" "CMakeFiles/Vulkan_Learning.dir/keyboard_movement_controller.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/keyboard_movement_controller.cpp.obj.d"
   "E:/Vulkan-Learning/lve_buffer.cpp" "CMakeFiles/Vulkan_Learning.dir/lve_buffer.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/lve_buffer.cpp.obj.d"
@@ -15,6 +22,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "E:/Vulkan-Learning/lve_descriptors.cpp" "CMakeFiles/Vulkan_Learning.dir/lve_descriptors.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/lve_descriptors.cpp.obj.d"
   "E:/Vulkan-Learning/lve_device.cpp" "CMakeFiles/Vulkan_Learning.dir/lve_device.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/lve_device.cpp.obj.d"
   "E:/Vulkan-Learning/lve_gameobject.cpp" "CMakeFiles/Vulkan_Learning.dir/lve_gameobject.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/lve_gameobject.cpp.obj.d"
+  "E:/Vulkan-Learning/lve_imgui.cpp" "CMakeFiles/Vulkan_Learning.dir/lve_imgui.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/lve_imgui.cpp.obj.d"
   "E:/Vulkan-Learning/lve_material.cpp" "CMakeFiles/Vulkan_Learning.dir/lve_material.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/lve_material.cpp.obj.d"
   "E:/Vulkan-Learning/lve_model.cpp" "CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.obj.d"
   "E:/Vulkan-Learning/lve_pipeline.cpp" "CMakeFiles/Vulkan_Learning.dir/lve_pipeline.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/lve_pipeline.cpp.obj.d"

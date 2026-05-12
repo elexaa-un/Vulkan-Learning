@@ -408,7 +408,16 @@ CMakeFiles/Vulkan_Learning.dir/first_app.cpp.obj: \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/stl_heap.h \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/uniform_int_dist.h \
  C:/msys64/ucrt64/include/c++/15.2.0/pstl/glue_algorithm_defs.h \
- E:\Vulkan-Learning\stb_image.h \
+ E:\Vulkan-Learning\stb_image.h E:\Vulkan-Learning\lve_imgui.hpp \
+ E:\Vulkan-Learning\ImGui/imgui.h E:\Vulkan-Learning\ImGui/imconfig.h \
+ C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/stdarg.h \
+ C:/msys64/ucrt64/include/stdarg.h \
+ C:/msys64/ucrt64/include/_mingw_stdarg.h \
+ C:/msys64/ucrt64/include/string.h \
+ C:/msys64/ucrt64/include/sec_api/string_s.h \
+ E:\Vulkan-Learning\ImGui/imgui_impl_glfw.h \
+ E:\Vulkan-Learning\ImGui/imgui_impl_vulkan.h \
+ E:\Vulkan-Learning\ImGui/imgui_impl_win32.h \
  C:/msys64/ucrt64/include/c++/15.2.0/iostream \
  C:/msys64/ucrt64/include/c++/15.2.0/ostream \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/ostream.h \

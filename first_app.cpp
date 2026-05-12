@@ -8,6 +8,8 @@
 #include "keyboard_movement_controller.hpp"
 #include "lve_model.hpp"
 #include "terrain_height_sampler.hpp"
+#include "lve_imgui.hpp"
+#include "ImGui/imgui.h"
 #include <stdexcept>
 #include <array>
 #include <iostream>
@@ -73,20 +75,9 @@ namespace lve
                                    .build();
 
         std::vector<VkDescriptorSet> globalDescriptorSets(LveSwapChain::MAX_FRAMES_IN_FLIGHT);
-        for (int i = 0; i < globalDescriptorSets.size(); i++)
-        {
-            auto bufferInfo = uboBuffers[i]->descriptorInfo();
-            VkDescriptorSet set;
-            LveDescriptorWriter(*globalSetLayout, *globalPool)
-                .writeBuffer(0, &bufferInfo)
-                .build(set);
-            globalDescriptorSets[i] = set;
-            if (set == VK_NULL_HANDLE)
-            {
-                throw std::runtime_error("Failed to allocate global descriptor set for frame " + std::to_string(i));
-            }
-        }
 
+        //============================创建 ImGui 系统===========================
+        LveImgui imgui(lveWindow.getGLFWwindow(), lveDevice, lveRenderer.GetSwapChainRenderPass());
         //============================创建天空盒===========================
         auto skyboxTexture = LveTexture::createCubemap(lveDevice, {"E:/Vulkan-Learning/skybox/px.png",
                                                                    "E:/Vulkan-Learning/skybox/nx.png",
@@ -186,6 +177,100 @@ namespace lve
                     std::cerr << "Error: globalDescriptorSet is null!" << std::endl;
                     continue;
                 }
+                //====================imgui界面设置=====================
+                imgui.newFrame();
+
+                // ============================================================
+                // 调试面板
+                // ============================================================
+                ImGui::Begin("Vulkan Renderer - Debug Panel");
+
+                // ---------- Performance ----------
+                if (ImGui::CollapsingHeader("Performance", ImGuiTreeNodeFlags_DefaultOpen))
+                {
+                    ImGui::Text("FPS: %.1f", 1.0f / frameTime);
+                    ImGui::Text("Frame Time: %.2f ms", frameTime * 1000.0f);
+                    ImGui::Text("Scene Objects: %d", (int)gameObjects.size());
+                }
+
+                // ---------- Camera ----------
+                if (ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_DefaultOpen))
+                {
+                    auto &pos = viewerObject.transform.translation;
+                    auto &rot = viewerObject.transform.rotation;
+                    ImGui::Text("Position: (%.2f, %.2f, %.2f)", pos.x, pos.y, pos.z);
+                    ImGui::Text("Rotation: (%.2f, %.2f, %.2f)", rot.x, rot.y, rot.z);
+
+                    // Quick position buttons
+                    if (ImGui::Button("Reset (0,0,3)"))
+                        viewerObject.transform.translation = glm::vec3{0.f, 0.f, 3.f};
+                    ImGui::SameLine();
+                    if (ImGui::Button("Top View (0,30,0)"))
+                        viewerObject.transform.translation = glm::vec3{0.f, 30.f, 0.f};
+                }
+
+                // ---------- Lighting ----------
+                if (ImGui::CollapsingHeader("Lighting", ImGuiTreeNodeFlags_DefaultOpen))
+                {
+                    static float lightPos[3] = {0.f, 20.f, 0.f};
+                    static float lightIntensity = 100.f;
+                    static float lightRadius = 10.f;
+                    static float lightColor[3] = {1.f, 1.f, 1.f};
+
+                    if (ImGui::SliderFloat3("Light Position", lightPos, -50.f, 50.f))
+                    {
+                        // Update point light in scene
+                        for (auto &kv : gameObjects)
+                        {
+                            if (kv.second.pointLight)
+                            {
+                                kv.second.transform.translation.x = lightPos[0];
+                                kv.second.transform.translation.y = lightPos[1];
+                                kv.second.transform.translation.z = lightPos[2];
+                                kv.second.pointLight->lightIntensity = lightIntensity;
+                            }
+                        }
+                    }
+                    ImGui::SliderFloat("Intensity", &lightIntensity, 1.f, 500.f);
+                    ImGui::SliderFloat("Radius", &lightRadius, 1.f, 50.f);
+                    ImGui::ColorEdit3("Color", lightColor);
+                }
+
+                // ---------- Render Options ----------
+                if (ImGui::CollapsingHeader("Render Options"))
+                {
+                    static bool showSkybox = true;
+                    static bool showTerrain = true;
+                    static bool showVegetation = true;
+                    static bool showModel = true;
+                    static bool wireframe = false;
+
+                    ImGui::Checkbox("Skybox", &showSkybox);
+                    ImGui::Checkbox("Terrain", &showTerrain);
+                    ImGui::Checkbox("Vegetation", &showVegetation);
+                    ImGui::Checkbox("Model", &showModel);
+                    ImGui::Checkbox("Wireframe", &wireframe);
+                }
+
+                // ---------- Vegetation ----------
+                if (ImGui::CollapsingHeader("Vegetation"))
+                {
+                    static float windStrength = 0.5f;
+                    static float windSpeed = 1.0f;
+                    ImGui::SliderFloat("Wind Strength", &windStrength, 0.0f, 2.0f);
+                    ImGui::SliderFloat("Wind Speed", &windSpeed, 0.1f, 5.0f);
+                }
+
+                // ---------- Controls ----------
+                if (ImGui::CollapsingHeader("Controls"))
+                {
+                    ImGui::BulletText("WASD - Move Camera");
+                    ImGui::BulletText("Right Mouse Drag - Rotate View");
+                    ImGui::BulletText("Scroll Wheel - Zoom");
+                    ImGui::BulletText("ESC - Exit");
+                }
+
+                ImGui::End();
 
                 FrameInfo frameInfo{
                     frameIndex,
@@ -209,6 +294,8 @@ namespace lve
                 vegetationSystem.render(frameInfo);
                 pointLightSystem->renderer(frameInfo);
                 lveRenderer.endSwapChainRenderPass(commandBuffer);
+
+                imgui.render(commandBuffer);
                 lveRenderer.endFrame();
             }
         }

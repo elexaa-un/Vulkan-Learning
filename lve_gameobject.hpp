@@ -53,7 +53,7 @@ namespace lve
         TransformComponent transform{};
 
         std::shared_ptr<LveModel> model{};
-        std::shared_ptr<LveMaterial> material;
+        std::shared_ptr<LveMaterial> material = m_material;
         std::vector<std::shared_ptr<LveTexture>> textures;
         VkDescriptorSet materialDescriptorSet = VK_NULL_HANDLE;
         std::unique_ptr<PointLightComponent> pointLight = nullptr;
