@@ -32,6 +32,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "E:/Vulkan-Learning/lve_window.cpp" "CMakeFiles/Vulkan_Learning.dir/lve_window.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/lve_window.cpp.obj.d"
   "E:/Vulkan-Learning/main.cpp" "CMakeFiles/Vulkan_Learning.dir/main.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/main.cpp.obj.d"
   "E:/Vulkan-Learning/systems/lve_point_light_system.cpp" "CMakeFiles/Vulkan_Learning.dir/systems/lve_point_light_system.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/systems/lve_point_light_system.cpp.obj.d"
+  "E:/Vulkan-Learning/systems/lve_shadow_system.cpp" "CMakeFiles/Vulkan_Learning.dir/systems/lve_shadow_system.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/systems/lve_shadow_system.cpp.obj.d"
   "E:/Vulkan-Learning/systems/lve_simple_renderer_system.cpp" "CMakeFiles/Vulkan_Learning.dir/systems/lve_simple_renderer_system.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/systems/lve_simple_renderer_system.cpp.obj.d"
   "E:/Vulkan-Learning/systems/lve_skybox_system.cpp" "CMakeFiles/Vulkan_Learning.dir/systems/lve_skybox_system.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/systems/lve_skybox_system.cpp.obj.d"
   "E:/Vulkan-Learning/systems/lve_vegetation_system.cpp" "CMakeFiles/Vulkan_Learning.dir/systems/lve_vegetation_system.cpp.obj" "gcc" "CMakeFiles/Vulkan_Learning.dir/systems/lve_vegetation_system.cpp.obj.d"

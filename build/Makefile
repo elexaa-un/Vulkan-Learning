@@ -704,6 +704,30 @@ systems/lve_point_light_system.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/systems/lve_point_light_system.cpp.s
 .PHONY : systems/lve_point_light_system.cpp.s
 
+systems/lve_shadow_system.obj: systems/lve_shadow_system.cpp.obj
+.PHONY : systems/lve_shadow_system.obj
+
+# target to build an object file
+systems/lve_shadow_system.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/systems/lve_shadow_system.cpp.obj
+.PHONY : systems/lve_shadow_system.cpp.obj
+
+systems/lve_shadow_system.i: systems/lve_shadow_system.cpp.i
+.PHONY : systems/lve_shadow_system.i
+
+# target to preprocess a source file
+systems/lve_shadow_system.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/systems/lve_shadow_system.cpp.i
+.PHONY : systems/lve_shadow_system.cpp.i
+
+systems/lve_shadow_system.s: systems/lve_shadow_system.cpp.s
+.PHONY : systems/lve_shadow_system.s
+
+# target to generate assembly for a file
+systems/lve_shadow_system.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/systems/lve_shadow_system.cpp.s
+.PHONY : systems/lve_shadow_system.cpp.s
+
 systems/lve_simple_renderer_system.obj: systems/lve_simple_renderer_system.cpp.obj
 .PHONY : systems/lve_simple_renderer_system.obj
 
@@ -857,6 +881,9 @@ help:
 	@echo ... systems/lve_point_light_system.obj
 	@echo ... systems/lve_point_light_system.i
 	@echo ... systems/lve_point_light_system.s
+	@echo ... systems/lve_shadow_system.obj
+	@echo ... systems/lve_shadow_system.i
+	@echo ... systems/lve_shadow_system.s
 	@echo ... systems/lve_simple_renderer_system.obj
 	@echo ... systems/lve_simple_renderer_system.i
 	@echo ... systems/lve_simple_renderer_system.s

@@ -145,6 +145,12 @@
 },
 {
   "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\systems\\lve_shadow_system.cpp.obj -c E:\\Vulkan-Learning\\systems\\lve_shadow_system.cpp",
+  "file": "E:/Vulkan-Learning/systems/lve_shadow_system.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/systems/lve_shadow_system.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
   "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\systems\\lve_simple_renderer_system.cpp.obj -c E:\\Vulkan-Learning\\systems\\lve_simple_renderer_system.cpp",
   "file": "E:/Vulkan-Learning/systems/lve_simple_renderer_system.cpp",
   "output": "CMakeFiles/Vulkan_Learning.dir/systems/lve_simple_renderer_system.cpp.obj"

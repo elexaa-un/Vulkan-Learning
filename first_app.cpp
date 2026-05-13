@@ -5,6 +5,7 @@
 #include "systems\lve_point_light_system.hpp"
 #include "systems\lve_skybox_system.hpp"
 #include "systems\lve_vegetation_system.hpp"
+#include "systems/lve_shadow_system.hpp"
 #include "keyboard_movement_controller.hpp"
 #include "lve_model.hpp"
 #include "terrain_height_sampler.hpp"
@@ -71,7 +72,8 @@ namespace lve
 
         auto globalSetLayout = LveDescriptorSetLayout::Builder(lveDevice)
                                    .addBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_ALL_GRAPHICS)
-                                   .addBinding(1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
+                                   .addBinding(1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)  // 天空盒
+                                   .addBinding(2, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)  // Shadow Map
                                    .build();
 
         std::vector<VkDescriptorSet> globalDescriptorSets(LveSwapChain::MAX_FRAMES_IN_FLIGHT);
@@ -79,12 +81,12 @@ namespace lve
         //============================创建 ImGui 系统===========================
         LveImgui imgui(lveWindow.getGLFWwindow(), lveDevice, lveRenderer.GetSwapChainRenderPass());
         //============================创建天空盒===========================
-        auto skyboxTexture = LveTexture::createCubemap(lveDevice, {"E:/Vulkan-Learning/skybox/px.png",
-                                                                   "E:/Vulkan-Learning/skybox/nx.png",
-                                                                   "E:/Vulkan-Learning/skybox/py.png",
-                                                                   "E:/Vulkan-Learning/skybox/ny.png",
-                                                                   "E:/Vulkan-Learning/skybox/pz.png",
-                                                                   "E:/Vulkan-Learning/skybox/nz.png"});
+        auto skyboxTexture = LveTexture::createCubemap(lveDevice, {"skybox/px.png",
+                                                                   "skybox/nx.png",
+                                                                   "skybox/py.png",
+                                                                   "skybox/ny.png",
+                                                                   "skybox/pz.png",
+                                                                   "skybox/nz.png"});
 
         // 为每个帧的描述符集写入天空盒纹理
         VkDescriptorImageInfo skyboxImageInfo{};
@@ -98,9 +100,27 @@ namespace lve
 
             LveDescriptorWriter(*globalSetLayout, *globalPool)
                 .writeBuffer(0, &bufferInfo)
-                .writeImage(1, &skyboxImageInfo) // 写入纹理
+                .writeImage(1, &skyboxImageInfo) // 写入天空盒纹理
                 .build(globalDescriptorSets[i]);
         }
+        // ============================================================
+        // 创建 Shadow System（在渲染系统之前创建）
+        // ============================================================
+        LveShadowSystem shadowSystem(lveDevice, globalSetLayout->getDescriptorSetLayout());
+
+        // 为每个帧的描述符集写入 Shadow Map
+        VkDescriptorImageInfo shadowMapImageInfo{};
+        shadowMapImageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+        shadowMapImageInfo.imageView = shadowSystem.getShadowMapImageView();
+        shadowMapImageInfo.sampler = shadowSystem.getShadowMapSampler();
+
+        for (int i = 0; i < globalDescriptorSets.size(); ++i)
+        {
+            LveDescriptorWriter(*globalSetLayout, *globalPool)
+                .writeImage(2, &shadowMapImageInfo)  // binding 2 = Shadow Map
+                .overwrite(globalDescriptorSets[i]); // 更新已有的描述符集，只写入 binding 2
+        }
+
         auto skyboxModel = lve::createSkyboxModel(lveDevice);
         LveSkyboxSystem skyboxSystem(lveDevice, lveRenderer.GetSwapChainRenderPass(),
                                      globalSetLayout->getDescriptorSetLayout());
@@ -109,9 +129,9 @@ namespace lve
         LveVegetationSystem vegetationSystem(lveDevice,
                                              lveRenderer.GetSwapChainRenderPass(),
                                              globalSetLayout->getDescriptorSetLayout(),
-                                             "E:\\Vulkan-Learning\\tree.png");
+                                             "tree.png");
         // ========= 创建实例数据 =========
-        TerrainHeightSampler terrainSampler("E:\\Vulkan-Learning\\tt.jpg", 200.0f, 200.0f, -5.0f, 20.0f);
+        TerrainHeightSampler terrainSampler("tt.jpg", 200.0f, 200.0f, -5.0f, 20.0f);
         std::vector<VegetationInstance> instances;
         // 填充实例数据（需要获取地形高度）
         for (int i = 0; i < 1000; ++i)
@@ -143,6 +163,11 @@ namespace lve
 
         auto currentTime = std::chrono::high_resolution_clock::now();
 
+        // ==== 风力参数（声明在 ImGui 作用域外，以便写入 UBO）====
+        float windStrength = 0.5f;
+        float windSpeed = 1.0f;
+        float totalTime = 0.0f; // 累计时间
+
         while (!lveWindow.shouldClose())
         {
             glfwPollEvents();
@@ -152,6 +177,7 @@ namespace lve
             currentTime = newTime;
 
             frameTime = glm::min(frameTime, MAX_FRAME_TIME);
+            totalTime += frameTime; // 累计时间
 
             cameraController.moveInPlaneXZ(lveWindow.getGLFWwindow(), frameTime, viewerObject);
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
@@ -255,8 +281,7 @@ namespace lve
                 // ---------- Vegetation ----------
                 if (ImGui::CollapsingHeader("Vegetation"))
                 {
-                    static float windStrength = 0.5f;
-                    static float windSpeed = 1.0f;
+                    // ImGui 内部引用外部变量（需要用指针或引用）
                     ImGui::SliderFloat("Wind Strength", &windStrength, 0.0f, 2.0f);
                     ImGui::SliderFloat("Wind Speed", &windSpeed, 0.1f, 5.0f);
                 }
@@ -285,9 +310,40 @@ namespace lve
                 ubo.view = camera.getView();
                 ubo.inverseView = camera.getInverseView();
                 pointLightSystem->update(frameInfo, ubo);
+
+                // ============================================================
+                // Shadow Pass：从光源视角渲染场景到 Shadow Map
+                // ============================================================
+                // 找到场景中的点光源作为阴影投射光源
+                glm::vec3 lightPos{0.f, 20.f, 0.f};
+                for (auto &kv : gameObjects)
+                {
+                    if (kv.second.pointLight)
+                    {
+                        lightPos = kv.second.transform.translation;
+                        break;
+                    }
+                }
+                shadowSystem.render(frameInfo, lightPos, glm::vec3{0.f, 0.f, 0.f});
+
+                // 将光源的 View*Projection 矩阵写入 UBO（着色器用它计算阴影坐标）
+                ubo.lightViewProj = shadowSystem.getLightViewProj();
+
+                // ===== 写入风力参数 =====
+                ubo.windTime = totalTime;
+                ubo.windStrength = windStrength;
+                ubo.windSpeed = windSpeed;
+                // 风向：可以从风向来推导方向向量
+                // 简单起见，用固定的方向（例如沿X轴）
+                ubo.windDirectionX = 1.0f;
+                ubo.windDirectionZ = 0.0f;
+
                 uboBuffers[frameIndex]->writeToBuffer(&ubo);
                 uboBuffers[frameIndex]->flush();
 
+                // ============================================================
+                // 主渲染通道：使用 Shadow Map 渲染最终场景
+                // ============================================================
                 lveRenderer.beginSwapChainRenderPass(commandBuffer);
                 skyboxSystem.render(frameInfo, skyboxTexture, *skyboxModel);
                 simpleRenderSystem->rendererGameObjects(frameInfo);
@@ -311,7 +367,7 @@ namespace lve
         LveMaterialManager materialManager(*materialSetLayout, *materialPool, lveDevice);
 
         auto catMaterial = materialManager.createMaterial("apple");
-        auto diffuseTex = std::make_shared<LveTexture>(lveDevice, "E:\\Vulkan-Learning\\apple\\image\\Model_0.jpg");
+        auto diffuseTex = std::make_shared<LveTexture>(lveDevice, "apple/image/Model_0.jpg");
         catMaterial->setTexture(LveMaterial::TextureType::DIFFUSE, diffuseTex);
 
         catMaterial->setBaseColorFactor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -320,7 +376,7 @@ namespace lve
 
         catMaterial->buildDescriptorSet();
         auto gameObj = LveGameObject::createGameObject();
-        gameObj.model = LveModel::createModelFromFile(lveDevice, "E:\\Vulkan-Learning\\apple\\Model.obj");
+        gameObj.model = LveModel::createModelFromFile(lveDevice, "apple/Model.obj");
         gameObj.material = catMaterial; // 直接赋值 material 成员
         gameObj.transform.translation = {0.f, 0.f, 0.f};
         gameObj.transform.rotation = {0.f, 0.f, 1.f * 3.14f};
@@ -329,16 +385,16 @@ namespace lve
         gameObjects.emplace(gameObj.getId(), std::move(gameObj));
 
         auto terrainModel = lve::createTerrainModel(lveDevice,
-                                                    "E:\\Vulkan-Learning\\tt.jpg", // 你的高度图路径
-                                                    200.0f,                        // 宽度 200
-                                                    200.0f,                        // 深度 200
-                                                    256,                           // 分段数 256 (顶点 257x257)
-                                                    -5.0f,                         // 最低高度
-                                                    20.0f,                         // 最高高度
-                                                    "E:\\Vulkan-Learning\\tt.jpg");
+                                                    "tt.jpg", // 高度图路径
+                                                    200.0f,   // 宽度 200
+                                                    200.0f,   // 深度 200
+                                                    256,      // 分段数 256 (顶点 257x257)
+                                                    -5.0f,    // 最低高度
+                                                    20.0f,    // 最高高度
+                                                    "tt.jpg");
 
         auto terrainMaterial = materialManager.createMaterial("terrain");
-        auto terrainTex = std::make_shared<LveTexture>(lveDevice, "E:\\Vulkan-Learning\\tt.jpg");
+        auto terrainTex = std::make_shared<LveTexture>(lveDevice, "tt.jpg");
         terrainMaterial->setTexture(LveMaterial::TextureType::DIFFUSE, terrainTex);
         terrainMaterial->setBaseColorFactor(glm::vec4(1.0f));
         terrainMaterial->setMetallicFactor(0.0f);

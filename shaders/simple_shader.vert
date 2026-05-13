@@ -1,0 +1,58 @@
+#version 450
+
+layout(location = 0) in vec3 position;
+layout(location = 1) in vec3 color;
+layout(location = 2) in vec3 normal;
+layout(location = 3) in vec2 uv;
+// 可选：法线贴图需要的切线
+// layout(location = 4) in vec3 tangent;
+
+layout(location = 0) out vec3 fragColor;
+layout(location = 1) out vec3 fragPosWorld;
+layout(location = 2) out vec3 fragNormalWorld;
+layout(location = 3) out vec2 fragTexCoord;
+layout(location = 4) out vec4 fragPosLightSpace;  // Shadow Map: 光源裁剪空间坐标
+// layout(location = 5) out vec3 fragTangentWorld;
+
+struct PointLight {
+    vec4 position;
+    vec4 color;
+};
+
+layout(set = 0, binding = 0) uniform GlobalUbo {
+    mat4 projectionMatrix;
+    mat4 viewMatrix;
+    mat4 inverseView;
+    mat4 lightViewProj;      // ===== Shadow Map: 光源的 View*Proj 矩阵 =====
+    vec4 ambientColor;
+    int numLights;
+    PointLight pointLights[10];
+
+    // ===== 新增：风力参数（必须与C++端GlobalUbo对齐）=====
+    float windTime;
+    float windStrength;
+    float windSpeed;
+    float windDirectionX;
+    float windDirectionZ;
+    float _pad0;
+    float _pad1;
+    float _pad2;
+} ubo;
+
+// Push constant 仅包含模型变换矩阵
+layout(push_constant) uniform Push {
+    mat4 modelMatrix;
+    mat4 normalMatrix;
+} push;
+
+void main() {
+    vec4 worldPos = push.modelMatrix * vec4(position, 1.0);
+    gl_Position = ubo.projectionMatrix * ubo.viewMatrix * worldPos;
+    fragNormalWorld = normalize(mat3(push.normalMatrix) * normal);
+    fragPosWorld = worldPos.xyz;
+    fragColor = color;
+    fragTexCoord = uv;
+    // 计算光源裁剪空间坐标（传给片段着色器用于 Shadow Map 采样）
+    fragPosLightSpace = ubo.lightViewProj * worldPos;
+    // 如果有切线：fragTangentWorld = normalize(mat3(push.normalMatrix) * tangent);
+}

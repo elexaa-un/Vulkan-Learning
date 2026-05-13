@@ -1,0 +1,105 @@
+{
+	"configurations" : 
+	[
+		{
+			"abstractTargets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Vulkan::Headers::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Vulkan__Headers-Debug-84af91b6237ed2caf6f6.json",
+					"name" : "Vulkan::Headers",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Vulkan::Vulkan::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Vulkan__Vulkan-Debug-633a3755994089acca8d.json",
+					"name" : "Vulkan::Vulkan",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Vulkan::glslangValidator::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Vulkan__glslangValidator-Debug-ffa75d4a733d7d3fea22.json",
+					"name" : "Vulkan::glslangValidator",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Vulkan::glslc::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Vulkan__glslc-Debug-7e9ae78516a2aaf175bd.json",
+					"name" : "Vulkan::glslc",
+					"projectIndex" : 0
+				}
+			],
+			"directories" : 
+			[
+				{
+					"abstractTargetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					],
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f6f22219c74102c3da70.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"abstractTargetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "MyProject",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Vulkan_Learning::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Vulkan_Learning-Debug-d69001cabdcdfb1d6459.json",
+					"name" : "Vulkan_Learning",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "E:/Vulkan-Learning/build",
+		"source" : "E:/Vulkan-Learning"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 9
+	}
+}

@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Vulkan Debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/Vulkan_Learning.exe",
+            "cwd": "${workspaceFolder}/build",
+            "preLaunchTask": "build",
+            "miDebuggerPath": "gdb.exe",
+            "setupCommands": [],
+            "stopAtEntry": false,
+            "externalConsole": false
+        }
+    ]
+}

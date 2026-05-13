@@ -4,7 +4,6 @@ project(MyProject VERSION 1.0 LANGUAGES CXX)
 
 # 不要递归查找，或者明确排除 build 目录
 # 方案1：只查找当前目录和 systems 目录（推荐）
-file(GLOB SOURCES "*.cpp" "systems/*.cpp")
 file(GLOB SOURCES "*.cpp" "systems/*.cpp" "ImGui/*.cpp")
 file(GLOB HEADERS "*.hpp" "*.h" "systems/*.hpp" "systems/*.h")
 
@@ -35,3 +34,31 @@ target_link_libraries(Vulkan_Learning PRIVATE Vulkan::Vulkan)
 
 # 链接 GLFW
 target_link_libraries(Vulkan_Learning PRIVATE glfw3 dwmapi)
+
+# ============================================================
+# 自动复制资源文件到 build 目录（exe 所在目录）
+# 这样 exe 用相对路径就能找到贴图、模型、天空盒等
+# ============================================================
+add_custom_command(TARGET Vulkan_Learning POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/skybox
+    $<TARGET_FILE_DIR:Vulkan_Learning>/skybox
+    COMMENT "Copying skybox textures to build/")
+
+add_custom_command(TARGET Vulkan_Learning POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/apple
+    $<TARGET_FILE_DIR:Vulkan_Learning>/apple
+    COMMENT "Copying apple model to build/")
+
+add_custom_command(TARGET Vulkan_Learning POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    ${CMAKE_SOURCE_DIR}/tree.png
+    $<TARGET_FILE_DIR:Vulkan_Learning>/tree.png
+    COMMENT "Copying tree texture")
+
+add_custom_command(TARGET Vulkan_Learning POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    ${CMAKE_SOURCE_DIR}/tt.jpg
+    $<TARGET_FILE_DIR:Vulkan_Learning>/tt.jpg
+    COMMENT "Copying terrain texture")

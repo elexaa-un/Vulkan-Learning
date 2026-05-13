@@ -47,6 +47,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Vulkan_Learning.dir/main.cpp.obj.d"
   "CMakeFiles/Vulkan_Learning.dir/systems/lve_point_light_system.cpp.obj"
   "CMakeFiles/Vulkan_Learning.dir/systems/lve_point_light_system.cpp.obj.d"
+  "CMakeFiles/Vulkan_Learning.dir/systems/lve_shadow_system.cpp.obj"
+  "CMakeFiles/Vulkan_Learning.dir/systems/lve_shadow_system.cpp.obj.d"
   "CMakeFiles/Vulkan_Learning.dir/systems/lve_simple_renderer_system.cpp.obj"
   "CMakeFiles/Vulkan_Learning.dir/systems/lve_simple_renderer_system.cpp.obj.d"
   "CMakeFiles/Vulkan_Learning.dir/systems/lve_skybox_system.cpp.obj"

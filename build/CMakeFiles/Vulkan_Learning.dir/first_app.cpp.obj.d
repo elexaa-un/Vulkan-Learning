@@ -399,6 +399,7 @@ CMakeFiles/Vulkan_Learning.dir/first_app.cpp.obj: \
  E:\Vulkan-Learning\systems\lve_skybox_system.hpp \
  E:\Vulkan-Learning\systems\lve_vegetation_system.hpp \
  E:\Vulkan-Learning\systems\vegetation_instance.hpp \
+ E:\Vulkan-Learning\systems/lve_shadow_system.hpp \
  E:\Vulkan-Learning\keyboard_movement_controller.hpp \
  E:\Vulkan-Learning\terrain_height_sampler.hpp \
  C:/msys64/ucrt64/include/c++/15.2.0/stdexcept \

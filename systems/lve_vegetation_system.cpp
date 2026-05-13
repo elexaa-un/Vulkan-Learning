@@ -53,26 +53,26 @@ namespace lve
     void LveVegetationSystem::createQuadModel()
     {
         std::vector<LveModel::Vertex> vertices(4);
-        // 顶点0: 左下
+        // 顶点0: 左下(地面/树根) — Y=0, UV.y=0=纹理底部
         vertices[0].position = {-0.5f, 0.0f, 0.0f};
         vertices[0].color = {1.0f, 1.0f, 1.0f};
         vertices[0].normal = {0.0f, 0.0f, 1.0f};
-        vertices[0].uv = {0.0f, 1.0f};
-        // 顶点1: 右下
+        vertices[0].uv = {0.0f, 0.0f};
+        // 顶点1: 右下(地面/树根)
         vertices[1].position = {0.5f, 0.0f, 0.0f};
         vertices[1].color = {1.0f, 1.0f, 1.0f};
         vertices[1].normal = {0.0f, 0.0f, 1.0f};
-        vertices[1].uv = {1.0f, 1.0f};
-        // 顶点2: 右上
+        vertices[1].uv = {1.0f, 0.0f};
+        // 顶点2: 右上(顶部/树冠) — Y=1, UV.y=1=纹理顶部
         vertices[2].position = {0.5f, 1.0f, 0.0f};
         vertices[2].color = {1.0f, 1.0f, 1.0f};
         vertices[2].normal = {0.0f, 0.0f, 1.0f};
-        vertices[2].uv = {1.0f, 0.0f};
-        // 顶点3: 左上
+        vertices[2].uv = {1.0f, 1.0f};
+        // 顶点3: 左上(顶部/树冠)
         vertices[3].position = {-0.5f, 1.0f, 0.0f};
         vertices[3].color = {1.0f, 1.0f, 1.0f};
         vertices[3].normal = {0.0f, 0.0f, 1.0f};
-        vertices[3].uv = {0.0f, 0.0f};
+        vertices[3].uv = {0.0f, 1.0f};
 
         std::vector<uint32_t> indices = {0, 1, 2, 2, 3, 0};
         m_quadModel = LveModel::createModelFromVertices(lveDevice, vertices, indices);
@@ -143,9 +143,15 @@ namespace lve
         instanceScaleAttr.format = VK_FORMAT_R32_SFLOAT;
         instanceScaleAttr.offset = offsetof(VegetationInstance, scale);
 
+        VkVertexInputAttributeDescription windFlexAttr{};
+        windFlexAttr.location = 6;
+        windFlexAttr.binding = 1;
+        windFlexAttr.format = VK_FORMAT_R32_SFLOAT;
+        windFlexAttr.offset = offsetof(VegetationInstance, windFlexibility);
+
         attributes.push_back(instancePosAttr);
         attributes.push_back(instanceScaleAttr);
-
+        attributes.push_back(windFlexAttr);
         // 覆盖 config 中的绑定和属性
         config.bindingDescriptions = bindings;
         config.attributeDescriptions = attributes;
