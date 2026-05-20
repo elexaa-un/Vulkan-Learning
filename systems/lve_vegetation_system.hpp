@@ -13,6 +13,14 @@
 
 namespace lve
 {
+    struct WindPushConstantData
+    {
+        float windTime;       // 累计时间（秒）
+        float windStrength;   // 风力强度 [0.0, 2.0]
+        float windSpeed;      // 风速 [0.1, 5.0]
+        float windDirectionX; // 风向 X 分量（归一化）
+        float windDirectionZ; // 风向 Z 分量（归一化）
+    };
 
     class LveVegetationSystem
     {
@@ -24,7 +32,7 @@ namespace lve
 
         void createInstances(const std::vector<VegetationInstance> &instances);
         void updateInstances(const std::vector<VegetationInstance> &instances);
-        void render(FrameInfo &frameInfo);
+        void render(FrameInfo &frameInfo, WindPushConstantData &windData);
 
     private:
         void createPipelineLayout(VkDescriptorSetLayout globalSetLayout, VkDescriptorSetLayout textureSetLayout);

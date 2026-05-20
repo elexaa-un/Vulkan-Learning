@@ -21,6 +21,10 @@ namespace lve
         LveCamera &camera;
         VkDescriptorSet globalDescriptorSet;
         LveGameObject::Map &gameObjects;
+
+        // 视锥体剔除统计（每帧由渲染系统更新）
+        uint32_t culledCount = 0;
+        uint32_t totalCount = 0;
     };
     struct GlobalUbo
     {
@@ -31,14 +35,6 @@ namespace lve
         glm::vec4 ambientColor{1.f, 1.f, 1.f, .02f};
         int numLights;
         PointLight pointLights[MAX_LIGHTS];
-
-        // ===== 新增：风力参数 =====
-        float windTime;       // 累计时间（秒）
-        float windStrength;   // 风力强度 [0.0, 2.0]
-        float windSpeed;      // 风速 [0.1, 5.0]
-        float windDirectionX; // 风向 X 分量（归一化）
-        float windDirectionZ; // 风向 Z 分量（归一化）
-        float _pad[3];        // 对齐填充（保证16字节对齐）
     };
 
 }

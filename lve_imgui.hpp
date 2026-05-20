@@ -8,9 +8,20 @@
 #include <GLFW/glfw3.h>
 #include "lve_device.hpp"
 #include "lve_descriptors.hpp" // 新增：需要 LveDescriptorPool
-
+#include "lve_gameobject.hpp"
+#include "lve_camera.hpp"
 namespace lve
 {
+    // 渲染选项结构体：在主循环中持久化，供 ImGui 修改、渲染循环读取
+    struct RenderOptions
+    {
+        bool showSkybox = true;
+        bool showTerrain = true;
+        bool showVegetation = true;
+        bool showModel = true;
+        bool wireframe = false;
+    };
+
     class LveImgui
     {
     public:
@@ -27,6 +38,12 @@ namespace lve
         // 调用后，你就可以写自己的 ImGui 控件代码了
         void newFrame();
 
+        void showImGUI(float frameTime,
+                       LveGameObject::Map &gameObjects,
+                       LveCamera &camera,
+                       LveGameObject &viewerObject,
+                       RenderOptions &options,
+                       class FrameInfo* frameInfo = nullptr);
         // 在每帧结束时调用，把 UI 渲染到屏幕上
         // 必须在 render pass 结束之后调用
         void render(VkCommandBuffer commandBuffer);

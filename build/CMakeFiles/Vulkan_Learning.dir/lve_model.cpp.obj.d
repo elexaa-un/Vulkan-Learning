@@ -125,7 +125,54 @@ CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.obj: \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/stl_vector.h \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/stl_bvector.h \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/vector.tcc \
- E:\Vulkan-Learning\lve_utils.hpp E:\Vulkan-Learning\lve_buffer.hpp \
+ E:\Vulkan-Learning\lve_utils.hpp \
+ C:/msys64/ucrt64/include/c++/15.2.0/stdexcept \
+ C:/msys64/ucrt64/include/c++/15.2.0/exception \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/exception_ptr.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/cxxabi_init_exception.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/typeinfo \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/nested_exception.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/iostream \
+ C:/msys64/ucrt64/include/c++/15.2.0/ostream \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/ostream.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/ios \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/ios_base.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/ext/atomicity.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/x86_64-w64-mingw32/bits/gthr.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/x86_64-w64-mingw32/bits/gthr-default.h \
+ C:/msys64/ucrt64/include/pthread.h C:/msys64/ucrt64/include/sys/types.h \
+ C:/msys64/ucrt64/include/process.h \
+ C:/msys64/ucrt64/include/corecrt_startup.h \
+ C:/msys64/ucrt64/include/signal.h \
+ C:/msys64/ucrt64/include/pthread_signal.h \
+ C:/msys64/ucrt64/include/time.h C:/msys64/ucrt64/include/sys/timeb.h \
+ C:/msys64/ucrt64/include/sec_api/sys/timeb_s.h \
+ C:/msys64/ucrt64/include/_timeval.h \
+ C:/msys64/ucrt64/include/pthread_time.h \
+ C:/msys64/ucrt64/include/pthread_compat.h \
+ C:/msys64/ucrt64/include/sched.h \
+ C:/msys64/ucrt64/include/pthread_unistd.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/x86_64-w64-mingw32/bits/atomic_word.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/locale_classes.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/locale_classes.tcc \
+ C:/msys64/ucrt64/include/c++/15.2.0/system_error \
+ C:/msys64/ucrt64/include/c++/15.2.0/x86_64-w64-mingw32/bits/error_constants.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/streambuf \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/streambuf.tcc \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/basic_ios.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/locale_facets.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/cwctype \
+ C:/msys64/ucrt64/include/wctype.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/x86_64-w64-mingw32/bits/ctype_base.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/streambuf_iterator.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/x86_64-w64-mingw32/bits/ctype_inline.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/locale_facets.tcc \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/basic_ios.tcc \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/ostream.tcc \
+ C:/msys64/ucrt64/include/c++/15.2.0/istream \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/istream.tcc \
+ E:\Vulkan-Learning\lve_buffer.hpp \
+ E:\Vulkan-Learning\lve_frustum_culling.hpp \
  E:/VulkanSDK/include/glm/glm.hpp \
  E:/VulkanSDK/include/glm/detail/_fixes.hpp \
  C:/msys64/ucrt64/include/c++/15.2.0/cmath \
@@ -180,7 +227,6 @@ CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.obj: \
  E:/VulkanSDK/Include/glm/detail/compute_vector_decl.hpp \
  C:/msys64/ucrt64/include/c++/15.2.0/functional \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/std_function.h \
- C:/msys64/ucrt64/include/c++/15.2.0/typeinfo \
  C:/msys64/ucrt64/include/c++/15.2.0/unordered_map \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/unordered_map.h \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/hashtable.h \
@@ -300,6 +346,26 @@ CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.obj: \
  E:/VulkanSDK/include/glm/detail/type_half.inl \
  E:/VulkanSDK/include/glm/integer.hpp \
  E:/VulkanSDK/include/glm/detail/func_integer.inl \
+ E:/VulkanSDK/include/glm/gtc/matrix_transform.hpp \
+ E:/VulkanSDK/Include/glm/ext/matrix_projection.hpp \
+ E:/VulkanSDK/Include/glm/gtc/constants.hpp \
+ E:/VulkanSDK/Include/glm/ext/scalar_constants.hpp \
+ E:/VulkanSDK/Include/glm/ext/scalar_constants.inl \
+ E:/VulkanSDK/Include/glm/gtc/constants.inl \
+ E:/VulkanSDK/Include/glm/ext/matrix_projection.inl \
+ E:/VulkanSDK/Include/glm/ext/matrix_clip_space.hpp \
+ E:/VulkanSDK/Include/glm/ext/matrix_clip_space.inl \
+ E:/VulkanSDK/Include/glm/ext/matrix_transform.hpp \
+ E:/VulkanSDK/Include/glm/ext/matrix_transform.inl \
+ E:/VulkanSDK/include/glm/gtc/matrix_transform.inl \
+ C:/msys64/ucrt64/include/c++/15.2.0/algorithm \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/stl_algo.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/algorithmfwd.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/stl_heap.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/uniform_int_dist.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/stl_tempbuf.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/pstl/glue_algorithm_defs.h \
+ C:/msys64/ucrt64/include/c++/15.2.0/pstl/execution_defs.h \
  E:/VulkanSDK/include/glm/gtx/hash.hpp \
  E:/VulkanSDK/Include/glm/gtc/vec1.hpp \
  E:/VulkanSDK/Include/glm/ext/vector_bool1.hpp \
@@ -313,18 +379,6 @@ CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.obj: \
  E:/VulkanSDK/Include/glm/ext/vector_uint1.hpp \
  E:/VulkanSDK/Include/glm/ext/vector_uint1_sized.hpp \
  E:/VulkanSDK/Include/glm/gtc/quaternion.hpp \
- E:/VulkanSDK/Include/glm/gtc/constants.hpp \
- E:/VulkanSDK/Include/glm/ext/scalar_constants.hpp \
- E:/VulkanSDK/Include/glm/ext/scalar_constants.inl \
- E:/VulkanSDK/Include/glm/gtc/constants.inl \
- E:/VulkanSDK/Include/glm/gtc/matrix_transform.hpp \
- E:/VulkanSDK/Include/glm/ext/matrix_projection.hpp \
- E:/VulkanSDK/Include/glm/ext/matrix_projection.inl \
- E:/VulkanSDK/Include/glm/ext/matrix_clip_space.hpp \
- E:/VulkanSDK/Include/glm/ext/matrix_clip_space.inl \
- E:/VulkanSDK/Include/glm/ext/matrix_transform.hpp \
- E:/VulkanSDK/Include/glm/ext/matrix_transform.inl \
- E:/VulkanSDK/Include/glm/gtc/matrix_transform.inl \
  E:/VulkanSDK/Include/glm/ext/vector_relational.hpp \
  E:/VulkanSDK/Include/glm/ext/vector_relational.inl \
  E:/VulkanSDK/Include/glm/detail/type_float.hpp \
@@ -352,67 +406,22 @@ CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.obj: \
  E:/VulkanSDK/Include/glm/gtx/dual_quaternion.inl \
  E:/VulkanSDK/include/glm/gtx/hash.inl \
  C:/msys64/ucrt64/include/c++/15.2.0/memory \
- C:/msys64/ucrt64/include/c++/15.2.0/bits/stl_tempbuf.h \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/stl_raw_storage_iter.h \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/align.h \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/unique_ptr.h \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/shared_ptr.h \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/shared_ptr_base.h \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/allocated_ptr.h \
- C:/msys64/ucrt64/include/c++/15.2.0/ext/atomicity.h \
- C:/msys64/ucrt64/include/c++/15.2.0/x86_64-w64-mingw32/bits/gthr.h \
- C:/msys64/ucrt64/include/c++/15.2.0/x86_64-w64-mingw32/bits/gthr-default.h \
- C:/msys64/ucrt64/include/pthread.h C:/msys64/ucrt64/include/sys/types.h \
- C:/msys64/ucrt64/include/process.h \
- C:/msys64/ucrt64/include/corecrt_startup.h \
- C:/msys64/ucrt64/include/signal.h \
- C:/msys64/ucrt64/include/pthread_signal.h \
- C:/msys64/ucrt64/include/time.h C:/msys64/ucrt64/include/sys/timeb.h \
- C:/msys64/ucrt64/include/sec_api/sys/timeb_s.h \
- C:/msys64/ucrt64/include/_timeval.h \
- C:/msys64/ucrt64/include/pthread_time.h \
- C:/msys64/ucrt64/include/pthread_compat.h \
- C:/msys64/ucrt64/include/sched.h \
- C:/msys64/ucrt64/include/pthread_unistd.h \
- C:/msys64/ucrt64/include/c++/15.2.0/x86_64-w64-mingw32/bits/atomic_word.h \
  C:/msys64/ucrt64/include/c++/15.2.0/ext/concurrence.h \
- C:/msys64/ucrt64/include/c++/15.2.0/exception \
- C:/msys64/ucrt64/include/c++/15.2.0/bits/exception_ptr.h \
- C:/msys64/ucrt64/include/c++/15.2.0/bits/cxxabi_init_exception.h \
- C:/msys64/ucrt64/include/c++/15.2.0/bits/nested_exception.h \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/shared_ptr_atomic.h \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/atomic_base.h \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/atomic_lockfree_defines.h \
  C:/msys64/ucrt64/include/c++/15.2.0/backward/auto_ptr.h \
  C:/msys64/ucrt64/include/c++/15.2.0/pstl/glue_memory_defs.h \
- C:/msys64/ucrt64/include/c++/15.2.0/pstl/execution_defs.h \
+ E:\Vulkan-Learning\stb_image.h \
  C:/msys64/ucrt64/include/c++/15.2.0/cstring \
  C:/msys64/ucrt64/include/string.h \
  C:/msys64/ucrt64/include/sec_api/string_s.h \
- C:/msys64/ucrt64/include/c++/15.2.0/iostream \
- C:/msys64/ucrt64/include/c++/15.2.0/ostream \
- C:/msys64/ucrt64/include/c++/15.2.0/bits/ostream.h \
- C:/msys64/ucrt64/include/c++/15.2.0/ios \
- C:/msys64/ucrt64/include/c++/15.2.0/bits/ios_base.h \
- C:/msys64/ucrt64/include/c++/15.2.0/bits/locale_classes.h \
- C:/msys64/ucrt64/include/c++/15.2.0/bits/locale_classes.tcc \
- C:/msys64/ucrt64/include/c++/15.2.0/system_error \
- C:/msys64/ucrt64/include/c++/15.2.0/x86_64-w64-mingw32/bits/error_constants.h \
- C:/msys64/ucrt64/include/c++/15.2.0/stdexcept \
- C:/msys64/ucrt64/include/c++/15.2.0/streambuf \
- C:/msys64/ucrt64/include/c++/15.2.0/bits/streambuf.tcc \
- C:/msys64/ucrt64/include/c++/15.2.0/bits/basic_ios.h \
- C:/msys64/ucrt64/include/c++/15.2.0/bits/locale_facets.h \
- C:/msys64/ucrt64/include/c++/15.2.0/cwctype \
- C:/msys64/ucrt64/include/wctype.h \
- C:/msys64/ucrt64/include/c++/15.2.0/x86_64-w64-mingw32/bits/ctype_base.h \
- C:/msys64/ucrt64/include/c++/15.2.0/bits/streambuf_iterator.h \
- C:/msys64/ucrt64/include/c++/15.2.0/x86_64-w64-mingw32/bits/ctype_inline.h \
- C:/msys64/ucrt64/include/c++/15.2.0/bits/locale_facets.tcc \
- C:/msys64/ucrt64/include/c++/15.2.0/bits/basic_ios.tcc \
- C:/msys64/ucrt64/include/c++/15.2.0/bits/ostream.tcc \
- C:/msys64/ucrt64/include/c++/15.2.0/istream \
- C:/msys64/ucrt64/include/c++/15.2.0/bits/istream.tcc \
  E:\Vulkan-Learning\tiny_obj_loader.h \
  C:/msys64/ucrt64/include/c++/15.2.0/map \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/stl_tree.h \
@@ -613,4 +622,4 @@ CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.obj: \
  C:/msys64/ucrt64/include/c++/15.2.0/version \
  C:/msys64/ucrt64/include/intrin.h C:/msys64/ucrt64/include/setjmp.h \
  C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/cpuid.h \
- E:\Vulkan-Learning\lve_texture.hpp E:\Vulkan-Learning\stb_image.h
+ E:\Vulkan-Learning\lve_texture.hpp

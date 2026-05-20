@@ -6,9 +6,9 @@
  */
 
 #include "lve_buffer.hpp"
+#include "lve_utils.hpp"
 
 // std
-#include <cassert>
 #include <cstring>
 
 namespace lve
@@ -68,7 +68,7 @@ namespace lve
      */
     VkResult LveBuffer::map(VkDeviceSize size, VkDeviceSize offset)
     {
-        assert(buffer && memory && "Called map on buffer before create");
+        LVE_ASSERT(buffer && memory, "Called map on buffer before create");
         return vkMapMemory(lveDevice.device(), memory, offset, size, 0, &mapped);
     }
 
@@ -97,7 +97,7 @@ namespace lve
      */
     void LveBuffer::writeToBuffer(void *data, VkDeviceSize size, VkDeviceSize offset)
     {
-        assert(mapped && "Cannot copy to unmapped buffer");
+        LVE_ASSERT(mapped, "Cannot copy to unmapped buffer");
 
         if (size == VK_WHOLE_SIZE)
         {

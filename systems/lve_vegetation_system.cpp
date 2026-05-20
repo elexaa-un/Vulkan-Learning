@@ -87,17 +87,17 @@ namespace lve
 
         std::vector<VkDescriptorSetLayout> layouts = {globalSetLayout, textureSetLayout};
 
+        VkPushConstantRange pushConstantRange{};
+        pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
+        pushConstantRange.offset = 0;
+        pushConstantRange.size = sizeof(WindPushConstantData); // 传递风动画数据
+
         VkPipelineLayoutCreateInfo layoutInfo{};
         layoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
         layoutInfo.setLayoutCount = static_cast<uint32_t>(layouts.size());
         layoutInfo.pSetLayouts = layouts.data();
-        layoutInfo.pushConstantRangeCount = 0;
-        layoutInfo.pPushConstantRanges = nullptr;
-
-        VkPushConstantRange pushConstantRange{};
-        pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
-        pushConstantRange.offset = 0;
-        pushConstantRange.size = 0; // 本系统中不使用 push constant
+        layoutInfo.pushConstantRangeCount = 1;
+        layoutInfo.pPushConstantRanges = &pushConstantRange;
 
         if (vkCreatePipelineLayout(lveDevice.device(), &layoutInfo, nullptr, &m_pipelineLayout) != VK_SUCCESS)
         {
@@ -143,15 +143,10 @@ namespace lve
         instanceScaleAttr.format = VK_FORMAT_R32_SFLOAT;
         instanceScaleAttr.offset = offsetof(VegetationInstance, scale);
 
-        VkVertexInputAttributeDescription windFlexAttr{};
-        windFlexAttr.location = 6;
-        windFlexAttr.binding = 1;
-        windFlexAttr.format = VK_FORMAT_R32_SFLOAT;
-        windFlexAttr.offset = offsetof(VegetationInstance, windFlexibility);
-
         attributes.push_back(instancePosAttr);
         attributes.push_back(instanceScaleAttr);
-        attributes.push_back(windFlexAttr);
+        // 注意：location 6 (windFlexibility) 已移除
+        // vegetation.vert 仅使用 location 0-5，不需要此属性
         // 覆盖 config 中的绑定和属性
         config.bindingDescriptions = bindings;
         config.attributeDescriptions = attributes;
@@ -208,7 +203,7 @@ namespace lve
         }
     }
 
-    void LveVegetationSystem::render(FrameInfo &frameInfo)
+    void LveVegetationSystem::render(FrameInfo &frameInfo, WindPushConstantData &windData)
     {
         if (m_instanceCount == 0)
             return;
@@ -230,6 +225,12 @@ namespace lve
                                 1, 1,
                                 &m_textureSet,
                                 0, nullptr);
+        // 将风数据通过 push constant 传递给着色器
+        vkCmdPushConstants(frameInfo.commandBuffer,
+                           m_pipelineLayout,
+                           VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,
+                           0, sizeof(WindPushConstantData),
+                           &windData);
 
         // 绑定几何顶点缓冲（四边形）
         m_quadModel->bind(frameInfo.commandBuffer);
@@ -245,5 +246,4 @@ namespace lve
                          m_instanceCount,
                          0, 0, 0);
     }
-
 } // namespace lve

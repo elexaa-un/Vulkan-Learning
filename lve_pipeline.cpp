@@ -1,9 +1,9 @@
 #include "lve_pipeline.hpp"
 #include "lve_model.hpp"
+#include "lve_utils.hpp"
 #include <fstream>
 #include <stdexcept>
 #include <iostream>
-#include <cassert>
 namespace lve
 {
     LvePipeline::LvePipeline(LveDevice &device,
@@ -42,11 +42,11 @@ namespace lve
     }
     void LvePipeline::createGraphicsPipeline(const std::string &vertFilePath, const std::string &fragFilePath, const PipelineConfigInfo &configInfo)
     {
-        assert(
-            configInfo.pipelineLayout != VK_NULL_HANDLE &&
+        LVE_ASSERT(
+            configInfo.pipelineLayout != VK_NULL_HANDLE,
             "Cannot create graphics pipeline::no pipelineLayout provided in configInfo");
-        assert(
-            configInfo.renderPass != VK_NULL_HANDLE &&
+        LVE_ASSERT(
+            configInfo.renderPass != VK_NULL_HANDLE,
             "Cannot create graphics pipeline::no renderpass provided in configInfo");
         auto vertCode = readFile(vertFilePath);
         auto fragCode = readFile(fragFilePath);
@@ -102,10 +102,7 @@ namespace lve
         pipelineInfo.basePipelineIndex = -1;
         pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
-        if (vkCreateGraphicsPipelines(lveDevice.device(), VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline) != VK_SUCCESS)
-        {
-            throw std::runtime_error("Failed to create Graphics Pipeline!");
-        }
+        VK_CHECK(vkCreateGraphicsPipelines(lveDevice.device(), VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline));
     }
 
     void LvePipeline::createShaderModule(const std::vector<char> &code, VkShaderModule *shaderModule)
@@ -115,10 +112,7 @@ namespace lve
         createInfo.codeSize = code.size();
         createInfo.pCode = reinterpret_cast<const uint32_t *>(code.data());
 
-        if (vkCreateShaderModule(lveDevice.device(), &createInfo, nullptr, shaderModule) != VK_SUCCESS)
-        {
-            throw std::runtime_error("Failed to create shader module!");
-        }
+        VK_CHECK(vkCreateShaderModule(lveDevice.device(), &createInfo, nullptr, shaderModule));
     }
 
     void LvePipeline::defaultPipelineConfigInfo(PipelineConfigInfo &configInfo)

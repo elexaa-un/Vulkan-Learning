@@ -25,6 +25,11 @@ namespace lve
                 uint32_t count = 1);
             std::unique_ptr<LveDescriptorSetLayout> build() const;
 
+            const std::unordered_map<uint32_t, VkDescriptorSetLayoutBinding> &getBindings() const
+            {
+                return bindings;
+            }
+
         private:
             LveDevice &lveDevice;
             std::unordered_map<uint32_t, VkDescriptorSetLayoutBinding> bindings{};
@@ -104,6 +109,11 @@ namespace lve
         LveDescriptorSetLayout &setLayout;
         LveDescriptorPool &pool;
         std::vector<VkWriteDescriptorSet> writes;
+
+        // Store copies of image/buffer info structs so their lifetime
+        // matches the write descriptors that point to them.
+        std::vector<VkDescriptorImageInfo> imageInfos;
+        std::vector<VkDescriptorBufferInfo> bufferInfos;
     };
 
 } // namespace lve

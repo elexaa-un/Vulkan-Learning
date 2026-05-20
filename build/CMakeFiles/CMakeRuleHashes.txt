@@ -1,0 +1,12 @@
+# Hashes of file build rules.
+8e0a9dc45e746ebb58d75043c68250d7 CMakeFiles/CompileShaders
+f05ec8566a116756e1e9d2995d148051 shaders/point_light.frag.spv
+3da71e93b2519f5011a711663c468b8b shaders/point_light.vert.spv
+022a02de4401f600fa2df3fdd62563fd shaders/shadow.frag.spv
+ebb226d79096971959f85395c62eebe1 shaders/shadow.vert.spv
+5170d4e3b15000114cac90e5ae77ec21 shaders/simple_shader.frag.spv
+6d3b1b0fc9582213ac2a9bae79ef83d6 shaders/simple_shader.vert.spv
+8e19033d879f7fd56503e5bef3fa9c2f shaders/skybox.frag.spv
+94cf7426dac4d59bf1c59a836de47995 shaders/skybox.vert.spv
+5736dbd376064ba7d9b6445d58a1e595 shaders/vegetation.frag.spv
+74dbd76fc4d38ad4ec4ec1c3e8fd631f shaders/vegetation.vert.spv

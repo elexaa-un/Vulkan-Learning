@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include "lve_buffer.hpp"
+#include "lve_texture_manager.hpp"
 
 namespace lve
 {
@@ -146,31 +147,51 @@ namespace lve
             return;
         }
 
-        prepareDescriptorWrites();
-
-        // 构建描述符集
         LveDescriptorWriter writer(m_layout, m_pool);
-
-        // Binding 0: Uniform Buffer (材质参数)
         writer.writeBuffer(0, &m_materialBufferInfo);
 
-        // Binding 1+: 纹理
-        for (size_t i = 0; i < m_imageInfos.size(); i++)
+        // 使用 LveTextureManager 的全局 fallback 资源
+        VkDescriptorImageInfo fallbackInfo{};
+        fallbackInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL; // 必须显式设置！
+        fallbackInfo.imageView = LveTextureManager::getFallbackImageView();
+        fallbackInfo.sampler = LveTextureManager::getFallbackSampler();
+
+        // 验证 fallback 资源是否有效
+        assert(fallbackInfo.imageView != VK_NULL_HANDLE);
+        assert(fallbackInfo.sampler != VK_NULL_HANDLE);
+
+        auto writeTextureBinding = [&](uint32_t binding)
         {
-            // 获取实际的绑定点（从 sortedTextures 中）
-            auto it = m_textures.begin();
-            std::advance(it, i);
-            uint32_t binding = it->first;
-            writer.writeImage(binding, &m_imageInfos[i]);
-        }
+            auto it = m_textures.find(binding);
+            VkDescriptorImageInfo info = fallbackInfo; // 默认使用 fallback
+
+            if (it != m_textures.end() && it->second && it->second->isValid())
+            {
+                VkSampler sampler = it->second->getSampler();
+                VkImageView imageView = it->second->getImageView();
+                if (sampler != VK_NULL_HANDLE && imageView != VK_NULL_HANDLE)
+                {
+                    info.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+                    info.imageView = imageView;
+                    info.sampler = sampler;
+                }
+                else
+                {
+                    std::cerr << "Warning: Texture binding " << binding
+                              << " has invalid handles, using fallback" << std::endl;
+                }
+            }
+            writer.writeImage(binding, &info);
+        };
+
+        writeTextureBinding(1); // DIFFUSE
+        writeTextureBinding(2); // NORMAL
+        writeTextureBinding(3); // SPECULAR
 
         writer.build(m_descriptorSet);
         m_built = true;
         m_dirty = false;
-
-        std::cout << "Material built with " << m_imageInfos.size() << " textures" << std::endl;
     }
-
     void LveMaterial::updateDescriptorSet()
     {
         if (!m_built)

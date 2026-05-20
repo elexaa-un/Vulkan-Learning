@@ -16,6 +16,7 @@
 			"add_executable",
 			"target_link_directories",
 			"target_link_libraries",
+			"add_dependencies",
 			"target_include_directories"
 		],
 		"files" : 
@@ -54,6 +55,12 @@
 			{
 				"command" : 3,
 				"file" : 0,
+				"line" : 87,
+				"parent" : 0
+			},
+			{
+				"command" : 4,
+				"file" : 0,
 				"line" : 21,
 				"parent" : 0
 			}
@@ -83,19 +90,19 @@
 			"includes" : 
 			[
 				{
-					"backtrace" : 5,
+					"backtrace" : 6,
 					"path" : "E:/Vulkan-Learning/glfw/include"
 				},
 				{
-					"backtrace" : 5,
+					"backtrace" : 6,
 					"path" : "E:/Vulkan-Learning/."
 				},
 				{
-					"backtrace" : 5,
+					"backtrace" : 6,
 					"path" : "E:/Vulkan-Learning/systems"
 				},
 				{
-					"backtrace" : 5,
+					"backtrace" : 6,
 					"path" : "E:/Vulkan-Learning/ImGui"
 				},
 				{
@@ -134,8 +141,18 @@
 				24,
 				25,
 				26,
-				27
+				27,
+				28,
+				29,
+				30
 			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 5,
+			"id" : "CompileShaders::@6890427a1f51a3e7e1df"
 		}
 	],
 	"id" : "Vulkan_Learning::@6890427a1f51a3e7e1df",
@@ -191,6 +208,13 @@
 	],
 	"name" : "Vulkan_Learning",
 	"nameOnDisk" : "Vulkan_Learning.exe",
+	"orderDependencies" : 
+	[
+		{
+			"backtrace" : 5,
+			"id" : "CompileShaders::@6890427a1f51a3e7e1df"
+		}
+	],
 	"paths" : 
 	{
 		"build" : ".",
@@ -229,7 +253,10 @@
 				24,
 				25,
 				26,
-				27
+				27,
+				28,
+				29,
+				30
 			]
 		}
 	],
@@ -316,6 +343,12 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
+			"path" : "lve_frustum_culling.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
 			"path" : "lve_gameobject.cpp",
 			"sourceGroupIndex" : 0
 		},
@@ -352,6 +385,12 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
+			"path" : "lve_resource_manager.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
 			"path" : "lve_swap_chain.cpp",
 			"sourceGroupIndex" : 0
 		},
@@ -359,6 +398,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "lve_texture.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "lve_texture_manager.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{

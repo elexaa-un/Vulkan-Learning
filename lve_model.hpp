@@ -3,6 +3,7 @@
 #include "lve_device.hpp"
 #include "lve_utils.hpp"
 #include "lve_buffer.hpp"
+#include "lve_frustum_culling.hpp"
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <glm/glm.hpp>
@@ -10,7 +11,7 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
-
+#include "stb_image.h"
 namespace lve
 {
     class LveModel
@@ -60,6 +61,9 @@ namespace lve
         }
         uint32_t getIndexCount() const { return indexCount; }
 
+        /// 获取模型在**局部空间**的轴对齐包围盒（用于视锥体剔除）
+        const AABB& getAABB() const { return aabb; }
+
     private:
         void createVertexBuffers(const std::vector<Vertex> &vertices);
         void createIndexBuffers(const std::vector<uint32_t> &indices);
@@ -70,6 +74,9 @@ namespace lve
         bool hasIndexBuffer = false;
         std::unique_ptr<LveBuffer> indexBuffer;
         uint32_t indexCount;
+
+        // 模型在局部空间的轴对齐包围盒，顶点数据加载后计算
+        AABB aabb{};
     };
     std::unique_ptr<LveModel> createTerrainModel(
         LveDevice &device,
@@ -81,6 +88,7 @@ namespace lve
         float maxHeight,                  // 最高高度（对应高度图最亮处）
         const std::string &texturePath);  // 地形纹理（可选）
 
+    float bilinearSample(const stbi_uc *data, int width, int height, float u, float v);
     static std::unique_ptr<LveModel> createSkyboxModel(LveDevice &device)
     {
         // 立方体顶点坐标（范围 -1 到 1）

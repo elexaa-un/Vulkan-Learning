@@ -1,8 +1,8 @@
 #include "lve_point_light_system.hpp"
+#include "lve_utils.hpp"
 #include <stdexcept>
 #include <array>
 #include <iostream>
-#include <cassert>
 #include <map>
 namespace lve
 {
@@ -40,21 +40,22 @@ namespace lve
         pipelineLayoueInfo.pushConstantRangeCount = 1;
         pipelineLayoueInfo.pPushConstantRanges = &pushConstantRange;
 
-        if (vkCreatePipelineLayout(lveDevice.device(), &pipelineLayoueInfo, nullptr, &pipelineLayout) != VK_SUCCESS)
-        {
-            throw std::runtime_error("Failed to create Pipeline Layout!");
-        }
+        VK_CHECK(vkCreatePipelineLayout(lveDevice.device(), &pipelineLayoueInfo, nullptr, &pipelineLayout));
     }
 
     void LvePointLightSystem::createPipeline(VkRenderPass renderPass)
     {
-        assert(pipelineLayout != nullptr && "Cannot create pipeline before pipeline layout");
+        LVE_ASSERT(pipelineLayout != nullptr, "Cannot create pipeline before pipeline layout");
 
         PipelineConfigInfo pipelineConfig{};
         LvePipeline::defaultPipelineConfigInfo(pipelineConfig);
         LvePipeline::enablePipelineAlphaBlending(pipelineConfig);
+        // 点光源使用 advertiser billboard，不需要顶点缓冲区
         pipelineConfig.attributeDescriptions.clear();
         pipelineConfig.bindingDescriptions.clear();
+        // 点光源只写颜色，不写深度（使用 LESS_OR_EQUAL 保证叠加正确）
+        pipelineConfig.depthStencilInfo.depthWriteEnable = VK_FALSE;
+        pipelineConfig.depthStencilInfo.depthCompareOp = VK_COMPARE_OP_LESS_OR_EQUAL;
         pipelineConfig.renderPass = renderPass;
         pipelineConfig.pipelineLayout = pipelineLayout;
         lvePipeline = std::make_unique<LvePipeline>(
@@ -62,8 +63,6 @@ namespace lve
             "shaders/point_light.vert.spv",
             "shaders/point_light.frag.spv",
             pipelineConfig);
-        pipelineConfig.depthStencilInfo.depthWriteEnable = VK_FALSE;                  // 关键
-        pipelineConfig.depthStencilInfo.depthCompareOp = VK_COMPARE_OP_LESS_OR_EQUAL; // 保留测试
     }
 
     void LvePointLightSystem::renderer(FrameInfo &frameInfo)
@@ -120,7 +119,7 @@ namespace lve
             if (obj.pointLight == nullptr)
                 continue;
 
-            assert(lightIndex < MAX_LIGHTS && "Point lights exceed maximum specified");
+            LVE_ASSERT(lightIndex < MAX_LIGHTS, "Point lights exceed maximum specified");
 
             // update light position
             obj.transform.translation = glm::vec3(glm::vec4(obj.transform.translation, 1.f));

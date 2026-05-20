@@ -6,8 +6,16 @@
 #include <iostream>
 #include <string>
 #include <array>
+#include <cmath>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 namespace lve
 {
+    struct CubemapCaptureVertex
+    {
+        glm::vec3 position;
+        glm::vec2 uv;
+    };
     // 默认构造函数：不加载任何图片，只初始化成员
     LveTexture::LveTexture(LveDevice &device)
         : lveDevice{device}
@@ -416,6 +424,37 @@ namespace lve
         }
 
         texture->createImageSampler(); // 复用现有的采样器创建
+        return texture;
+    }
+    // 在 lve_texture.cpp 中，在其他函数实现之后添加
+
+    std::shared_ptr<LveTexture> LveTexture::createCubemapFromEquirectangular(
+        LveDevice &device,
+        const std::string &equirectangularPath)
+    {
+        static bool warned = false;
+
+        if (!warned)
+        {
+            std::cerr << "\n================================================================================\n"
+                      << "WARNING: LveTexture::createCubemapFromEquirectangular\n"
+                      << "================================================================================\n"
+                      << "Runtime conversion from equirectangular to cubemap requires compute shader\n"
+                      << "or offline preprocessing. For production use, please pre-convert your\n"
+                      << "equirectangular textures to cubemap faces using tools like:\n"
+                      << "  - cmft (https://github.com/dariomanesku/cmft)\n"
+                      << "  - nvidia Texture Tools (https://github.com/castano/nvidia-texture-tools)\n"
+                      << "  - ImageMagick (with appropriate scripts)\n"
+                      << "\nLoading as 2D texture as fallback. Texture will NOT be a valid cubemap!\n"
+                      << "================================================================================\n"
+                      << std::endl;
+            warned = true;
+        }
+
+        // 降级方案：作为普通2D纹理加载
+        auto texture = std::make_shared<LveTexture>(device, equirectangularPath);
+        texture->m_isCubemap = false; // 确保标记为非立方体贴图
+
         return texture;
     }
 } // namespace lve

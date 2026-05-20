@@ -155,10 +155,10 @@
 				},
 				{
 					"name" : "HELPSTRING",
-					"value" : "CXX compiler"
+					"value" : "No help, variable specified on the command line."
 				}
 			],
-			"type" : "STRING",
+			"type" : "FILEPATH",
 			"value" : "C:/msys64/ucrt64/bin/g++.exe"
 		},
 		{
@@ -316,6 +316,18 @@
 			],
 			"type" : "FILEPATH",
 			"value" : "C:/msys64/ucrt64/bin/dlltool.exe"
+		},
+		{
+			"name" : "CMAKE_EDIT_COMMAND",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to cache edit program executable."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "C:/Program Files/CMake/bin/cmake-gui.exe"
 		},
 		{
 			"name" : "CMAKE_EXECUTABLE_FORMAT",
@@ -1248,6 +1260,18 @@
 			],
 			"type" : "INTERNAL",
 			"value" : "[E:/VulkanSDK/Lib/vulkan-1.lib][E:/VulkanSDK/include][found components: glslc glslangValidator ][v1.4.341()]"
+		},
+		{
+			"name" : "GLSLC",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Vulkan GLSL-to-SPIR-V compiler (glslc)"
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "E:/VulkanSDK/Bin/glslc.exe"
 		},
 		{
 			"name" : "MyProject_BINARY_DIR",

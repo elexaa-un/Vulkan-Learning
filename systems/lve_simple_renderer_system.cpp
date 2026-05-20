@@ -1,8 +1,9 @@
 #include "lve_simple_renderer_system.hpp"
+#include "lve_utils.hpp"
+#include "lve_frustum_culling.hpp"
 #include <stdexcept>
 #include <array>
 #include <iostream>
-#include <cassert>
 
 namespace lve
 {
@@ -48,15 +49,12 @@ namespace lve
         pipelineLayoutInfo.pushConstantRangeCount = 1;
         pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange;
 
-        if (vkCreatePipelineLayout(lveDevice.device(), &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS)
-        {
-            throw std::runtime_error("Failed to create Pipeline Layout!");
-        }
+        VK_CHECK(vkCreatePipelineLayout(lveDevice.device(), &pipelineLayoutInfo, nullptr, &pipelineLayout));
     }
 
     void LveSimpleRenderSystem::createPipeline(VkRenderPass renderPass)
     {
-        assert(pipelineLayout != nullptr && "Cannot create pipeline before pipeline layout");
+        LVE_ASSERT(pipelineLayout != nullptr, "Cannot create pipeline before pipeline layout");
 
         PipelineConfigInfo pipelineConfig{};
         LvePipeline::defaultPipelineConfigInfo(pipelineConfig);
@@ -71,9 +69,17 @@ namespace lve
 
     void LveSimpleRenderSystem::rendererGameObjects(FrameInfo &frameInfo)
     {
+        // ===== 步骤 1：从相机 View-Projection 矩阵构造视锥体 =====
+        // MVP = Projection * View，视锥体以此矩阵定义裁剪空间范围
+        Frustum frustum(frameInfo.camera.getProjection() * frameInfo.camera.getView());
+
+        // ===== 步骤 2：初始化剔除统计 =====
+        frameInfo.totalCount = 0;
+        frameInfo.culledCount = 0;
+
         lvePipeline->bind(frameInfo.commandBuffer);
 
-        // 绑定全局描述符集 (set=0)
+        // 绑定全局描述符集 (set=0) —— 只需绑定一次，所有 gameObject 共享
         vkCmdBindDescriptorSets(
             frameInfo.commandBuffer,
             VK_PIPELINE_BIND_POINT_GRAPHICS,
@@ -87,11 +93,27 @@ namespace lve
             auto &gameObject = kv.second;
             if (gameObject.model == nullptr)
             {
-                continue;
+                continue; // 没有模型的物体直接跳过
             }
-            if (gameObject.material && gameObject.material->isBuilt())
+
+            // ===== 步骤 3：视锥体剔除检测 =====
+            ++frameInfo.totalCount; // 统计总数
+
+            // 核心：将模型的局部空间 AABB 通过世界变换矩阵转换到世界空间
+            //                局部AABB ——modelMatrix——> 世界空间AABB
+            AABB worldAABB = gameObject.model->getAABB().transform(gameObject.transform.mat4());
+
+            if (!frustum.isAABBVisible(worldAABB))
             {
-                VkDescriptorSet materialSet = gameObject.material->getDescriptorSet();
+                // 物体完全在视锥体之外，跳过渲染（这就是"剔除"）
+                ++frameInfo.culledCount;
+                continue; // 节省一次 Draw Call
+            }
+            // ===== 剔除检测结束 =====
+
+            if (gameObject.getMaterial() && gameObject.getMaterial()->isBuilt())
+            {
+                VkDescriptorSet materialSet = gameObject.getMaterial()->getDescriptorSet();
                 vkCmdBindDescriptorSets(frameInfo.commandBuffer,
                                         VK_PIPELINE_BIND_POINT_GRAPHICS,
                                         pipelineLayout,
@@ -103,8 +125,6 @@ namespace lve
             SimplePushConstantData push{};
             push.modelMatrix = gameObject.transform.mat4();
             push.normalMatrix = gameObject.transform.normalMartix();
-
-            // 材质参数已通过描述符集传递，不再需要 push constant
 
             vkCmdPushConstants(frameInfo.commandBuffer,
                                pipelineLayout,

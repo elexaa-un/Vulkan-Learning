@@ -340,6 +340,7 @@ CMakeFiles/Vulkan_Learning.dir/lve_renderer.cpp.obj: \
  E:/VulkanSDK/Include/glm/ext/scalar_constants.hpp \
  E:/VulkanSDK/Include/glm/ext/scalar_constants.inl \
  E:/VulkanSDK/include/glm/gtc/constants.inl \
+ E:\Vulkan-Learning\lve_utils.hpp \
  C:/msys64/ucrt64/include/c++/15.2.0/stdexcept \
  C:/msys64/ucrt64/include/c++/15.2.0/iostream \
  C:/msys64/ucrt64/include/c++/15.2.0/ostream \

@@ -24,18 +24,15 @@ layout(set = 0, binding = 0) uniform GlobalUbo {
     vec4 ambientColor;
     int numLights;
     PointLight pointLights[10];
-
-    // ===== 新增：风力参数（必须与C++端GlobalUbo对齐）=====
-    float windTime;
-    float windStrength;
-    float windSpeed;
-    float windDirectionX;
-    float windDirectionZ;
-    float _pad0;
-    float _pad1;
-    float _pad2;
 } ubo;
 
+layout(push_constant) uniform Push {
+        float windTime;       // 累计时间（秒）
+        float windStrength;   // 风力强度 [0.0, 2.0]
+        float windSpeed;      // 风速 [0.1, 5.0]
+        float windDirectionX; // 风向 X 分量（归一化）
+        float windDirectionZ; // 风向 Z 分量（归一化）
+} push;
 void main() {
     fragUV = inUV;
 
@@ -53,17 +50,17 @@ void main() {
     float worldHeight = inPosition.y * inInstanceScale;
 
     // 风力方向（世界空间）
-    vec2 windDir = normalize(vec2(ubo.windDirectionX, ubo.windDirectionZ));
+    vec2 windDir = normalize(vec2(push.windDirectionX, push.windDirectionZ));
 
     // 多频率叠加（更自然的风动效果）
-    float wave1 = sin(ubo.windTime * ubo.windSpeed * 1.0 + inPosition.y * 5.0) * 0.6;
-    float wave2 = sin(ubo.windTime * ubo.windSpeed * 1.7 + inPosition.y * 3.0) * 0.3;
-    float wave3 = sin(ubo.windTime * ubo.windSpeed * 0.5 + inPosition.y * 8.0) * 0.1;
+    float wave1 = sin(push.windTime * push.windSpeed * 1.0 + inPosition.y * 5.0) * 0.6;
+    float wave2 = sin(push.windTime * push.windSpeed * 1.7 + inPosition.y * 3.0) * 0.3;
+    float wave3 = sin(push.windTime * push.windSpeed * 0.5 + inPosition.y * 8.0) * 0.1;
     float wave = wave1 + wave2 + wave3;
 
     // 弯曲程度随高度增加（树根不动，树冠最弯）
     // smoothstep 让底部更硬，顶部更软
-    float bendFactor = smoothstep(0.0, 0.3, inPosition.y) * ubo.windStrength;
+    float bendFactor = smoothstep(0.0, 0.3, inPosition.y) * push.windStrength;
 
     // 最终风力偏移（仅在XZ平面）
     vec3 windOffset = vec3(windDir.x, 0.0, windDir.y) * wave * bendFactor * worldHeight;

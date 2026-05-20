@@ -53,7 +53,8 @@
 					"source" : ".",
 					"targetIndexes" : 
 					[
-						0
+						0,
+						1
 					]
 				}
 			],
@@ -75,7 +76,8 @@
 					"name" : "MyProject",
 					"targetIndexes" : 
 					[
-						0
+						0,
+						1
 					]
 				}
 			],
@@ -83,8 +85,15 @@
 			[
 				{
 					"directoryIndex" : 0,
+					"id" : "CompileShaders::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-CompileShaders-Debug-cde214a9d0d2715eec6c.json",
+					"name" : "CompileShaders",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
 					"id" : "Vulkan_Learning::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-Vulkan_Learning-Debug-d69001cabdcdfb1d6459.json",
+					"jsonFile" : "target-Vulkan_Learning-Debug-36f6dbf9f06566eb5faf.json",
 					"name" : "Vulkan_Learning",
 					"projectIndex" : 0
 				}

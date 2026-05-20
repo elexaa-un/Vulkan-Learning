@@ -266,11 +266,26 @@ CMakeFiles/Vulkan_Learning.dir/lve_device.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Vulkan_Learning.dir/lve_device.cpp.s"
 	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S E:\Vulkan-Learning\lve_device.cpp -o CMakeFiles\Vulkan_Learning.dir\lve_device.cpp.s
 
+CMakeFiles/Vulkan_Learning.dir/lve_frustum_culling.cpp.obj: CMakeFiles/Vulkan_Learning.dir/flags.make
+CMakeFiles/Vulkan_Learning.dir/lve_frustum_culling.cpp.obj: CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp
+CMakeFiles/Vulkan_Learning.dir/lve_frustum_culling.cpp.obj: E:/Vulkan-Learning/lve_frustum_culling.cpp
+CMakeFiles/Vulkan_Learning.dir/lve_frustum_culling.cpp.obj: CMakeFiles/Vulkan_Learning.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_frustum_culling.cpp.obj"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Vulkan_Learning.dir/lve_frustum_culling.cpp.obj -MF CMakeFiles\Vulkan_Learning.dir\lve_frustum_culling.cpp.obj.d -o CMakeFiles\Vulkan_Learning.dir\lve_frustum_culling.cpp.obj -c E:\Vulkan-Learning\lve_frustum_culling.cpp
+
+CMakeFiles/Vulkan_Learning.dir/lve_frustum_culling.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Vulkan_Learning.dir/lve_frustum_culling.cpp.i"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E E:\Vulkan-Learning\lve_frustum_culling.cpp > CMakeFiles\Vulkan_Learning.dir\lve_frustum_culling.cpp.i
+
+CMakeFiles/Vulkan_Learning.dir/lve_frustum_culling.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Vulkan_Learning.dir/lve_frustum_culling.cpp.s"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S E:\Vulkan-Learning\lve_frustum_culling.cpp -o CMakeFiles\Vulkan_Learning.dir\lve_frustum_culling.cpp.s
+
 CMakeFiles/Vulkan_Learning.dir/lve_gameobject.cpp.obj: CMakeFiles/Vulkan_Learning.dir/flags.make
 CMakeFiles/Vulkan_Learning.dir/lve_gameobject.cpp.obj: CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp
 CMakeFiles/Vulkan_Learning.dir/lve_gameobject.cpp.obj: E:/Vulkan-Learning/lve_gameobject.cpp
 CMakeFiles/Vulkan_Learning.dir/lve_gameobject.cpp.obj: CMakeFiles/Vulkan_Learning.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_gameobject.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_gameobject.cpp.obj"
 	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Vulkan_Learning.dir/lve_gameobject.cpp.obj -MF CMakeFiles\Vulkan_Learning.dir\lve_gameobject.cpp.obj.d -o CMakeFiles\Vulkan_Learning.dir\lve_gameobject.cpp.obj -c E:\Vulkan-Learning\lve_gameobject.cpp
 
 CMakeFiles/Vulkan_Learning.dir/lve_gameobject.cpp.i: cmake_force
@@ -285,7 +300,7 @@ CMakeFiles/Vulkan_Learning.dir/lve_imgui.cpp.obj: CMakeFiles/Vulkan_Learning.dir
 CMakeFiles/Vulkan_Learning.dir/lve_imgui.cpp.obj: CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp
 CMakeFiles/Vulkan_Learning.dir/lve_imgui.cpp.obj: E:/Vulkan-Learning/lve_imgui.cpp
 CMakeFiles/Vulkan_Learning.dir/lve_imgui.cpp.obj: CMakeFiles/Vulkan_Learning.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_imgui.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_imgui.cpp.obj"
 	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Vulkan_Learning.dir/lve_imgui.cpp.obj -MF CMakeFiles\Vulkan_Learning.dir\lve_imgui.cpp.obj.d -o CMakeFiles\Vulkan_Learning.dir\lve_imgui.cpp.obj -c E:\Vulkan-Learning\lve_imgui.cpp
 
 CMakeFiles/Vulkan_Learning.dir/lve_imgui.cpp.i: cmake_force
@@ -300,7 +315,7 @@ CMakeFiles/Vulkan_Learning.dir/lve_material.cpp.obj: CMakeFiles/Vulkan_Learning.
 CMakeFiles/Vulkan_Learning.dir/lve_material.cpp.obj: CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp
 CMakeFiles/Vulkan_Learning.dir/lve_material.cpp.obj: E:/Vulkan-Learning/lve_material.cpp
 CMakeFiles/Vulkan_Learning.dir/lve_material.cpp.obj: CMakeFiles/Vulkan_Learning.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_material.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_material.cpp.obj"
 	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Vulkan_Learning.dir/lve_material.cpp.obj -MF CMakeFiles\Vulkan_Learning.dir\lve_material.cpp.obj.d -o CMakeFiles\Vulkan_Learning.dir\lve_material.cpp.obj -c E:\Vulkan-Learning\lve_material.cpp
 
 CMakeFiles/Vulkan_Learning.dir/lve_material.cpp.i: cmake_force
@@ -315,7 +330,7 @@ CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.obj: CMakeFiles/Vulkan_Learning.dir
 CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.obj: CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp
 CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.obj: E:/Vulkan-Learning/lve_model.cpp
 CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.obj: CMakeFiles/Vulkan_Learning.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.obj"
 	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.obj -MF CMakeFiles\Vulkan_Learning.dir\lve_model.cpp.obj.d -o CMakeFiles\Vulkan_Learning.dir\lve_model.cpp.obj -c E:\Vulkan-Learning\lve_model.cpp
 
 CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.i: cmake_force
@@ -330,7 +345,7 @@ CMakeFiles/Vulkan_Learning.dir/lve_pipeline.cpp.obj: CMakeFiles/Vulkan_Learning.
 CMakeFiles/Vulkan_Learning.dir/lve_pipeline.cpp.obj: CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp
 CMakeFiles/Vulkan_Learning.dir/lve_pipeline.cpp.obj: E:/Vulkan-Learning/lve_pipeline.cpp
 CMakeFiles/Vulkan_Learning.dir/lve_pipeline.cpp.obj: CMakeFiles/Vulkan_Learning.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_pipeline.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_pipeline.cpp.obj"
 	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Vulkan_Learning.dir/lve_pipeline.cpp.obj -MF CMakeFiles\Vulkan_Learning.dir\lve_pipeline.cpp.obj.d -o CMakeFiles\Vulkan_Learning.dir\lve_pipeline.cpp.obj -c E:\Vulkan-Learning\lve_pipeline.cpp
 
 CMakeFiles/Vulkan_Learning.dir/lve_pipeline.cpp.i: cmake_force
@@ -345,7 +360,7 @@ CMakeFiles/Vulkan_Learning.dir/lve_renderer.cpp.obj: CMakeFiles/Vulkan_Learning.
 CMakeFiles/Vulkan_Learning.dir/lve_renderer.cpp.obj: CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp
 CMakeFiles/Vulkan_Learning.dir/lve_renderer.cpp.obj: E:/Vulkan-Learning/lve_renderer.cpp
 CMakeFiles/Vulkan_Learning.dir/lve_renderer.cpp.obj: CMakeFiles/Vulkan_Learning.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_renderer.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_renderer.cpp.obj"
 	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Vulkan_Learning.dir/lve_renderer.cpp.obj -MF CMakeFiles\Vulkan_Learning.dir\lve_renderer.cpp.obj.d -o CMakeFiles\Vulkan_Learning.dir\lve_renderer.cpp.obj -c E:\Vulkan-Learning\lve_renderer.cpp
 
 CMakeFiles/Vulkan_Learning.dir/lve_renderer.cpp.i: cmake_force
@@ -356,11 +371,26 @@ CMakeFiles/Vulkan_Learning.dir/lve_renderer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Vulkan_Learning.dir/lve_renderer.cpp.s"
 	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S E:\Vulkan-Learning\lve_renderer.cpp -o CMakeFiles\Vulkan_Learning.dir\lve_renderer.cpp.s
 
+CMakeFiles/Vulkan_Learning.dir/lve_resource_manager.cpp.obj: CMakeFiles/Vulkan_Learning.dir/flags.make
+CMakeFiles/Vulkan_Learning.dir/lve_resource_manager.cpp.obj: CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp
+CMakeFiles/Vulkan_Learning.dir/lve_resource_manager.cpp.obj: E:/Vulkan-Learning/lve_resource_manager.cpp
+CMakeFiles/Vulkan_Learning.dir/lve_resource_manager.cpp.obj: CMakeFiles/Vulkan_Learning.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_resource_manager.cpp.obj"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Vulkan_Learning.dir/lve_resource_manager.cpp.obj -MF CMakeFiles\Vulkan_Learning.dir\lve_resource_manager.cpp.obj.d -o CMakeFiles\Vulkan_Learning.dir\lve_resource_manager.cpp.obj -c E:\Vulkan-Learning\lve_resource_manager.cpp
+
+CMakeFiles/Vulkan_Learning.dir/lve_resource_manager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Vulkan_Learning.dir/lve_resource_manager.cpp.i"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E E:\Vulkan-Learning\lve_resource_manager.cpp > CMakeFiles\Vulkan_Learning.dir\lve_resource_manager.cpp.i
+
+CMakeFiles/Vulkan_Learning.dir/lve_resource_manager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Vulkan_Learning.dir/lve_resource_manager.cpp.s"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S E:\Vulkan-Learning\lve_resource_manager.cpp -o CMakeFiles\Vulkan_Learning.dir\lve_resource_manager.cpp.s
+
 CMakeFiles/Vulkan_Learning.dir/lve_swap_chain.cpp.obj: CMakeFiles/Vulkan_Learning.dir/flags.make
 CMakeFiles/Vulkan_Learning.dir/lve_swap_chain.cpp.obj: CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp
 CMakeFiles/Vulkan_Learning.dir/lve_swap_chain.cpp.obj: E:/Vulkan-Learning/lve_swap_chain.cpp
 CMakeFiles/Vulkan_Learning.dir/lve_swap_chain.cpp.obj: CMakeFiles/Vulkan_Learning.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_swap_chain.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_swap_chain.cpp.obj"
 	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Vulkan_Learning.dir/lve_swap_chain.cpp.obj -MF CMakeFiles\Vulkan_Learning.dir\lve_swap_chain.cpp.obj.d -o CMakeFiles\Vulkan_Learning.dir\lve_swap_chain.cpp.obj -c E:\Vulkan-Learning\lve_swap_chain.cpp
 
 CMakeFiles/Vulkan_Learning.dir/lve_swap_chain.cpp.i: cmake_force
@@ -375,7 +405,7 @@ CMakeFiles/Vulkan_Learning.dir/lve_texture.cpp.obj: CMakeFiles/Vulkan_Learning.d
 CMakeFiles/Vulkan_Learning.dir/lve_texture.cpp.obj: CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp
 CMakeFiles/Vulkan_Learning.dir/lve_texture.cpp.obj: E:/Vulkan-Learning/lve_texture.cpp
 CMakeFiles/Vulkan_Learning.dir/lve_texture.cpp.obj: CMakeFiles/Vulkan_Learning.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_texture.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_texture.cpp.obj"
 	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Vulkan_Learning.dir/lve_texture.cpp.obj -MF CMakeFiles\Vulkan_Learning.dir\lve_texture.cpp.obj.d -o CMakeFiles\Vulkan_Learning.dir\lve_texture.cpp.obj -c E:\Vulkan-Learning\lve_texture.cpp
 
 CMakeFiles/Vulkan_Learning.dir/lve_texture.cpp.i: cmake_force
@@ -386,11 +416,26 @@ CMakeFiles/Vulkan_Learning.dir/lve_texture.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Vulkan_Learning.dir/lve_texture.cpp.s"
 	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S E:\Vulkan-Learning\lve_texture.cpp -o CMakeFiles\Vulkan_Learning.dir\lve_texture.cpp.s
 
+CMakeFiles/Vulkan_Learning.dir/lve_texture_manager.cpp.obj: CMakeFiles/Vulkan_Learning.dir/flags.make
+CMakeFiles/Vulkan_Learning.dir/lve_texture_manager.cpp.obj: CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp
+CMakeFiles/Vulkan_Learning.dir/lve_texture_manager.cpp.obj: E:/Vulkan-Learning/lve_texture_manager.cpp
+CMakeFiles/Vulkan_Learning.dir/lve_texture_manager.cpp.obj: CMakeFiles/Vulkan_Learning.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_texture_manager.cpp.obj"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Vulkan_Learning.dir/lve_texture_manager.cpp.obj -MF CMakeFiles\Vulkan_Learning.dir\lve_texture_manager.cpp.obj.d -o CMakeFiles\Vulkan_Learning.dir\lve_texture_manager.cpp.obj -c E:\Vulkan-Learning\lve_texture_manager.cpp
+
+CMakeFiles/Vulkan_Learning.dir/lve_texture_manager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Vulkan_Learning.dir/lve_texture_manager.cpp.i"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E E:\Vulkan-Learning\lve_texture_manager.cpp > CMakeFiles\Vulkan_Learning.dir\lve_texture_manager.cpp.i
+
+CMakeFiles/Vulkan_Learning.dir/lve_texture_manager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Vulkan_Learning.dir/lve_texture_manager.cpp.s"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S E:\Vulkan-Learning\lve_texture_manager.cpp -o CMakeFiles\Vulkan_Learning.dir\lve_texture_manager.cpp.s
+
 CMakeFiles/Vulkan_Learning.dir/lve_window.cpp.obj: CMakeFiles/Vulkan_Learning.dir/flags.make
 CMakeFiles/Vulkan_Learning.dir/lve_window.cpp.obj: CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp
 CMakeFiles/Vulkan_Learning.dir/lve_window.cpp.obj: E:/Vulkan-Learning/lve_window.cpp
 CMakeFiles/Vulkan_Learning.dir/lve_window.cpp.obj: CMakeFiles/Vulkan_Learning.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_window.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/Vulkan_Learning.dir/lve_window.cpp.obj"
 	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Vulkan_Learning.dir/lve_window.cpp.obj -MF CMakeFiles\Vulkan_Learning.dir\lve_window.cpp.obj.d -o CMakeFiles\Vulkan_Learning.dir\lve_window.cpp.obj -c E:\Vulkan-Learning\lve_window.cpp
 
 CMakeFiles/Vulkan_Learning.dir/lve_window.cpp.i: cmake_force
@@ -405,7 +450,7 @@ CMakeFiles/Vulkan_Learning.dir/main.cpp.obj: CMakeFiles/Vulkan_Learning.dir/flag
 CMakeFiles/Vulkan_Learning.dir/main.cpp.obj: CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp
 CMakeFiles/Vulkan_Learning.dir/main.cpp.obj: E:/Vulkan-Learning/main.cpp
 CMakeFiles/Vulkan_Learning.dir/main.cpp.obj: CMakeFiles/Vulkan_Learning.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/Vulkan_Learning.dir/main.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/Vulkan_Learning.dir/main.cpp.obj"
 	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Vulkan_Learning.dir/main.cpp.obj -MF CMakeFiles\Vulkan_Learning.dir\main.cpp.obj.d -o CMakeFiles\Vulkan_Learning.dir\main.cpp.obj -c E:\Vulkan-Learning\main.cpp
 
 CMakeFiles/Vulkan_Learning.dir/main.cpp.i: cmake_force
@@ -420,7 +465,7 @@ CMakeFiles/Vulkan_Learning.dir/systems/lve_point_light_system.cpp.obj: CMakeFile
 CMakeFiles/Vulkan_Learning.dir/systems/lve_point_light_system.cpp.obj: CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp
 CMakeFiles/Vulkan_Learning.dir/systems/lve_point_light_system.cpp.obj: E:/Vulkan-Learning/systems/lve_point_light_system.cpp
 CMakeFiles/Vulkan_Learning.dir/systems/lve_point_light_system.cpp.obj: CMakeFiles/Vulkan_Learning.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/Vulkan_Learning.dir/systems/lve_point_light_system.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/Vulkan_Learning.dir/systems/lve_point_light_system.cpp.obj"
 	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Vulkan_Learning.dir/systems/lve_point_light_system.cpp.obj -MF CMakeFiles\Vulkan_Learning.dir\systems\lve_point_light_system.cpp.obj.d -o CMakeFiles\Vulkan_Learning.dir\systems\lve_point_light_system.cpp.obj -c E:\Vulkan-Learning\systems\lve_point_light_system.cpp
 
 CMakeFiles/Vulkan_Learning.dir/systems/lve_point_light_system.cpp.i: cmake_force
@@ -435,7 +480,7 @@ CMakeFiles/Vulkan_Learning.dir/systems/lve_shadow_system.cpp.obj: CMakeFiles/Vul
 CMakeFiles/Vulkan_Learning.dir/systems/lve_shadow_system.cpp.obj: CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp
 CMakeFiles/Vulkan_Learning.dir/systems/lve_shadow_system.cpp.obj: E:/Vulkan-Learning/systems/lve_shadow_system.cpp
 CMakeFiles/Vulkan_Learning.dir/systems/lve_shadow_system.cpp.obj: CMakeFiles/Vulkan_Learning.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/Vulkan_Learning.dir/systems/lve_shadow_system.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/Vulkan_Learning.dir/systems/lve_shadow_system.cpp.obj"
 	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Vulkan_Learning.dir/systems/lve_shadow_system.cpp.obj -MF CMakeFiles\Vulkan_Learning.dir\systems\lve_shadow_system.cpp.obj.d -o CMakeFiles\Vulkan_Learning.dir\systems\lve_shadow_system.cpp.obj -c E:\Vulkan-Learning\systems\lve_shadow_system.cpp
 
 CMakeFiles/Vulkan_Learning.dir/systems/lve_shadow_system.cpp.i: cmake_force
@@ -450,7 +495,7 @@ CMakeFiles/Vulkan_Learning.dir/systems/lve_simple_renderer_system.cpp.obj: CMake
 CMakeFiles/Vulkan_Learning.dir/systems/lve_simple_renderer_system.cpp.obj: CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp
 CMakeFiles/Vulkan_Learning.dir/systems/lve_simple_renderer_system.cpp.obj: E:/Vulkan-Learning/systems/lve_simple_renderer_system.cpp
 CMakeFiles/Vulkan_Learning.dir/systems/lve_simple_renderer_system.cpp.obj: CMakeFiles/Vulkan_Learning.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/Vulkan_Learning.dir/systems/lve_simple_renderer_system.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/Vulkan_Learning.dir/systems/lve_simple_renderer_system.cpp.obj"
 	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Vulkan_Learning.dir/systems/lve_simple_renderer_system.cpp.obj -MF CMakeFiles\Vulkan_Learning.dir\systems\lve_simple_renderer_system.cpp.obj.d -o CMakeFiles\Vulkan_Learning.dir\systems\lve_simple_renderer_system.cpp.obj -c E:\Vulkan-Learning\systems\lve_simple_renderer_system.cpp
 
 CMakeFiles/Vulkan_Learning.dir/systems/lve_simple_renderer_system.cpp.i: cmake_force
@@ -465,7 +510,7 @@ CMakeFiles/Vulkan_Learning.dir/systems/lve_skybox_system.cpp.obj: CMakeFiles/Vul
 CMakeFiles/Vulkan_Learning.dir/systems/lve_skybox_system.cpp.obj: CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp
 CMakeFiles/Vulkan_Learning.dir/systems/lve_skybox_system.cpp.obj: E:/Vulkan-Learning/systems/lve_skybox_system.cpp
 CMakeFiles/Vulkan_Learning.dir/systems/lve_skybox_system.cpp.obj: CMakeFiles/Vulkan_Learning.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/Vulkan_Learning.dir/systems/lve_skybox_system.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/Vulkan_Learning.dir/systems/lve_skybox_system.cpp.obj"
 	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Vulkan_Learning.dir/systems/lve_skybox_system.cpp.obj -MF CMakeFiles\Vulkan_Learning.dir\systems\lve_skybox_system.cpp.obj.d -o CMakeFiles\Vulkan_Learning.dir\systems\lve_skybox_system.cpp.obj -c E:\Vulkan-Learning\systems\lve_skybox_system.cpp
 
 CMakeFiles/Vulkan_Learning.dir/systems/lve_skybox_system.cpp.i: cmake_force
@@ -480,7 +525,7 @@ CMakeFiles/Vulkan_Learning.dir/systems/lve_vegetation_system.cpp.obj: CMakeFiles
 CMakeFiles/Vulkan_Learning.dir/systems/lve_vegetation_system.cpp.obj: CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp
 CMakeFiles/Vulkan_Learning.dir/systems/lve_vegetation_system.cpp.obj: E:/Vulkan-Learning/systems/lve_vegetation_system.cpp
 CMakeFiles/Vulkan_Learning.dir/systems/lve_vegetation_system.cpp.obj: CMakeFiles/Vulkan_Learning.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/Vulkan_Learning.dir/systems/lve_vegetation_system.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/Vulkan_Learning.dir/systems/lve_vegetation_system.cpp.obj"
 	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Vulkan_Learning.dir/systems/lve_vegetation_system.cpp.obj -MF CMakeFiles\Vulkan_Learning.dir\systems\lve_vegetation_system.cpp.obj.d -o CMakeFiles\Vulkan_Learning.dir\systems\lve_vegetation_system.cpp.obj -c E:\Vulkan-Learning\systems\lve_vegetation_system.cpp
 
 CMakeFiles/Vulkan_Learning.dir/systems/lve_vegetation_system.cpp.i: cmake_force
@@ -506,14 +551,17 @@ Vulkan_Learning_OBJECTS = \
 "CMakeFiles/Vulkan_Learning.dir/lve_camera.cpp.obj" \
 "CMakeFiles/Vulkan_Learning.dir/lve_descriptors.cpp.obj" \
 "CMakeFiles/Vulkan_Learning.dir/lve_device.cpp.obj" \
+"CMakeFiles/Vulkan_Learning.dir/lve_frustum_culling.cpp.obj" \
 "CMakeFiles/Vulkan_Learning.dir/lve_gameobject.cpp.obj" \
 "CMakeFiles/Vulkan_Learning.dir/lve_imgui.cpp.obj" \
 "CMakeFiles/Vulkan_Learning.dir/lve_material.cpp.obj" \
 "CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.obj" \
 "CMakeFiles/Vulkan_Learning.dir/lve_pipeline.cpp.obj" \
 "CMakeFiles/Vulkan_Learning.dir/lve_renderer.cpp.obj" \
+"CMakeFiles/Vulkan_Learning.dir/lve_resource_manager.cpp.obj" \
 "CMakeFiles/Vulkan_Learning.dir/lve_swap_chain.cpp.obj" \
 "CMakeFiles/Vulkan_Learning.dir/lve_texture.cpp.obj" \
+"CMakeFiles/Vulkan_Learning.dir/lve_texture_manager.cpp.obj" \
 "CMakeFiles/Vulkan_Learning.dir/lve_window.cpp.obj" \
 "CMakeFiles/Vulkan_Learning.dir/main.cpp.obj" \
 "CMakeFiles/Vulkan_Learning.dir/systems/lve_point_light_system.cpp.obj" \
@@ -538,14 +586,17 @@ Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/lve_buffer.cpp.obj
 Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/lve_camera.cpp.obj
 Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/lve_descriptors.cpp.obj
 Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/lve_device.cpp.obj
+Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/lve_frustum_culling.cpp.obj
 Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/lve_gameobject.cpp.obj
 Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/lve_imgui.cpp.obj
 Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/lve_material.cpp.obj
 Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/lve_model.cpp.obj
 Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/lve_pipeline.cpp.obj
 Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/lve_renderer.cpp.obj
+Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/lve_resource_manager.cpp.obj
 Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/lve_swap_chain.cpp.obj
 Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/lve_texture.cpp.obj
+Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/lve_texture_manager.cpp.obj
 Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/lve_window.cpp.obj
 Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/main.cpp.obj
 Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/systems/lve_point_light_system.cpp.obj
@@ -558,7 +609,7 @@ Vulkan_Learning.exe: E:/VulkanSDK/Lib/vulkan-1.lib
 Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/linkLibs.rsp
 Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/objects1.rsp
 Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Linking CXX executable Vulkan_Learning.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=E:\Vulkan-Learning\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Linking CXX executable Vulkan_Learning.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\Vulkan_Learning.dir\link.txt --verbose=$(VERBOSE)
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold "Copying skybox textures to build/"
 	C:\msys64\ucrt64\bin\cmake.exe -E copy_directory E:/Vulkan-Learning/skybox E:/Vulkan-Learning/build/skybox
@@ -568,6 +619,8 @@ Vulkan_Learning.exe: CMakeFiles/Vulkan_Learning.dir/link.txt
 	C:\msys64\ucrt64\bin\cmake.exe -E copy_if_different E:/Vulkan-Learning/tree.png E:/Vulkan-Learning/build/tree.png
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold "Copying terrain texture"
 	C:\msys64\ucrt64\bin\cmake.exe -E copy_if_different E:/Vulkan-Learning/tt.jpg E:/Vulkan-Learning/build/tt.jpg
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold "Copying glfw3.dll to build/"
+	C:\msys64\ucrt64\bin\cmake.exe -E copy_if_different E:/Vulkan-Learning/glfw/lib/glfw3.dll E:/Vulkan-Learning/build/glfw3.dll
 
 # Rule to build all files generated by this target.
 CMakeFiles/Vulkan_Learning.dir/build: Vulkan_Learning.exe

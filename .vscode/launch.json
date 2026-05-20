@@ -8,10 +8,10 @@
             "program": "${workspaceFolder}/build/Vulkan_Learning.exe",
             "cwd": "${workspaceFolder}/build",
             "preLaunchTask": "build",
-            "miDebuggerPath": "gdb.exe",
+            "miDebuggerPath": "E:/msys64/mingw64/bin/gdb.exe",
             "setupCommands": [],
             "stopAtEntry": false,
-            "externalConsole": false
+            "externalConsole": true
         }
     ]
 }

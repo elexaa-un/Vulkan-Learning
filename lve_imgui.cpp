@@ -1,9 +1,12 @@
 #include "lve_imgui.hpp"
 #include "lve_descriptors.hpp"
-
+#include "lve_frame_info.hpp"
 #include <iostream>
 #include <stdexcept>
-
+#define GLM_FORCE_RADIANS
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
+#include <glm/glm.hpp>
+#include <glm/gtc/constants.hpp>
 namespace lve
 {
     LveImgui::LveImgui(GLFWwindow *window, LveDevice &device, VkRenderPass renderPass)
@@ -115,5 +118,132 @@ namespace lve
     {
         ImGui::Render();
         ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), commandBuffer);
+    }
+
+    void LveImgui::showImGUI(float frameTime, LveGameObject::Map &gameObjects, LveCamera &camera, LveGameObject &viewerObject, RenderOptions &options, FrameInfo* frameInfo)
+    {
+        // ============================================================
+        // 调试面板
+        // ============================================================
+        ImGui::Begin("Vulkan Renderer - Debug Panel");
+
+        // ---------- Performance ----------
+        if (ImGui::CollapsingHeader("Performance", ImGuiTreeNodeFlags_DefaultOpen))
+        {
+            ImGui::Text("FPS: %.1f", 1.0f / frameTime);
+            ImGui::Text("Frame Time: %.2f ms", frameTime * 1000.0f);
+            ImGui::Text("Scene Objects: %d", (int)gameObjects.size());
+
+            // ==== 视锥体剔除统计（仅在有 FrameInfo 时显示） ====
+            if (frameInfo)
+            {
+                ImGui::Separator();
+                ImGui::TextColored(ImVec4(0.4f, 0.9f, 1.0f, 1.0f), "=== Frustum Culling ===");
+                ImGui::Text("  Total candidates: %u", frameInfo->totalCount);
+                ImGui::Text("  Culled (skipped):  %u", frameInfo->culledCount);
+                ImGui::Text("  Rendered:          %u",
+                            frameInfo->totalCount - frameInfo->culledCount);
+
+                float cullRatio = 0.f;
+                if (frameInfo->totalCount > 0)
+                    cullRatio = (float)frameInfo->culledCount / (float)frameInfo->totalCount * 100.f;
+                ImGui::Text("  Cull ratio:        %.1f%%", cullRatio);
+
+                // 进度条可视化
+                ImGui::ProgressBar(cullRatio / 100.f, ImVec2(-1.f, 0.f),
+                                   frameInfo->culledCount > 0 ? "objects culled" : "no culling");
+            }
+        }
+
+        // ---------- Camera ----------
+        if (ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_DefaultOpen))
+        {
+            auto &pos = viewerObject.transform.translation;
+            auto &rot = viewerObject.transform.rotation;
+            ImGui::Text("Position: (%.2f, %.2f, %.2f)", pos.x, pos.y, pos.z);
+            ImGui::Text("Rotation: (%.2f, %.2f, %.2f)", rot.x, rot.y, rot.z);
+
+            // Quick position buttons
+            if (ImGui::Button("Reset (0,0,3)"))
+                viewerObject.transform.translation = glm::vec3{0.f, 0.f, 3.f};
+            ImGui::SameLine();
+            if (ImGui::Button("Top View (0,30,0)"))
+                viewerObject.transform.translation = glm::vec3{0.f, 30.f, 0.f};
+        }
+
+        // ---------- Lighting ----------
+        if (ImGui::CollapsingHeader("Lighting", ImGuiTreeNodeFlags_DefaultOpen))
+        {
+            // 【修复】每次 ImGui 帧都从场景中读取当前状态，确保面板显示实时值
+            // 先找到场景中的点光源
+            for (auto &kv : gameObjects)
+            {
+                if (kv.second.pointLight)
+                {
+                    auto &lightObj = kv.second;
+                    float lightPos[3] = {
+                        lightObj.transform.translation.x,
+                        lightObj.transform.translation.y,
+                        lightObj.transform.translation.z};
+                    float lightIntensity = lightObj.pointLight->lightIntensity;
+                    float lightRadius = lightObj.pointLight->lightIntensity; // 共用同一个参数
+                    float lightColor[3] = {
+                        lightObj.color.x,
+                        lightObj.color.y,
+                        lightObj.color.z};
+
+                    // 每个控件独立修改，不再嵌套 if
+                    ImGui::SliderFloat3("Light Position", lightPos, -50.f, 50.f);
+                    lightObj.transform.translation.x = lightPos[0];
+                    lightObj.transform.translation.y = lightPos[1];
+                    lightObj.transform.translation.z = lightPos[2];
+
+                    ImGui::SliderFloat("Intensity", &lightIntensity, 1.f, 500.f);
+                    lightObj.pointLight->lightIntensity = lightIntensity;
+
+                    ImGui::SliderFloat("Radius", &lightRadius, 1.f, 50.f);
+                    // 这里 radius 和 intensity 之前共用，lightRadius 修改后暂无独立字段存放
+                    // 如果有独立 radius 字段请替换此处
+
+                    ImGui::ColorEdit3("Color", lightColor);
+                    lightObj.color.x = lightColor[0];
+                    lightObj.color.y = lightColor[1];
+                    lightObj.color.z = lightColor[2];
+
+                    break; // 只处理第一个点光源
+                }
+            }
+        }
+
+        // ---------- Render Options ----------
+        if (ImGui::CollapsingHeader("Render Options"))
+        {
+            // 【修复】使用持久化的 options 引用，不再是 static 局部变量
+            ImGui::Checkbox("Skybox", &options.showSkybox);
+            ImGui::Checkbox("Terrain", &options.showTerrain);
+            ImGui::Checkbox("Vegetation", &options.showVegetation);
+            ImGui::Checkbox("Model", &options.showModel);
+            ImGui::Checkbox("Wireframe", &options.wireframe);
+        }
+
+        // ---------- Vegetation ----------
+        // if (ImGui::CollapsingHeader("Vegetation"))
+        // {
+        //     // ImGui 内部引用外部变量（需要用指针或引用）
+        //     ImGui::SliderFloat("Wind Strength", &windStrength, 0.0f, 2.0f);
+        //     ImGui::SliderFloat("Wind Speed", &windSpeed, 0.1f, 5.0f);
+        // }
+
+        // ---------- Controls ----------
+        if (ImGui::CollapsingHeader("Controls"))
+        {
+            ImGui::BulletText("WASD - Move Camera");
+            ImGui::BulletText("Right Mouse Drag - Rotate View");
+            ImGui::BulletText("Scroll Wheel - Zoom");
+            ImGui::BulletText("F1 - Toggle Debug Panel");
+            ImGui::BulletText("ESC - Exit");
+        }
+
+        ImGui::End(); // 配对 ImGui::Begin
     }
 }

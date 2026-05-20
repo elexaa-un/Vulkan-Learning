@@ -23,18 +23,14 @@ layout(set = 0, binding = 0) uniform GlobalUbo {
     vec4 ambientColor;
     int numLights;
     PointLight pointLights[10];
-
-    // ===== 新增：风力参数（必须与C++端GlobalUbo对齐）=====
-    float windTime;
-    float windStrength;
-    float windSpeed;
-    float windDirectionX;
-    float windDirectionZ;
-    float _pad0;
-    float _pad1;
-    float _pad2;
 } ubo;
-
+layout(push_constant) uniform Push {
+        float windTime;       // 累计时间（秒）
+        float windStrength;   // 风力强度 [0.0, 2.0]
+        float windSpeed;      // 风速 [0.1, 5.0]
+        float windDirectionX; // 风向 X 分量（归一化）
+        float windDirectionZ; // 风向 Z 分量（归一化）
+} push;
 void main() {
     // 1. 采样纹理，进行 Alpha 测试
     vec2 uv = vec2(fragUV.x, 1.0 - fragUV.y);

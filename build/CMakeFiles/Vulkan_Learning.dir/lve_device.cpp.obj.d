@@ -184,4 +184,5 @@ CMakeFiles/Vulkan_Learning.dir/lve_device.cpp.obj: \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/unordered_set.h \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/hashtable.h \
  C:/msys64/ucrt64/include/c++/15.2.0/bits/hashtable_policy.h \
- C:/msys64/ucrt64/include/c++/15.2.0/bits/enable_special_members.h
+ C:/msys64/ucrt64/include/c++/15.2.0/bits/enable_special_members.h \
+ E:\Vulkan-Learning\lve_utils.hpp

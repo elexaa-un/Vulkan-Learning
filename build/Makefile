@@ -66,8 +66,8 @@ CMAKE_BINARY_DIR = E:\Vulkan-Learning\build
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "No interactive CMake dialog available..."
-	C:\msys64\ucrt64\bin\cmake.exe -E echo "No interactive CMake dialog available."
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake cache editor..."
+	"C:\Program Files\CMake\bin\cmake-gui.exe" -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -127,6 +127,19 @@ Vulkan_Learning: cmake_check_build_system
 Vulkan_Learning/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/build
 .PHONY : Vulkan_Learning/fast
+
+#=============================================================================
+# Target rules for targets named CompileShaders
+
+# Build rule for target.
+CompileShaders: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CompileShaders
+.PHONY : CompileShaders
+
+# fast build rule for target.
+CompileShaders/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\CompileShaders.dir\build.make CMakeFiles/CompileShaders.dir/build
+.PHONY : CompileShaders/fast
 
 ImGui/imgui.obj: ImGui/imgui.cpp.obj
 .PHONY : ImGui/imgui.obj
@@ -440,6 +453,30 @@ lve_device.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/lve_device.cpp.s
 .PHONY : lve_device.cpp.s
 
+lve_frustum_culling.obj: lve_frustum_culling.cpp.obj
+.PHONY : lve_frustum_culling.obj
+
+# target to build an object file
+lve_frustum_culling.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/lve_frustum_culling.cpp.obj
+.PHONY : lve_frustum_culling.cpp.obj
+
+lve_frustum_culling.i: lve_frustum_culling.cpp.i
+.PHONY : lve_frustum_culling.i
+
+# target to preprocess a source file
+lve_frustum_culling.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/lve_frustum_culling.cpp.i
+.PHONY : lve_frustum_culling.cpp.i
+
+lve_frustum_culling.s: lve_frustum_culling.cpp.s
+.PHONY : lve_frustum_culling.s
+
+# target to generate assembly for a file
+lve_frustum_culling.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/lve_frustum_culling.cpp.s
+.PHONY : lve_frustum_culling.cpp.s
+
 lve_gameobject.obj: lve_gameobject.cpp.obj
 .PHONY : lve_gameobject.obj
 
@@ -584,6 +621,30 @@ lve_renderer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/lve_renderer.cpp.s
 .PHONY : lve_renderer.cpp.s
 
+lve_resource_manager.obj: lve_resource_manager.cpp.obj
+.PHONY : lve_resource_manager.obj
+
+# target to build an object file
+lve_resource_manager.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/lve_resource_manager.cpp.obj
+.PHONY : lve_resource_manager.cpp.obj
+
+lve_resource_manager.i: lve_resource_manager.cpp.i
+.PHONY : lve_resource_manager.i
+
+# target to preprocess a source file
+lve_resource_manager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/lve_resource_manager.cpp.i
+.PHONY : lve_resource_manager.cpp.i
+
+lve_resource_manager.s: lve_resource_manager.cpp.s
+.PHONY : lve_resource_manager.s
+
+# target to generate assembly for a file
+lve_resource_manager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/lve_resource_manager.cpp.s
+.PHONY : lve_resource_manager.cpp.s
+
 lve_swap_chain.obj: lve_swap_chain.cpp.obj
 .PHONY : lve_swap_chain.obj
 
@@ -631,6 +692,30 @@ lve_texture.s: lve_texture.cpp.s
 lve_texture.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/lve_texture.cpp.s
 .PHONY : lve_texture.cpp.s
+
+lve_texture_manager.obj: lve_texture_manager.cpp.obj
+.PHONY : lve_texture_manager.obj
+
+# target to build an object file
+lve_texture_manager.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/lve_texture_manager.cpp.obj
+.PHONY : lve_texture_manager.cpp.obj
+
+lve_texture_manager.i: lve_texture_manager.cpp.i
+.PHONY : lve_texture_manager.i
+
+# target to preprocess a source file
+lve_texture_manager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/lve_texture_manager.cpp.i
+.PHONY : lve_texture_manager.cpp.i
+
+lve_texture_manager.s: lve_texture_manager.cpp.s
+.PHONY : lve_texture_manager.s
+
+# target to generate assembly for a file
+lve_texture_manager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Vulkan_Learning.dir\build.make CMakeFiles/Vulkan_Learning.dir/lve_texture_manager.cpp.s
+.PHONY : lve_texture_manager.cpp.s
 
 lve_window.obj: lve_window.cpp.obj
 .PHONY : lve_window.obj
@@ -808,6 +893,7 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... CompileShaders
 	@echo ... Vulkan_Learning
 	@echo ... ImGui/imgui.obj
 	@echo ... ImGui/imgui.i
@@ -848,6 +934,9 @@ help:
 	@echo ... lve_device.obj
 	@echo ... lve_device.i
 	@echo ... lve_device.s
+	@echo ... lve_frustum_culling.obj
+	@echo ... lve_frustum_culling.i
+	@echo ... lve_frustum_culling.s
 	@echo ... lve_gameobject.obj
 	@echo ... lve_gameobject.i
 	@echo ... lve_gameobject.s
@@ -866,12 +955,18 @@ help:
 	@echo ... lve_renderer.obj
 	@echo ... lve_renderer.i
 	@echo ... lve_renderer.s
+	@echo ... lve_resource_manager.obj
+	@echo ... lve_resource_manager.i
+	@echo ... lve_resource_manager.s
 	@echo ... lve_swap_chain.obj
 	@echo ... lve_swap_chain.i
 	@echo ... lve_swap_chain.s
 	@echo ... lve_texture.obj
 	@echo ... lve_texture.i
 	@echo ... lve_texture.s
+	@echo ... lve_texture_manager.obj
+	@echo ... lve_texture_manager.i
+	@echo ... lve_texture_manager.s
 	@echo ... lve_window.obj
 	@echo ... lve_window.i
 	@echo ... lve_window.s

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <set>
 #include <unordered_set>
-
+#include "lve_utils.hpp"
 namespace lve
 {
 
@@ -118,10 +118,7 @@ namespace lve
             createInfo.pNext = nullptr;
         }
 
-        if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS)
-        {
-            throw std::runtime_error("failed to create instance!");
-        }
+        VK_CHECK(vkCreateInstance(&createInfo, nullptr, &instance));
 
         hasGflwRequiredInstanceExtensions();
     }
@@ -199,10 +196,7 @@ namespace lve
             createInfo.enabledLayerCount = 0;
         }
 
-        if (vkCreateDevice(physicalDevice, &createInfo, nullptr, &device_) != VK_SUCCESS)
-        {
-            throw std::runtime_error("failed to create logical device!");
-        }
+        VK_CHECK(vkCreateDevice(physicalDevice, &createInfo, nullptr, &device_));
 
         vkGetDeviceQueue(device_, indices.graphicsFamily, 0, &graphicsQueue_);
         vkGetDeviceQueue(device_, indices.presentFamily, 0, &presentQueue_);
@@ -218,10 +212,7 @@ namespace lve
         poolInfo.flags =
             VK_COMMAND_POOL_CREATE_TRANSIENT_BIT | VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 
-        if (vkCreateCommandPool(device_, &poolInfo, nullptr, &commandPool) != VK_SUCCESS)
-        {
-            throw std::runtime_error("failed to create command pool!");
-        }
+        VK_CHECK(vkCreateCommandPool(device_, &poolInfo, nullptr, &commandPool));
     }
 
     void LveDevice::createSurface() { window.createWindowSurface(instance, &surface_); }
@@ -265,10 +256,8 @@ namespace lve
             return;
         VkDebugUtilsMessengerCreateInfoEXT createInfo;
         populateDebugMessengerCreateInfo(createInfo);
-        if (CreateDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &debugMessenger) != VK_SUCCESS)
-        {
-            throw std::runtime_error("failed to set up debug messenger!");
-        }
+
+        VK_CHECK(CreateDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &debugMessenger));
     }
 
     bool LveDevice::checkValidationLayerSupport()
@@ -481,10 +470,7 @@ namespace lve
         bufferInfo.usage = usage;
         bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-        if (vkCreateBuffer(device_, &bufferInfo, nullptr, &buffer) != VK_SUCCESS)
-        {
-            throw std::runtime_error("failed to create vertex buffer!");
-        }
+        VK_CHECK(vkCreateBuffer(device_, &bufferInfo, nullptr, &buffer));
 
         VkMemoryRequirements memRequirements;
         vkGetBufferMemoryRequirements(device_, buffer, &memRequirements);
@@ -494,10 +480,7 @@ namespace lve
         allocInfo.allocationSize = memRequirements.size;
         allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
 
-        if (vkAllocateMemory(device_, &allocInfo, nullptr, &bufferMemory) != VK_SUCCESS)
-        {
-            throw std::runtime_error("failed to allocate vertex buffer memory!");
-        }
+        VK_CHECK(vkAllocateMemory(device_, &allocInfo, nullptr, &bufferMemory));
 
         vkBindBufferMemory(device_, buffer, bufferMemory, 0);
     }
@@ -583,10 +566,7 @@ namespace lve
         VkImage &image,
         VkDeviceMemory &imageMemory)
     {
-        if (vkCreateImage(device_, &imageInfo, nullptr, &image) != VK_SUCCESS)
-        {
-            throw std::runtime_error("failed to create image!");
-        }
+        VK_CHECK(vkCreateImage(device_, &imageInfo, nullptr, &image));
 
         VkMemoryRequirements memRequirements;
         vkGetImageMemoryRequirements(device_, image, &memRequirements);
@@ -596,15 +576,9 @@ namespace lve
         allocInfo.allocationSize = memRequirements.size;
         allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
 
-        if (vkAllocateMemory(device_, &allocInfo, nullptr, &imageMemory) != VK_SUCCESS)
-        {
-            throw std::runtime_error("failed to allocate image memory!");
-        }
+        VK_CHECK(vkAllocateMemory(device_, &allocInfo, nullptr, &imageMemory));
 
-        if (vkBindImageMemory(device_, image, imageMemory, 0) != VK_SUCCESS)
-        {
-            throw std::runtime_error("failed to bind image memory!");
-        }
+        VK_CHECK(vkBindImageMemory(device_, image, imageMemory, 0));
     }
 
 } // namespace lve

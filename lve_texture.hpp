@@ -39,7 +39,12 @@ namespace lve
             const std::string &equirectangularPath);
 
         // 判断是否为有效纹理
-        bool isValid() const { return image != VK_NULL_HANDLE; }
+        bool isValid() const
+        {
+            return image != VK_NULL_HANDLE &&
+                   imageView != VK_NULL_HANDLE &&
+                   sampler != VK_NULL_HANDLE;
+        }
         bool isCubemap() const { return m_isCubemap; }
 
         VkImageView getImageView() const { return imageView; }

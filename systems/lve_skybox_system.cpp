@@ -46,6 +46,16 @@ namespace lve
     {
         PipelineConfigInfo config{};
         LvePipeline::defaultPipelineConfigInfo(config);
+        // 天空盒顶点着色器只使用 location 0 (position)
+        // 需要限制属性描述符，避免验证层警告
+        // 但仍需保留 binding 0（stride=sizeof(Vertex)）才能读取顶点缓冲
+        std::vector<VkVertexInputAttributeDescription> skyboxAttributes(1);
+        skyboxAttributes[0].location = 0;
+        skyboxAttributes[0].binding = 0;
+        skyboxAttributes[0].format = VK_FORMAT_R32G32B32_SFLOAT;
+        skyboxAttributes[0].offset = offsetof(LveModel::Vertex, position);
+        config.attributeDescriptions = skyboxAttributes;
+        // 绑定描述保持不变（binding 0, stride=sizeof(Vertex)）
         config.renderPass = renderPass;
         config.pipelineLayout = pipelineLayout;
         config.depthStencilInfo.depthWriteEnable = VK_FALSE; // 关键：不写深度

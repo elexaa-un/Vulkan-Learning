@@ -7,7 +7,7 @@
 #include "tiny_obj_loader.h"
 #include "lve_model.hpp"
 #include "lve_texture.hpp" // 如果纹理单独处理，可以不在这里加载纹理，只返回模型
-#include "stb_image.h"
+
 #include <cmath>
 namespace lve
 {
@@ -15,6 +15,11 @@ namespace lve
     {
         createVertexBuffers(builder.verties);
         createIndexBuffers(builder.indices);
+        // 计算局部空间的 AABB：遍历所有顶点找 min/max
+        aabb = AABB::empty();
+        for (const auto& v : builder.verties) {
+            aabb.extend(v.position);
+        }
     }
     LveModel::~LveModel()
     {
@@ -202,21 +207,14 @@ namespace lve
     {
         // 1. 加载高度图
         int imgWidth, imgHeight, channels;
-        stbi_uc *heightData = stbi_load(heightmapPath.c_str(), &imgWidth, &imgHeight, &channels, 1); // 灰度图
+        stbi_uc *heightData = stbi_load(heightmapPath.c_str(), &imgWidth, &imgHeight, &channels, 1);
         if (!heightData)
         {
             throw std::runtime_error("Failed to load heightmap: " + heightmapPath);
         }
-        // 简单起见，我们假设 heightmap 尺寸至少为 segments+1，如果不是则缩放采样，这里不做复杂处理，要求高度图尺寸匹配
-        // 实际中你可以按比例采样，但为了简单，要求 heightmap 宽度 = segments+1
-        if (imgWidth != (int)(segments + 1) || imgHeight != (int)(segments + 1))
-        {
-            std::cerr << "Warning: heightmap size (" << imgWidth << "x" << imgHeight
-                      << ") does not match segments (" << segments << "). Will stretch." << std::endl;
-        }
 
         uint32_t vertexCount = (segments + 1) * (segments + 1);
-        uint32_t indexCount = segments * segments * 6; // 每个小方格2个三角形=6个索引
+        uint32_t indexCount = segments * segments * 6;
 
         std::vector<LveModel::Vertex> vertices(vertexCount);
         std::vector<uint32_t> indices(indexCount);
@@ -226,7 +224,7 @@ namespace lve
         float stepX = width / (float)segments;
         float stepZ = depth / (float)segments;
 
-        // 2. 生成顶点位置和 UV（纹理坐标基于 XZ 平面，重复 tiling）
+        // 2. 生成顶点位置和 UV
         for (uint32_t z = 0; z <= segments; ++z)
         {
             for (uint32_t x = 0; x <= segments; ++x)
@@ -235,20 +233,22 @@ namespace lve
                 float worldX = -halfWidth + x * stepX;
                 float worldZ = -halfDepth + z * stepZ;
 
-                // 从高度图采样高度 (使用双线性插值提高质量，这里简化取最近像素)
+                // 改进：使用双线性插值从任意尺寸高度图采样
                 float u = (float)x / segments;
                 float v = (float)z / segments;
-                int px = (int)(u * (imgWidth - 1));
-                int py = (int)(v * (imgHeight - 1));
-                float gray = heightData[py * imgWidth + px] / 255.0f;
+
+                // 映射到高度图坐标（浮点）
+                float imgU = u * (imgWidth - 1);
+                float imgV = v * (imgHeight - 1);
+
+                // 双线性插值采样高度
+                float gray = bilinearSample(heightData, imgWidth, imgHeight, imgU, imgV);
                 float height = minHeight + gray * (maxHeight - minHeight);
 
                 vertices[idx].position = {worldX, height, worldZ};
-                // UV: 让纹理在整个地形上重复多次，比如平铺 10 次
                 vertices[idx].uv = {u * 10.0f, v * 10.0f};
-                // 颜色暂时设为白色，法线后面计算
                 vertices[idx].color = {1.0f, 1.0f, 1.0f};
-                vertices[idx].normal = {0.0f, 1.0f, 0.0f}; // 临时
+                vertices[idx].normal = {0.0f, 1.0f, 0.0f};
             }
         }
 
@@ -312,5 +312,29 @@ namespace lve
 
         // 5. 创建模型
         return LveModel::createModelFromVertices(device, vertices, indices);
+    }
+    float bilinearSample(const stbi_uc *data, int width, int height, float u, float v)
+    {
+        // 边界限制
+        u = glm::clamp(u, 0.0f, (float)(width - 1));
+        v = glm::clamp(v, 0.0f, (float)(height - 1));
+
+        int x0 = (int)floor(u);
+        int y0 = (int)floor(v);
+        int x1 = glm::min(x0 + 1, width - 1);
+        int y1 = glm::min(y0 + 1, height - 1);
+
+        float fx = u - x0;
+        float fy = v - y0;
+
+        float v00 = data[y0 * width + x0] / 255.0f;
+        float v10 = data[y0 * width + x1] / 255.0f;
+        float v01 = data[y1 * width + x0] / 255.0f;
+        float v11 = data[y1 * width + x1] / 255.0f;
+
+        float v0 = v00 * (1 - fx) + v10 * fx;
+        float v1 = v01 * (1 - fx) + v11 * fx;
+
+        return v0 * (1 - fy) + v1 * fy;
     }
 }

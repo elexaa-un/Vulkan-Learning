@@ -326,6 +326,18 @@ namespace lve
         config.rasterizationInfo.depthBiasSlopeFactor = 1.75f;     // 斜率相关偏移
         // ============================
 
+        // ========== 仅声明 location 0（position）==========
+        // shadow.vert 只使用 location = 0 (position)
+        // 其他属性（color, normal, uv）不需要传递给着色器
+        std::vector<VkVertexInputAttributeDescription> shadowAttributes(1);
+        shadowAttributes[0].location = 0;
+        shadowAttributes[0].binding = 0;
+        shadowAttributes[0].format = VK_FORMAT_R32G32B32_SFLOAT;
+        shadowAttributes[0].offset = 0;
+
+        config.attributeDescriptions = shadowAttributes;
+        // ===================================================
+
         // 使用 shadow.vert 和 shadow.frag 创建管线
         m_pipeline = std::make_unique<LvePipeline>(
             lveDevice,

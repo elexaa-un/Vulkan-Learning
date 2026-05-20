@@ -1,0 +1,31 @@
+available extensions:
+	VK_KHR_device_group_creation
+	VK_KHR_external_fence_capabilities
+	VK_KHR_external_memory_capabilities
+	VK_KHR_external_semaphore_capabilities
+	VK_KHR_get_physical_device_properties2
+	VK_KHR_get_surface_capabilities2
+	VK_KHR_surface
+	VK_KHR_win32_surface
+	VK_EXT_debug_report
+	VK_EXT_debug_utils
+	VK_EXT_swapchain_colorspace
+	VK_KHR_portability_enumeration
+	VK_LUNARG_direct_driver_loading
+required extensions:
+	VK_KHR_surface
+	VK_KHR_win32_surface
+	VK_EXT_debug_utils
+Device count: 1
+physical device: AMD Radeon 780M Graphics
+No command buffers to free
+Present mode: V-Sync
+[LveSwapChain] RenderPass created: 0xb000000000b
+Allocating 3 command buffers
+Successfully allocated 3 command buffers
+Loaded texture: apple/image/Model_0.jpg (8192x8192)
+Material built with 1 textures
+Vertex Count:35723
+Warning: heightmap size (1280x853) does not match segments (256). Will stretch.
+Loaded texture: tt.jpg (1280x853)
+Material built with 1 textures

@@ -1,6 +1,6 @@
 #include "lve_camera.hpp"
+#include "lve_utils.hpp"
 
-#include <cassert>
 #include <limits>
 namespace lve
 {
@@ -18,7 +18,7 @@ namespace lve
 
     void LveCamera::setPerspectiveProject(float fovy, float aspect, float near, float far)
     {
-        assert(glm::abs(aspect - std::numeric_limits<float>::epsilon()) > 0.0f);
+        LVE_ASSERT(glm::abs(aspect - std::numeric_limits<float>::epsilon()) > 0.0f, "aspect ratio must be non-zero");
         const float tanHalfFovy = tan(fovy / 2.f);
         projectionMatrix = glm::mat4{1.0f};
         projectionMatrix[0][0] = 1.f / (aspect * tanHalfFovy);

@@ -1,9 +1,8 @@
 #include "lve_descriptors.hpp"
+#include "lve_utils.hpp"
 
 // std
-#include <cassert>
 #include <stdexcept>
-
 namespace lve
 {
 
@@ -15,7 +14,7 @@ namespace lve
         VkShaderStageFlags stageFlags,
         uint32_t count)
     {
-        assert(bindings.count(binding) == 0 && "Binding already in use");
+        LVE_ASSERT(bindings.count(binding) == 0, "Binding already in use");
         VkDescriptorSetLayoutBinding layoutBinding{};
         layoutBinding.binding = binding;
         layoutBinding.descriptorType = descriptorType;
@@ -47,14 +46,11 @@ namespace lve
         descriptorSetLayoutInfo.bindingCount = static_cast<uint32_t>(setLayoutBindings.size());
         descriptorSetLayoutInfo.pBindings = setLayoutBindings.data();
 
-        if (vkCreateDescriptorSetLayout(
-                lveDevice.device(),
-                &descriptorSetLayoutInfo,
-                nullptr,
-                &descriptorSetLayout) != VK_SUCCESS)
-        {
-            throw std::runtime_error("failed to create descriptor set layout!");
-        }
+        VK_CHECK(vkCreateDescriptorSetLayout(
+            lveDevice.device(),
+            &descriptorSetLayoutInfo,
+            nullptr,
+            &descriptorSetLayout));
     }
 
     LveDescriptorSetLayout::~LveDescriptorSetLayout()
@@ -104,11 +100,7 @@ namespace lve
         descriptorPoolInfo.maxSets = maxSets;
         descriptorPoolInfo.flags = poolFlags;
 
-        if (vkCreateDescriptorPool(lveDevice.device(), &descriptorPoolInfo, nullptr, &descriptorPool) !=
-            VK_SUCCESS)
-        {
-            throw std::runtime_error("failed to create descriptor pool!");
-        }
+        VK_CHECK(vkCreateDescriptorPool(lveDevice.device(), &descriptorPoolInfo, nullptr, &descriptorPool));
     }
 
     LveDescriptorPool::~LveDescriptorPool()
@@ -156,19 +148,24 @@ namespace lve
     LveDescriptorWriter &LveDescriptorWriter::writeBuffer(
         uint32_t binding, VkDescriptorBufferInfo *bufferInfo)
     {
-        assert(setLayout.bindings.count(binding) == 1 && "Layout does not contain specified binding");
+        LVE_ASSERT(setLayout.bindings.count(binding) == 1, "Layout does not contain specified binding");
 
         auto &bindingDescription = setLayout.bindings[binding];
 
-        assert(
-            bindingDescription.descriptorCount == 1 &&
+        LVE_ASSERT(
+            bindingDescription.descriptorCount == 1,
             "Binding single descriptor info, but binding expects multiple");
+
+        // Store a copy of the buffer info so it stays valid after the caller's
+        // local variable goes out of scope.
+        bufferInfos.push_back(*bufferInfo);
+        VkDescriptorBufferInfo *storedPtr = &bufferInfos.back();
 
         VkWriteDescriptorSet write{};
         write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
         write.descriptorType = bindingDescription.descriptorType;
         write.dstBinding = binding;
-        write.pBufferInfo = bufferInfo;
+        write.pBufferInfo = storedPtr;
         write.descriptorCount = 1;
 
         writes.push_back(write);
@@ -178,19 +175,24 @@ namespace lve
     LveDescriptorWriter &LveDescriptorWriter::writeImage(
         uint32_t binding, VkDescriptorImageInfo *imageInfo)
     {
-        assert(setLayout.bindings.count(binding) == 1 && "Layout does not contain specified binding");
+        LVE_ASSERT(setLayout.bindings.count(binding) == 1, "Layout does not contain specified binding");
 
         auto &bindingDescription = setLayout.bindings[binding];
 
-        assert(
-            bindingDescription.descriptorCount == 1 &&
+        LVE_ASSERT(
+            bindingDescription.descriptorCount == 1,
             "Binding single descriptor info, but binding expects multiple");
+
+        // Store a copy of the image info so it stays valid after the caller's
+        // local variable goes out of scope.
+        imageInfos.push_back(*imageInfo);
+        VkDescriptorImageInfo *storedPtr = &imageInfos.back();
 
         VkWriteDescriptorSet write{};
         write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
         write.descriptorType = bindingDescription.descriptorType;
         write.dstBinding = binding;
-        write.pImageInfo = imageInfo;
+        write.pImageInfo = storedPtr;
         write.descriptorCount = 1;
 
         writes.push_back(write);

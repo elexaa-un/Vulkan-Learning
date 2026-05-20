@@ -27,16 +27,6 @@ layout(set = 0, binding = 0) uniform GlobalUbo {
     vec4 ambientColor;
     int numLights;
     PointLight pointLights[10];
-
-    // ===== 新增：风力参数（必须与C++端GlobalUbo对齐）=====
-    float windTime;
-    float windStrength;
-    float windSpeed;
-    float windDirectionX;
-    float windDirectionZ;
-    float _pad0;
-    float _pad1;
-    float _pad2;
 } ubo;
 
 // Push constant 仅包含模型变换矩阵

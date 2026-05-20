@@ -79,6 +79,12 @@
 },
 {
   "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_frustum_culling.cpp.obj -c E:\\Vulkan-Learning\\lve_frustum_culling.cpp",
+  "file": "E:/Vulkan-Learning/lve_frustum_culling.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/lve_frustum_culling.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
   "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_gameobject.cpp.obj -c E:\\Vulkan-Learning\\lve_gameobject.cpp",
   "file": "E:/Vulkan-Learning/lve_gameobject.cpp",
   "output": "CMakeFiles/Vulkan_Learning.dir/lve_gameobject.cpp.obj"
@@ -115,6 +121,12 @@
 },
 {
   "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_resource_manager.cpp.obj -c E:\\Vulkan-Learning\\lve_resource_manager.cpp",
+  "file": "E:/Vulkan-Learning/lve_resource_manager.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/lve_resource_manager.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
   "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_swap_chain.cpp.obj -c E:\\Vulkan-Learning\\lve_swap_chain.cpp",
   "file": "E:/Vulkan-Learning/lve_swap_chain.cpp",
   "output": "CMakeFiles/Vulkan_Learning.dir/lve_swap_chain.cpp.obj"
@@ -124,6 +136,12 @@
   "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_texture.cpp.obj -c E:\\Vulkan-Learning\\lve_texture.cpp",
   "file": "E:/Vulkan-Learning/lve_texture.cpp",
   "output": "CMakeFiles/Vulkan_Learning.dir/lve_texture.cpp.obj"
+},
+{
+  "directory": "E:/Vulkan-Learning/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe  @CMakeFiles/Vulkan_Learning.dir/includes_CXX.rsp -g -o CMakeFiles\\Vulkan_Learning.dir\\lve_texture_manager.cpp.obj -c E:\\Vulkan-Learning\\lve_texture_manager.cpp",
+  "file": "E:/Vulkan-Learning/lve_texture_manager.cpp",
+  "output": "CMakeFiles/Vulkan_Learning.dir/lve_texture_manager.cpp.obj"
 },
 {
   "directory": "E:/Vulkan-Learning/build",

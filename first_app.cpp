@@ -1,16 +1,13 @@
 #include "first_app.hpp"
 #include "lve_camera.hpp"
 #include "lve_texture.hpp"
-#include "systems\lve_simple_renderer_system.hpp"
-#include "systems\lve_point_light_system.hpp"
-#include "systems\lve_skybox_system.hpp"
-#include "systems\lve_vegetation_system.hpp"
-#include "systems/lve_shadow_system.hpp"
 #include "keyboard_movement_controller.hpp"
+#include "lve_texture_manager.hpp"
 #include "lve_model.hpp"
 #include "terrain_height_sampler.hpp"
 #include "lve_imgui.hpp"
 #include "ImGui/imgui.h"
+#include <GLFW/glfw3.h>
 #include <stdexcept>
 #include <array>
 #include <iostream>
@@ -37,7 +34,7 @@ namespace lve
                                 .build();
         materialPool = LveDescriptorPool::Builder(lveDevice)
                            .setMaxSets(200)
-                           .addPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 200)
+                           .addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 200)
                            .addPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 600)
                            .build();
 
@@ -51,13 +48,313 @@ namespace lve
                                       .setMaxSets(1)
                                       .addPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1)
                                       .build();
+        LveTextureManager::initFallbackResources(lveDevice.device(), lveDevice.getPhysicalDevice());
+        // 验证初始化是否成功
+        assert(LveTextureManager::getFallbackSampler() != VK_NULL_HANDLE);
+        assert(LveTextureManager::getFallbackImageView() != VK_NULL_HANDLE);
+        
         LoadGameObjects();
     }
+
+    // ========================================================================
+    // 重构后的 run()：清晰的三阶段划分
+    // ========================================================================
     void FirstApp::run()
     {
+        std::cerr << "[DEBUG run] === Phase 1: initGlobalResources ===" << std::endl
+                  << std::flush;
+        initGlobalResources();
+        std::cerr << "[DEBUG run] Phase 1 done" << std::endl
+                  << std::flush;
+
+        // --- 阶段 2: 创建各子系统 ---
+        std::cerr << "[DEBUG run] === Phase 2: Creating subsystems ===" << std::endl
+                  << std::flush;
+        LveImgui imgui(lveWindow.getGLFWwindow(), lveDevice, lveRenderer.GetSwapChainRenderPass());
+        std::cerr << "[DEBUG run] ImGui created" << std::endl
+                  << std::flush;
+
+        auto skyboxModel = lve::createSkyboxModel(lveDevice);
+        std::cerr << "[DEBUG run] Skybox model created" << std::endl
+                  << std::flush;
+
+        LveSkyboxSystem skyboxSystem(lveDevice, lveRenderer.GetSwapChainRenderPass(),
+                                     globalSetLayout->getDescriptorSetLayout());
+        std::cerr << "[DEBUG run] SkyboxSystem created" << std::endl
+                  << std::flush;
+
+        LveShadowSystem shadowSystem(lveDevice, globalSetLayout->getDescriptorSetLayout());
+        std::cerr << "[DEBUG run] ShadowSystem created" << std::endl
+                  << std::flush;
+        initShadowResources(shadowSystem);
+        std::cerr << "[DEBUG run] Shadow resources initialized" << std::endl
+                  << std::flush;
+
+        LveVegetationSystem vegetationSystem(lveDevice,
+                                             lveRenderer.GetSwapChainRenderPass(),
+                                             globalSetLayout->getDescriptorSetLayout(),
+                                             "tree.png");
+        std::cerr << "[DEBUG run] VegetationSystem created" << std::endl
+                  << std::flush;
+        initVegetationSystem(vegetationSystem, 3000);
+        std::cerr << "[DEBUG run] Vegetation initialized with 3000 instances" << std::endl
+                  << std::flush;
+
+        std::unique_ptr<LveSimpleRenderSystem> simpleRenderSystem;
+        std::unique_ptr<LvePointLightSystem> pointLightSystem;
+        initRenderSystems(simpleRenderSystem, pointLightSystem);
+        std::cerr << "[DEBUG run] Render systems initialized" << std::endl
+                  << std::flush;
+
+        // --- 阶段 3: 游戏主循环 ---
+        std::cerr << "[DEBUG run] === Phase 3: Main loop starting ===" << std::endl
+                  << std::flush;
+        LveCamera camera{};
+        camera.setViewTarget(glm::vec3{1.f, 2.f, 20.f}, glm::vec3{.0f, .0f, 2.5f});
+
+        auto viewerObject = LveGameObject::createGameObject();
+        viewerObject.transform.translation.z = -2.5f;
+        KeyBoardMovementController cameraController{};
+
+        auto currentTime = std::chrono::high_resolution_clock::now();
+        WindParams wind;
+
+        // 渲染选项：持久化在主循环中，ImGui 面板修改后实时影响渲染
+        RenderOptions renderOptions;
+
+        uint64_t frameCount = 0;
+
+        while (!lveWindow.shouldClose())
+        {
+            glfwPollEvents();
+
+            // ESC 退出
+            if (glfwGetKey(lveWindow.getGLFWwindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            {
+                glfwSetWindowShouldClose(lveWindow.getGLFWwindow(), GLFW_TRUE);
+                continue;
+            }
+
+            // F1 切换调试面板（防重复触发）
+            if (glfwGetKey(lveWindow.getGLFWwindow(), GLFW_KEY_F1) == GLFW_PRESS)
+            {
+                if (!m_debugKeyPressed)
+                {
+                    m_showDebugPanel = !m_showDebugPanel;
+                    m_debugKeyPressed = true;
+                }
+            }
+            else
+            {
+                m_debugKeyPressed = false;
+            }
+
+            auto newTime = std::chrono::high_resolution_clock::now();
+            float frameTime = std::chrono::duration<float, std::chrono::seconds::period>(newTime - currentTime).count();
+            currentTime = newTime;
+
+            frameTime = glm::min(frameTime, MAX_FRAME_TIME);
+            wind.totalTime += frameTime;
+
+            cameraController.moveInPlaneXZ(lveWindow.getGLFWwindow(), frameTime, viewerObject);
+            camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
+
+            float aspect = lveRenderer.getAspectRatio();
+            camera.setPerspectiveProject(glm::radians(50.0f), aspect, 0.1f, 100.f);
+
+            // 格式变化时重建渲染系统
+            if (lveRenderer.hasFormatsChanged())
+            {
+                std::cout << "Formats changed, recreating render system..." << std::endl;
+                vkDeviceWaitIdle(lveDevice.device());
+                simpleRenderSystem = std::make_unique<LveSimpleRenderSystem>(
+                    lveDevice, lveRenderer.GetSwapChainRenderPass(),
+                    globalSetLayout->getDescriptorSetLayout(),
+                    materialSetLayout->getDescriptorSetLayout());
+                lveRenderer.resetFormatsChangedFlag();
+            }
+
+            if (auto commandBuffer = lveRenderer.beginFrame())
+            {
+                frameCount++;
+                int frameIndex = lveRenderer.getFrameIndex();
+
+                // ImGui 开始新帧（必须在任何 ImGui 控件之前）
+                imgui.newFrame();
+
+                FrameInfo frameInfo{
+                    frameIndex,
+                    frameTime,
+                    commandBuffer,
+                    camera,
+                    globalDescriptorSets[frameIndex],
+                    gameObjects};
+
+                if (globalDescriptorSets[frameIndex] != VK_NULL_HANDLE)
+                {
+                    // 填充 UBO
+                    GlobalUbo ubo{};
+                    ubo.projection = camera.getProjection();
+                    ubo.view = camera.getView();
+                    ubo.inverseView = camera.getInverseView();
+                    pointLightSystem->update(frameInfo, ubo);
+
+                    // ==== Shadow Pass ====
+                    glm::vec3 lightPos{0.f, 20.f, 0.f};
+                    for (auto &kv : gameObjects)
+                    {
+                        if (kv.second.pointLight)
+                        {
+                            lightPos = kv.second.transform.translation;
+                            break;
+                        }
+                    }
+                    shadowSystem.render(frameInfo, lightPos, glm::vec3{0.f, 0.f, 0.f});
+                    ubo.lightViewProj = shadowSystem.getLightViewProj();
+
+                    WindPushConstantData windData{};
+                    windData.windTime = wind.totalTime;
+                    windData.windStrength = wind.strength;
+                    windData.windSpeed = wind.speed;
+                    windData.windDirectionX = 1.0f;
+                    windData.windDirectionZ = 0.0f;
+
+                    uboBuffers[frameIndex]->writeToBuffer(&ubo);
+                    uboBuffers[frameIndex]->flush();
+
+                    // ==== 主渲染通道 ====
+                    // 注意：simpleRenderSystem->rendererGameObjects() 会在此处
+                    // 填充 frameInfo.totalCount 和 frameInfo.culledCount
+                    lveRenderer.beginSwapChainRenderPass(commandBuffer);
+                    if (renderOptions.showSkybox)
+                    {
+                        skyboxSystem.render(frameInfo, skyboxTexture, *skyboxModel);
+                    }
+                    if (renderOptions.showTerrain || renderOptions.showModel)
+                    {
+                        simpleRenderSystem->rendererGameObjects(frameInfo);
+                    }
+                    if (renderOptions.showVegetation)
+                    {
+                        vegetationSystem.render(frameInfo, windData);
+                    }
+                    pointLightSystem->renderer(frameInfo);
+
+                    // ==== ImGui 调试面板（渲染完成后才调用，以便读取剔除统计） ====
+                    if (m_showDebugPanel)
+                    {
+                        // 此时 frameInfo 已经包含了最新的剔除统计数据
+                        imgui.showImGUI(frameTime, gameObjects, camera, viewerObject, renderOptions, &frameInfo);
+                    }
+                    // ImGui 绘制必须在 render pass 内进行
+                    imgui.render(commandBuffer);
+
+                    lveRenderer.endSwapChainRenderPass(commandBuffer);
+                }
+                else
+                {
+                    std::cerr << "Error: globalDescriptorSet is null at frameIndex "
+                              << frameIndex << "! Skipping rendering for this frame." << std::endl;
+                    // Even when skipping, we need to handle ImGui and end frame properly.
+                    lveRenderer.beginSwapChainRenderPass(commandBuffer);
+                    if (m_showDebugPanel)
+                    {
+                        imgui.showImGUI(frameTime, gameObjects, camera, viewerObject, renderOptions, &frameInfo);
+                    }
+                    imgui.render(commandBuffer);
+                    lveRenderer.endSwapChainRenderPass(commandBuffer);
+                }
+
+                lveRenderer.endFrame();
+            }
+            else
+            {
+                std::cout << "[DEBUG run] beginFrame returned null! Frame #" << (frameCount + 1)
+                          << " skipped (window minimized or swapchain needs recreation)" << std::endl;
+            }
+        }
+        std::cout << "[DEBUG run] Main loop exited after " << frameCount << " frames" << std::endl;
+        vkDeviceWaitIdle(lveDevice.device());
+    }
+
+    FirstApp::~FirstApp()
+    {
+        LveTextureManager::cleanupFallbackResources(lveDevice.device());
+    }
+
+    void FirstApp::LoadGameObjects()
+    {
+        std::cout << "[DEBUG LoadGameObjects] Step 1: Creating MaterialManager..." << std::endl;
+        LveMaterialManager materialManager(*materialSetLayout, *materialPool, lveDevice);
+
+        std::cout << "[DEBUG LoadGameObjects] Step 2: Creating cat material..." << std::endl;
+        auto catMaterial = materialManager.createMaterial("apple");
+        std::cout << "[DEBUG LoadGameObjects] Step 3: Loading texture..." << std::endl;
+        auto diffuseTex = m_resourceManager.loadTexture("apple/image/Model_0.jpg");
+        std::cout << "[DEBUG LoadGameObjects] Step 4: Setting texture on material..." << std::endl;
+        catMaterial->setTexture(LveMaterial::TextureType::DIFFUSE, diffuseTex);
+
+        std::cout << "[DEBUG LoadGameObjects] Step 5: Setting material properties..." << std::endl;
+        catMaterial->setBaseColorFactor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+        catMaterial->setMetallicFactor(0.2f);
+        catMaterial->setRoughnessFactor(0.5f);
+
+        std::cout << "[DEBUG LoadGameObjects] Step 6: Building descriptor set..." << std::endl;
+        catMaterial->buildDescriptorSet();
+        std::cout << "[DEBUG LoadGameObjects] Step 7: Loading model..." << std::flush;
+        std::cout << std::endl;
+        auto gameObj = LveGameObject::createGameObject();
+        gameObj.model = m_resourceManager.loadModel("apple/Model.obj");
+        gameObj.setMaterial(catMaterial); // 直接赋值 material 成员
+        gameObj.transform.translation = {0.f, 0.f, 0.f};
+        gameObj.transform.rotation = {0.f, 0.f, 1.f * 3.14f};
+        gameObj.transform.scale = glm::vec3{0.02f};
+
+        gameObjects.emplace(gameObj.getId(), std::move(gameObj));
+
+        std::cout << "[DEBUG LoadGameObjects] Step 8: Creating terrain model..." << std::endl;
+        auto terrainModel = lve::createTerrainModel(lveDevice,
+                                                    "tt.jpg", // 高度图路径
+                                                    200.0f,   // 宽度 200
+                                                    200.0f,   // 深度 200
+                                                    256,      // 分段数 256 (顶点 257x257)
+                                                    -5.0f,    // 最低高度
+                                                    20.0f,    // 最高高度
+                                                    "tt.jpg");
+
+        auto terrainMaterial = materialManager.createMaterial("terrain");
+        auto terrainTex = m_resourceManager.loadTexture("tt.jpg");
+        terrainMaterial->setTexture(LveMaterial::TextureType::DIFFUSE, terrainTex);
+        terrainMaterial->setBaseColorFactor(glm::vec4(1.0f));
+        terrainMaterial->setMetallicFactor(0.0f);
+        terrainMaterial->setRoughnessFactor(0.8f);
+        terrainMaterial->buildDescriptorSet();
+
+        auto terrainObj = LveGameObject::createGameObject();
+        terrainObj.model = std::move(terrainModel);
+        terrainObj.setMaterial(terrainMaterial);
+        terrainObj.transform.translation = {0.0f, 0.0f, 0.0f};
+        gameObjects.emplace(terrainObj.getId(), std::move(terrainObj));
+
+        {
+            auto lightObj = LveGameObject::makePointLight(100.f, 10.f, glm::vec3{1.f, 1.f, 1.f});
+            lightObj.transform.translation = {0.f, 20.f, 0.f};
+            gameObjects.emplace(lightObj.getId(), std::move(lightObj));
+        }
+        std::cout << "[DEBUG LoadGameObjects] All game objects loaded successfully!" << std::endl;
+    }
+
+    // ========================================================================
+    // 阶段 1: 初始化全局资源 (UBO + 描述符布局 + 天空盒)
+    // ========================================================================
+    void FirstApp::initGlobalResources()
+    {
+        LveTextureManager::initFallbackResources(lveDevice.device(), lveDevice.getPhysicalDevice());
+
         VkDeviceSize alignment = std::max(lveDevice.properties.limits.minUniformBufferOffsetAlignment,
                                           lveDevice.properties.limits.nonCoherentAtomSize);
-        std::vector<std::unique_ptr<LveBuffer>> uboBuffers(LveSwapChain::MAX_FRAMES_IN_FLIGHT);
+
+        uboBuffers.resize(LveSwapChain::MAX_FRAMES_IN_FLIGHT);
         for (int i = 0; i < uboBuffers.size(); i++)
         {
             uboBuffers[i] = std::make_unique<LveBuffer>(
@@ -70,29 +367,27 @@ namespace lve
             uboBuffers[i]->map();
         }
 
-        auto globalSetLayout = LveDescriptorSetLayout::Builder(lveDevice)
-                                   .addBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_ALL_GRAPHICS)
-                                   .addBinding(1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)  // 天空盒
-                                   .addBinding(2, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)  // Shadow Map
-                                   .build();
+        globalSetLayout = LveDescriptorSetLayout::Builder(lveDevice)
+                              .addBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_ALL_GRAPHICS)
+                              .addBinding(1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT) // 天空盒
+                              .addBinding(2, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT) // Shadow Map
+                              .build();
 
-        std::vector<VkDescriptorSet> globalDescriptorSets(LveSwapChain::MAX_FRAMES_IN_FLIGHT);
+        globalDescriptorSets.resize(LveSwapChain::MAX_FRAMES_IN_FLIGHT);
 
-        //============================创建 ImGui 系统===========================
-        LveImgui imgui(lveWindow.getGLFWwindow(), lveDevice, lveRenderer.GetSwapChainRenderPass());
-        //============================创建天空盒===========================
-        auto skyboxTexture = LveTexture::createCubemap(lveDevice, {"skybox/px.png",
-                                                                   "skybox/nx.png",
-                                                                   "skybox/py.png",
-                                                                   "skybox/ny.png",
-                                                                   "skybox/pz.png",
-                                                                   "skybox/nz.png"});
+        skyboxTexture = initSkybox();
+    }
 
-        // 为每个帧的描述符集写入天空盒纹理
+    std::shared_ptr<LveTexture> FirstApp::initSkybox()
+    {
+        auto texture = m_resourceManager.loadCubemap("skybox", {"skybox/px.png", "skybox/nx.png",
+                                                                "skybox/py.png", "skybox/ny.png",
+                                                                "skybox/pz.png", "skybox/nz.png"});
+
         VkDescriptorImageInfo skyboxImageInfo{};
         skyboxImageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-        skyboxImageInfo.imageView = skyboxTexture->getImageView();
-        skyboxImageInfo.sampler = skyboxTexture->getSampler();
+        skyboxImageInfo.imageView = texture->getImageView();
+        skyboxImageInfo.sampler = texture->getSampler();
 
         for (int i = 0; i < globalDescriptorSets.size(); ++i)
         {
@@ -100,15 +395,15 @@ namespace lve
 
             LveDescriptorWriter(*globalSetLayout, *globalPool)
                 .writeBuffer(0, &bufferInfo)
-                .writeImage(1, &skyboxImageInfo) // 写入天空盒纹理
+                .writeImage(1, &skyboxImageInfo)
                 .build(globalDescriptorSets[i]);
         }
-        // ============================================================
-        // 创建 Shadow System（在渲染系统之前创建）
-        // ============================================================
-        LveShadowSystem shadowSystem(lveDevice, globalSetLayout->getDescriptorSetLayout());
 
-        // 为每个帧的描述符集写入 Shadow Map
+        return texture;
+    }
+
+    void FirstApp::initShadowResources(LveShadowSystem &shadowSystem)
+    {
         VkDescriptorImageInfo shadowMapImageInfo{};
         shadowMapImageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
         shadowMapImageInfo.imageView = shadowSystem.getShadowMapImageView();
@@ -117,24 +412,16 @@ namespace lve
         for (int i = 0; i < globalDescriptorSets.size(); ++i)
         {
             LveDescriptorWriter(*globalSetLayout, *globalPool)
-                .writeImage(2, &shadowMapImageInfo)  // binding 2 = Shadow Map
-                .overwrite(globalDescriptorSets[i]); // 更新已有的描述符集，只写入 binding 2
+                .writeImage(2, &shadowMapImageInfo)
+                .overwrite(globalDescriptorSets[i]);
         }
+    }
 
-        auto skyboxModel = lve::createSkyboxModel(lveDevice);
-        LveSkyboxSystem skyboxSystem(lveDevice, lveRenderer.GetSwapChainRenderPass(),
-                                     globalSetLayout->getDescriptorSetLayout());
-
-        // ========= 植物系统相关（新增） =========
-        LveVegetationSystem vegetationSystem(lveDevice,
-                                             lveRenderer.GetSwapChainRenderPass(),
-                                             globalSetLayout->getDescriptorSetLayout(),
-                                             "tree.png");
-        // ========= 创建实例数据 =========
+    void FirstApp::initVegetationSystem(LveVegetationSystem &vegetationSystem, int instanceCount)
+    {
         TerrainHeightSampler terrainSampler("tt.jpg", 200.0f, 200.0f, -5.0f, 20.0f);
         std::vector<VegetationInstance> instances;
-        // 填充实例数据（需要获取地形高度）
-        for (int i = 0; i < 1000; ++i)
+        for (int i = 0; i < instanceCount; ++i)
         {
             float x = (rand() % 200) - 100;
             float z = (rand() % 200) - 100;
@@ -142,275 +429,18 @@ namespace lve
             instances.push_back({glm::vec3(x, y, z), 0.5f + (rand() % 100) / 100.0f});
         }
         vegetationSystem.createInstances(instances);
+    }
 
-        //============================创建渲染系统===========================
-        std::unique_ptr<LveSimpleRenderSystem> simpleRenderSystem;
+    void FirstApp::initRenderSystems(std::unique_ptr<LveSimpleRenderSystem> &simpleRenderSystem,
+                                     std::unique_ptr<LvePointLightSystem> &pointLightSystem)
+    {
         simpleRenderSystem = std::make_unique<LveSimpleRenderSystem>(
             lveDevice, lveRenderer.GetSwapChainRenderPass(),
             globalSetLayout->getDescriptorSetLayout(),
             materialSetLayout->getDescriptorSetLayout());
 
-        std::unique_ptr<LvePointLightSystem> pointLightSystem;
         pointLightSystem = std::make_unique<LvePointLightSystem>(
             lveDevice, lveRenderer.GetSwapChainRenderPass(),
             globalSetLayout->getDescriptorSetLayout());
-        LveCamera camera{};
-        camera.setViewTarget(glm::vec3{1.f, 2.f, 20.f}, glm::vec3{.0f, .0f, 2.5f});
-
-        auto viewerObject = LveGameObject::createGameObject();
-        viewerObject.transform.translation.z = -2.5f;
-        KeyBoardMovementController cameraController{};
-
-        auto currentTime = std::chrono::high_resolution_clock::now();
-
-        // ==== 风力参数（声明在 ImGui 作用域外，以便写入 UBO）====
-        float windStrength = 0.5f;
-        float windSpeed = 1.0f;
-        float totalTime = 0.0f; // 累计时间
-
-        while (!lveWindow.shouldClose())
-        {
-            glfwPollEvents();
-
-            auto newTime = std::chrono::high_resolution_clock::now();
-            float frameTime = std::chrono::duration<float, std::chrono::seconds::period>(newTime - currentTime).count();
-            currentTime = newTime;
-
-            frameTime = glm::min(frameTime, MAX_FRAME_TIME);
-            totalTime += frameTime; // 累计时间
-
-            cameraController.moveInPlaneXZ(lveWindow.getGLFWwindow(), frameTime, viewerObject);
-            camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
-
-            float aspect = lveRenderer.getAspectRatio();
-            camera.setPerspectiveProject(glm::radians(50.0f), aspect, 0.1f, 100.f);
-            // 关键：格式变化时重建渲染系统
-            if (lveRenderer.hasFormatsChanged())
-            {
-                std::cout << "Formats changed, recreating render system..." << std::endl;
-                vkDeviceWaitIdle(lveDevice.device());
-                simpleRenderSystem = std::make_unique<LveSimpleRenderSystem>(
-                    lveDevice, lveRenderer.GetSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout(), materialSetLayout->getDescriptorSetLayout());
-                lveRenderer.resetFormatsChangedFlag();
-            }
-
-            if (auto commandBuffer = lveRenderer.beginFrame())
-            {
-                int frameIndex = lveRenderer.getFrameIndex();
-                // 确保描述符集有效
-                if (globalDescriptorSets[frameIndex] == VK_NULL_HANDLE)
-                {
-                    std::cerr << "Error: globalDescriptorSet is null!" << std::endl;
-                    continue;
-                }
-                //====================imgui界面设置=====================
-                imgui.newFrame();
-
-                // ============================================================
-                // 调试面板
-                // ============================================================
-                ImGui::Begin("Vulkan Renderer - Debug Panel");
-
-                // ---------- Performance ----------
-                if (ImGui::CollapsingHeader("Performance", ImGuiTreeNodeFlags_DefaultOpen))
-                {
-                    ImGui::Text("FPS: %.1f", 1.0f / frameTime);
-                    ImGui::Text("Frame Time: %.2f ms", frameTime * 1000.0f);
-                    ImGui::Text("Scene Objects: %d", (int)gameObjects.size());
-                }
-
-                // ---------- Camera ----------
-                if (ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_DefaultOpen))
-                {
-                    auto &pos = viewerObject.transform.translation;
-                    auto &rot = viewerObject.transform.rotation;
-                    ImGui::Text("Position: (%.2f, %.2f, %.2f)", pos.x, pos.y, pos.z);
-                    ImGui::Text("Rotation: (%.2f, %.2f, %.2f)", rot.x, rot.y, rot.z);
-
-                    // Quick position buttons
-                    if (ImGui::Button("Reset (0,0,3)"))
-                        viewerObject.transform.translation = glm::vec3{0.f, 0.f, 3.f};
-                    ImGui::SameLine();
-                    if (ImGui::Button("Top View (0,30,0)"))
-                        viewerObject.transform.translation = glm::vec3{0.f, 30.f, 0.f};
-                }
-
-                // ---------- Lighting ----------
-                if (ImGui::CollapsingHeader("Lighting", ImGuiTreeNodeFlags_DefaultOpen))
-                {
-                    static float lightPos[3] = {0.f, 20.f, 0.f};
-                    static float lightIntensity = 100.f;
-                    static float lightRadius = 10.f;
-                    static float lightColor[3] = {1.f, 1.f, 1.f};
-
-                    if (ImGui::SliderFloat3("Light Position", lightPos, -50.f, 50.f))
-                    {
-                        // Update point light in scene
-                        for (auto &kv : gameObjects)
-                        {
-                            if (kv.second.pointLight)
-                            {
-                                kv.second.transform.translation.x = lightPos[0];
-                                kv.second.transform.translation.y = lightPos[1];
-                                kv.second.transform.translation.z = lightPos[2];
-                                kv.second.pointLight->lightIntensity = lightIntensity;
-                            }
-                        }
-                    }
-                    ImGui::SliderFloat("Intensity", &lightIntensity, 1.f, 500.f);
-                    ImGui::SliderFloat("Radius", &lightRadius, 1.f, 50.f);
-                    ImGui::ColorEdit3("Color", lightColor);
-                }
-
-                // ---------- Render Options ----------
-                if (ImGui::CollapsingHeader("Render Options"))
-                {
-                    static bool showSkybox = true;
-                    static bool showTerrain = true;
-                    static bool showVegetation = true;
-                    static bool showModel = true;
-                    static bool wireframe = false;
-
-                    ImGui::Checkbox("Skybox", &showSkybox);
-                    ImGui::Checkbox("Terrain", &showTerrain);
-                    ImGui::Checkbox("Vegetation", &showVegetation);
-                    ImGui::Checkbox("Model", &showModel);
-                    ImGui::Checkbox("Wireframe", &wireframe);
-                }
-
-                // ---------- Vegetation ----------
-                if (ImGui::CollapsingHeader("Vegetation"))
-                {
-                    // ImGui 内部引用外部变量（需要用指针或引用）
-                    ImGui::SliderFloat("Wind Strength", &windStrength, 0.0f, 2.0f);
-                    ImGui::SliderFloat("Wind Speed", &windSpeed, 0.1f, 5.0f);
-                }
-
-                // ---------- Controls ----------
-                if (ImGui::CollapsingHeader("Controls"))
-                {
-                    ImGui::BulletText("WASD - Move Camera");
-                    ImGui::BulletText("Right Mouse Drag - Rotate View");
-                    ImGui::BulletText("Scroll Wheel - Zoom");
-                    ImGui::BulletText("ESC - Exit");
-                }
-
-                ImGui::End();
-
-                FrameInfo frameInfo{
-                    frameIndex,
-                    frameTime,
-                    commandBuffer,
-                    camera,
-                    globalDescriptorSets[frameIndex],
-                    gameObjects};
-
-                GlobalUbo ubo{};
-                ubo.projection = camera.getProjection();
-                ubo.view = camera.getView();
-                ubo.inverseView = camera.getInverseView();
-                pointLightSystem->update(frameInfo, ubo);
-
-                // ============================================================
-                // Shadow Pass：从光源视角渲染场景到 Shadow Map
-                // ============================================================
-                // 找到场景中的点光源作为阴影投射光源
-                glm::vec3 lightPos{0.f, 20.f, 0.f};
-                for (auto &kv : gameObjects)
-                {
-                    if (kv.second.pointLight)
-                    {
-                        lightPos = kv.second.transform.translation;
-                        break;
-                    }
-                }
-                shadowSystem.render(frameInfo, lightPos, glm::vec3{0.f, 0.f, 0.f});
-
-                // 将光源的 View*Projection 矩阵写入 UBO（着色器用它计算阴影坐标）
-                ubo.lightViewProj = shadowSystem.getLightViewProj();
-
-                // ===== 写入风力参数 =====
-                ubo.windTime = totalTime;
-                ubo.windStrength = windStrength;
-                ubo.windSpeed = windSpeed;
-                // 风向：可以从风向来推导方向向量
-                // 简单起见，用固定的方向（例如沿X轴）
-                ubo.windDirectionX = 1.0f;
-                ubo.windDirectionZ = 0.0f;
-
-                uboBuffers[frameIndex]->writeToBuffer(&ubo);
-                uboBuffers[frameIndex]->flush();
-
-                // ============================================================
-                // 主渲染通道：使用 Shadow Map 渲染最终场景
-                // ============================================================
-                lveRenderer.beginSwapChainRenderPass(commandBuffer);
-                skyboxSystem.render(frameInfo, skyboxTexture, *skyboxModel);
-                simpleRenderSystem->rendererGameObjects(frameInfo);
-                vegetationSystem.render(frameInfo);
-                pointLightSystem->renderer(frameInfo);
-                lveRenderer.endSwapChainRenderPass(commandBuffer);
-
-                imgui.render(commandBuffer);
-                lveRenderer.endFrame();
-            }
-        }
-        vkDeviceWaitIdle(lveDevice.device());
-    }
-
-    FirstApp::~FirstApp()
-    {
-    }
-
-    void FirstApp::LoadGameObjects()
-    {
-        LveMaterialManager materialManager(*materialSetLayout, *materialPool, lveDevice);
-
-        auto catMaterial = materialManager.createMaterial("apple");
-        auto diffuseTex = std::make_shared<LveTexture>(lveDevice, "apple/image/Model_0.jpg");
-        catMaterial->setTexture(LveMaterial::TextureType::DIFFUSE, diffuseTex);
-
-        catMaterial->setBaseColorFactor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-        catMaterial->setMetallicFactor(0.2f);
-        catMaterial->setRoughnessFactor(0.5f);
-
-        catMaterial->buildDescriptorSet();
-        auto gameObj = LveGameObject::createGameObject();
-        gameObj.model = LveModel::createModelFromFile(lveDevice, "apple/Model.obj");
-        gameObj.material = catMaterial; // 直接赋值 material 成员
-        gameObj.transform.translation = {0.f, 0.f, 0.f};
-        gameObj.transform.rotation = {0.f, 0.f, 1.f * 3.14f};
-        gameObj.transform.scale = glm::vec3{0.02f};
-
-        gameObjects.emplace(gameObj.getId(), std::move(gameObj));
-
-        auto terrainModel = lve::createTerrainModel(lveDevice,
-                                                    "tt.jpg", // 高度图路径
-                                                    200.0f,   // 宽度 200
-                                                    200.0f,   // 深度 200
-                                                    256,      // 分段数 256 (顶点 257x257)
-                                                    -5.0f,    // 最低高度
-                                                    20.0f,    // 最高高度
-                                                    "tt.jpg");
-
-        auto terrainMaterial = materialManager.createMaterial("terrain");
-        auto terrainTex = std::make_shared<LveTexture>(lveDevice, "tt.jpg");
-        terrainMaterial->setTexture(LveMaterial::TextureType::DIFFUSE, terrainTex);
-        terrainMaterial->setBaseColorFactor(glm::vec4(1.0f));
-        terrainMaterial->setMetallicFactor(0.0f);
-        terrainMaterial->setRoughnessFactor(0.8f);
-        terrainMaterial->buildDescriptorSet();
-
-        auto terrainObj = LveGameObject::createGameObject();
-        terrainObj.model = std::move(terrainModel);
-        terrainObj.material = terrainMaterial;
-        terrainObj.transform.translation = {0.0f, 0.0f, 0.0f};
-        gameObjects.emplace(terrainObj.getId(), std::move(terrainObj));
-
-        {
-            auto lightObj = LveGameObject::makePointLight(100.f, 10.f, glm::vec3{1.f, 1.f, 1.f});
-            lightObj.transform.translation = {0.f, 20.f, 0.f};
-            gameObjects.emplace(lightObj.getId(), std::move(lightObj));
-        }
     }
 }

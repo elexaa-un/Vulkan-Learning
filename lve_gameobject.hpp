@@ -46,21 +46,20 @@ namespace lve
         }
 
         id_t getId() const { return id; }
-        void setMaterial(std::shared_ptr<LveMaterial> material);
-        std::shared_ptr<LveMaterial> getMaterial() const { return m_material; }
-
+        void setMaterial(std::shared_ptr<LveMaterial> mat) { material = mat; }
+        std::shared_ptr<LveMaterial> getMaterial() const { return material; }
         glm::vec3 color{};
         TransformComponent transform{};
 
         std::shared_ptr<LveModel> model{};
-        std::shared_ptr<LveMaterial> material = m_material;
         std::vector<std::shared_ptr<LveTexture>> textures;
         VkDescriptorSet materialDescriptorSet = VK_NULL_HANDLE;
         std::unique_ptr<PointLightComponent> pointLight = nullptr;
 
     private:
+        LveGameObject() : id(0), material(nullptr) {}
         LveGameObject(id_t objId) : id(objId) {}
-        std::shared_ptr<LveMaterial> m_material;
+        std::shared_ptr<LveMaterial> material;
         id_t id;
     };
 
