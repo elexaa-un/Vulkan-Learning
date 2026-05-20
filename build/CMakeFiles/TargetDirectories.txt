@@ -1,4 +1,0 @@
-E:/Vulkan-Learning/build/CMakeFiles/Vulkan_Learning.dir
-E:/Vulkan-Learning/build/CMakeFiles/CompileShaders.dir
-E:/Vulkan-Learning/build/CMakeFiles/edit_cache.dir
-E:/Vulkan-Learning/build/CMakeFiles/rebuild_cache.dir

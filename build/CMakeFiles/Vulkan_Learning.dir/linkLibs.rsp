@@ -1,1 +1,0 @@
-  -L"E:/Vulkan-Learning/glfw/lib"  "E:/VulkanSDK/Lib/vulkan-1.lib" -lglfw3 -ldwmapi -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 
