@@ -1,9 +1,6 @@
-/*
- * Encapsulates a vulkan buffer
- *
- * Initially based off VulkanBuffer by Sascha Willems -
- * https://github.com/SaschaWillems/Vulkan/blob/master/base/VulkanBuffer.h
- */
+// Vulkan学习项目 — Vulkan缓冲区实现
+// 基于Sascha Willems的VulkanBuffer的设计，封装缓冲区创建、映射、写入和同步
+// 参考：https://github.com/SaschaWillems/Vulkan/blob/master/base/VulkanBuffer.h
 
 #include "lve_buffer.hpp"
 #include "lve_utils.hpp"

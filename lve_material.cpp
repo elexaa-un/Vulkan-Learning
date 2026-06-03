@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 材质系统实现
+// 材质UBO更新、描述符集构建和管理器的具体实现
+
 #include "lve_material.hpp"
 #include <iostream>
 #include <algorithm>

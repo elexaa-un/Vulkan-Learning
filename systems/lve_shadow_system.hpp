@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 阴影贴图系统
+// 从光源视角渲染深度贴图，在主渲染中采样以实现实时阴影
+
 #pragma once
 
 #include "../lve_pipeline.hpp"

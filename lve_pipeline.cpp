@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 图形管线实现
+// 着色器模块创建和图形管线构建的完整流程
+
 #include "lve_pipeline.hpp"
 #include "lve_model.hpp"
 #include "lve_utils.hpp"
@@ -6,6 +9,7 @@
 #include <iostream>
 namespace lve
 {
+    // 构造函数：读取SPIR-V文件并创建图形管线
     LvePipeline::LvePipeline(LveDevice &device,
                              const std::string vertFilepath,
                              const std::string fragFilepath,

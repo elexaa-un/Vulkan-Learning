@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 统一资源管理器实现
+// 模型、纹理、材质、描述符布局/池的统一缓存和生命周期管理
+
 #include "lve_resource_manager.hpp"
 #include "lve_utils.hpp"
 #include <cstdint>

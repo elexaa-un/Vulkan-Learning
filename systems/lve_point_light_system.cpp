@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 点光源渲染系统实现
+// 点光源数据更新和光源球体渲染
+
 #include "lve_point_light_system.hpp"
 #include "lve_utils.hpp"
 #include <stdexcept>

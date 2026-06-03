@@ -14,28 +14,36 @@
 #include "stb_image.h"
 namespace lve
 {
+    // 3D模型类：管理顶点缓冲区、索引缓冲区和绘制命令
+    // 支持从OBJ文件加载模型或从原始顶点/索引数据创建模型
     class LveModel
     {
     public:
+        // 顶点数据结构：包含位置、颜色、法线和纹理坐标
         struct Vertex
         {
-            glm::vec3 position{};
-            glm::vec3 color{};
-            glm::vec3 normal{};
-            glm::vec2 uv{};
+            glm::vec3 position{};  // 局部空间位置
+            glm::vec3 color{};     // 顶点颜色
+            glm::vec3 normal{};    // 法线向量
+            glm::vec2 uv{};        // 纹理坐标
 
+            // 获取顶点输入绑定描述（Vulkan管线配置用）
             static std::vector<VkVertexInputBindingDescription> getBindingDescriptions();
+            // 获取顶点输入属性描述（Vulkan管线配置用）
             static std::vector<VkVertexInputAttributeDescription> getAttributeDescriptions();
             bool operator==(const Vertex &other) const
             {
                 return position == other.position && color == other.color && normal == other.normal && uv == other.uv;
             }
         };
+
+        // Builder模式：累积顶点和索引数据后统一构建模型
         struct Builder
         {
-            std::vector<Vertex> verties{};
-            std::vector<uint32_t> indices{};
+            std::vector<Vertex> verties{};     // 顶点列表
+            std::vector<uint32_t> indices{};   // 索引列表
 
+            // 从OBJ文件加载顶点和索引数据（通过tiny_obj_loader）
             void loadModel(const std::string &filepath);
         };
 

@@ -1,4 +1,6 @@
-// lve_vegetation_system.cpp
+// Vulkan学习项目 — 植被渲染系统实现
+// GPU实例化渲染、风力动画和植被SSBO管理
+
 #include "lve_vegetation_system.hpp"
 #include "lve_model.hpp"
 #include <stdexcept>

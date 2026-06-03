@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 地形高度采样器
+// 从高度图图像中查询指定世界坐标位置的地形高度
+
 #include <vector>
 #include <stdexcept>
 #include <string>
@@ -6,10 +9,15 @@
 
 namespace lve
 {
+    // 地形高度采样器：加载高度图纹理，提供世界坐标到地形高度的查询功能
     class TerrainHeightSampler
     {
     public:
-        // 构造时传入高度图路径、地形世界宽度、深度、最小/最大高度
+        // 构造函数：加载高度图并设置地形参数
+        // 执行步骤：
+        //   1. 通过 stb_image 库加载高度图图像（强制转为单通道灰度）
+        //   2. 保存图像尺寸，将像素数据复制到内部缓冲区
+        //   3. 释放 stb_image 分配的图像内存
         TerrainHeightSampler(const std::string &heightmapPath,
                              float terrainWidth, float terrainDepth,
                              float minH, float maxH)
@@ -28,6 +36,11 @@ namespace lve
         }
 
         // 查询世界坐标 (x, z) 处的地形高度
+        // 执行步骤：
+        //   1. 将世界坐标映射到 [0,1] 纹理坐标范围（将世界原点映射到地形中心）
+        //   2. 对纹理坐标进行 clamp 边界裁剪
+        //   3. 使用最近邻采样将纹理坐标转换为像素坐标
+        //   4. 从高度数据中读取灰度值，映射到 [minHeight, maxHeight] 范围并返回
         float getHeight(float worldX, float worldZ) const
         {
             // 世界坐标 → 纹理坐标 [0,1]
@@ -49,9 +62,9 @@ namespace lve
         }
 
     private:
-        int m_imgWidth, m_imgHeight;
-        std::vector<unsigned char> m_heightData;
-        float m_width, m_depth;
-        float m_minHeight, m_maxHeight;
+        int m_imgWidth, m_imgHeight;                // 高度图图像尺寸（像素）
+        std::vector<unsigned char> m_heightData;     // 高度图灰度像素数据
+        float m_width, m_depth;                      // 地形在世界空间中的宽度和深度
+        float m_minHeight, m_maxHeight;              // 地形高度的最小/最大范围
     };
 }

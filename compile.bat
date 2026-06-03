@@ -8,4 +8,6 @@ E:\VulkanSDK\Bin\glslc.exe shaders\vegetation.vert -o build\shaders\vegetation.v
 E:\VulkanSDK\Bin\glslc.exe shaders\vegetation.frag -o build\shaders\vegetation.frag.spv
 E:\VulkanSDK\Bin\glslc.exe shaders\shadow.vert -o build\shaders\shadow.vert.spv
 E:\VulkanSDK\Bin\glslc.exe shaders\shadow.frag -o build\shaders\shadow.frag.spv
+E:\VulkanSDK\Bin\glslc.exe shaders\post_process.vert -o build\shaders\post_process.vert.spv
+E:\VulkanSDK\Bin\glslc.exe shaders\post_process.frag -o build\shaders\post_process.frag.spv
 pause

@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 视锥体剔除系统
+// 从View×Projection矩阵提取六个裁剪平面，对AABB包围盒进行可见性检测
+
 #pragma once
 
 #define GLM_FORCE_RADIANS

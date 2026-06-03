@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 渲染器实现
+// 管理交换链重建、命令缓冲区分配和每帧beginFrame/endFrame的生命周期
+
 #include "lve_renderer.hpp"
 #include "lve_utils.hpp"
 #include <stdexcept>

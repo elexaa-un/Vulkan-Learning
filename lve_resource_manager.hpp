@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 统一资源管理器
+// 管理模型、纹理、材质、描述符集布局和描述符池的统一缓存和生命周期
+
 #pragma once
 #include "lve_device.hpp"
 #include "lve_model.hpp"
@@ -14,10 +17,12 @@
 namespace lve
 {
 
+    // 统一资源管理器：提供模型、纹理、材质、描述符布局/池的集中式管理
+    // 通过缓存避免重复加载，支持引用计数驱逐未使用资源
     class LveResourceManager
     {
     public:
-        // 构造：传入 device，可以选择性整合外部已有的 pool/layout
+        // 构造函数：传入Vulkan设备引用
         explicit LveResourceManager(LveDevice &device);
         ~LveResourceManager();
 

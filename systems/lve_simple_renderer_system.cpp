@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 基础渲染系统实现
+// 使用PBR着色器渲染场景中的普通3D模型
+
 #include "lve_simple_renderer_system.hpp"
 #include "lve_utils.hpp"
 #include "lve_frustum_culling.hpp"

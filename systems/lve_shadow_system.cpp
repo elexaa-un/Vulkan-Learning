@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 阴影贴图系统实现
+// 深度贴图渲染、阴影通道管理和光源视角矩阵计算
+
 #include "lve_shadow_system.hpp"
 #include "../lve_buffer.hpp"
 #include <stdexcept>

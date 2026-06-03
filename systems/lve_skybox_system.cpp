@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 天空盒渲染系统实现
+// 立方体贴图采样和天空盒渲染
+
 #include "lve_skybox_system.hpp"
 #include "lve_model.hpp"
 #include <stdexcept>

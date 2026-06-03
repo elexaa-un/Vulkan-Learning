@@ -1,3 +1,6 @@
+// Vulkan学习项目 — Vulkan逻辑设备实现
+// 实例创建、物理设备选择、逻辑设备创建和命令池管理的完整流程
+
 #include "lve_device.hpp"
 
 // std headers

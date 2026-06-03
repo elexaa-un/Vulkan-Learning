@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 3D模型实现
+// 顶点/索引缓冲区创建、OBJ模型加载和地形/天空盒生成
+
 #include "lve_model.hpp"
 #include <cassert>
 #include <cstring>

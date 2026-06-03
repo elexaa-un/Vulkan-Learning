@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 材质系统
+// 材质类管理PBR材质参数、纹理和描述符集，材质管理器提供全局材质注册
+
 #pragma once
 #include "lve_texture.hpp"
 #include "lve_descriptors.hpp"
@@ -12,16 +15,17 @@
 namespace lve
 {
 
-    // 材质参数 Uniform Buffer 结构体（必须与着色器中的布局匹配）
+    // 材质参数 Uniform Buffer 结构体（必须与着色器中的布局保持一致）
+    // alignas(16)确保16字节对齐以满足Vulkan UBO对齐要求
     struct alignas(16) MaterialUBO
     {
-        glm::vec4 baseColorFactor{1.0f}; // offset 0
-        float metallicFactor{0.0f};      // offset 16
-        float roughnessFactor{0.5f};     // offset 20
-        int hasDiffuseMap{0};            // offset 24
-        int hasNormalMap{0};             // offset 28
-        int hasSpecularMap{0};           // offset 32
-        // 编译器自动填充到 48 字节（16的倍数）
+        glm::vec4 baseColorFactor{1.0f}; // offset 0  — 基础颜色因子（RGBA）
+        float metallicFactor{0.0f};      // offset 16 — 金属度因子 [0,1]
+        float roughnessFactor{0.5f};     // offset 20 — 粗糙度因子 [0,1]
+        int hasDiffuseMap{0};            // offset 24 — 是否使用漫反射贴图（0/1）
+        int hasNormalMap{0};             // offset 28 — 是否使用法线贴图（0/1）
+        int hasSpecularMap{0};           // offset 32 — 是否使用高光贴图（0/1）
+        // 编译器自动填充到48字节（16的倍数），满足UBO对齐要求
     };
 
     static_assert(sizeof(MaterialUBO) % 16 == 0,

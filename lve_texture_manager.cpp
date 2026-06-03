@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 纹理管理器实现（Fallback资源）
+// 创建1x1白色纹理和默认采样器的完整Vulkan管线
+
 #include "lve_texture_manager.hpp"
 #include "lve_utils.hpp"
 #include <cstring>

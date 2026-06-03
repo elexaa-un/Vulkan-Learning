@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 交换链实现
+// 交换链、渲染通道、帧缓冲和同步对象的创建与管理
+
 #include "lve_swap_chain.hpp"
 #include "lve_utils.hpp"
 // std

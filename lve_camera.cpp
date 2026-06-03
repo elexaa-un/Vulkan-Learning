@@ -1,9 +1,13 @@
+// Vulkan学习项目 — 摄像机类实现
+// 正交投影、透视投影和多种视图矩阵设置方式的具体实现
+
 #include "lve_camera.hpp"
 #include "lve_utils.hpp"
 
 #include <limits>
 namespace lve
 {
+    // 设置正交投影矩阵
     void LveCamera::setOrthographicProjection(
         float top, float bottom, float left, float right, float near, float far)
     {
@@ -16,6 +20,8 @@ namespace lve
         projectionMatrix[3][2] = -near / (far - near);
     }
 
+    // 设置透视投影矩阵
+    // 使用反向Y轴（Vulkan NDC的Y轴朝下，乘以-1修正）
     void LveCamera::setPerspectiveProject(float fovy, float aspect, float near, float far)
     {
         LVE_ASSERT(glm::abs(aspect - std::numeric_limits<float>::epsilon()) > 0.0f, "aspect ratio must be non-zero");
@@ -27,8 +33,18 @@ namespace lve
         projectionMatrix[2][3] = 1.f;
         projectionMatrix[3][2] = -(far * near) / (far - near);
 
+        // 反转Y轴以适配Vulkan的NDC（Y轴向下）
         projectionMatrix[1][1] *= -1.0f;
     }
+
+    // 通过方向向量设置视图矩阵
+    // 执行步骤：
+    //   1. 归一化方向向量得到前向量 (w)
+    //   2. 计算右向量 (u) = normalize(w × up)
+    //   3. 计算上向量 (v) = w × u
+    //   4. 构建正交旋转矩阵作为视图矩阵
+    //   5. 计算平移部分：-dot(u, position), -dot(v, position), -dot(w, position)
+    //   6. 构建逆视图矩阵（旋转矩阵的转置 + 位置作为第四列）
     void LveCamera::setViewDirection(glm::vec3 position, glm::vec3 direction, glm::vec3 up)
     {
         const glm::vec3 w{glm::normalize(direction)};
@@ -64,11 +80,14 @@ namespace lve
         inverseViewMatrix[3][2] = position.z;
     }
 
+    // 通过观察目标设置视图矩阵（计算方向并委托给setViewDirection）
     void LveCamera::setViewTarget(glm::vec3 position, glm::vec3 target, glm::vec3 up)
     {
         setViewDirection(position, target - position, up);
     }
 
+    // 通过YXZ欧拉角设置视图矩阵
+    // 旋转顺序：绕Y轴旋转(偏航) → 绕X轴旋转(俯仰) → 绕Z轴旋转(滚转)
     void LveCamera::setViewYXZ(glm::vec3 position, glm::vec3 rotation)
     {
         const float c3 = glm::cos(rotation.z);

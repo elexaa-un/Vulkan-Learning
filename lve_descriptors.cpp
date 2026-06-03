@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 描述符系统实现
+// 描述符集布局、描述符池和描述符写入器的构建与操作
+
 #include "lve_descriptors.hpp"
 #include "lve_utils.hpp"
 

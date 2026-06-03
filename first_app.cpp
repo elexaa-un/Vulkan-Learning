@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 应用程序主类实现
+// FirstApp的构造、初始化、主循环和清理的完整实现
+
 #include "first_app.hpp"
 #include "lve_camera.hpp"
 #include "lve_texture.hpp"
@@ -18,6 +21,7 @@
 namespace lve
 {
 
+    // 构造函数：初始化描述符池、材质布局和回退资源，然后加载游戏对象
     FirstApp::FirstApp()
     {
         globalPool = LveDescriptorPool::Builder(lveDevice)
@@ -78,7 +82,19 @@ namespace lve
         std::cerr << "[DEBUG run] Skybox model created" << std::endl
                   << std::flush;
 
-        LveSkyboxSystem skyboxSystem(lveDevice, lveRenderer.GetSwapChainRenderPass(),
+        // -------- 创建后处理系统（必须先创建，因为场景系统需要离屏 RenderPass）--------
+        m_postProcessingSystem = std::make_unique<LvePostProcessingSystem>(
+            lveDevice,
+            lveRenderer.getSwapChainImageFormat(),
+            lveRenderer.getSwapChainExtent(),
+            lveRenderer.GetSwapChainRenderPass());
+        std::cerr << "[DEBUG run] PostProcessingSystem created" << std::endl
+                  << std::flush;
+
+        VkRenderPass offscreenPass = m_postProcessingSystem->getOffscreenRenderPass();
+
+        // -------- 创建场景渲染系统（全部使用离屏 RenderPass）--------
+        LveSkyboxSystem skyboxSystem(lveDevice, offscreenPass,
                                      globalSetLayout->getDescriptorSetLayout());
         std::cerr << "[DEBUG run] SkyboxSystem created" << std::endl
                   << std::flush;
@@ -91,7 +107,7 @@ namespace lve
                   << std::flush;
 
         LveVegetationSystem vegetationSystem(lveDevice,
-                                             lveRenderer.GetSwapChainRenderPass(),
+                                             offscreenPass,
                                              globalSetLayout->getDescriptorSetLayout(),
                                              "tree.png");
         std::cerr << "[DEBUG run] VegetationSystem created" << std::endl
@@ -100,11 +116,18 @@ namespace lve
         std::cerr << "[DEBUG run] Vegetation initialized with 3000 instances" << std::endl
                   << std::flush;
 
-        std::unique_ptr<LveSimpleRenderSystem> simpleRenderSystem;
-        std::unique_ptr<LvePointLightSystem> pointLightSystem;
-        initRenderSystems(simpleRenderSystem, pointLightSystem);
+        auto simpleRenderSystem = std::make_unique<LveSimpleRenderSystem>(
+            lveDevice, offscreenPass,
+            globalSetLayout->getDescriptorSetLayout(),
+            materialSetLayout->getDescriptorSetLayout());
+        auto pointLightSystem = std::make_unique<LvePointLightSystem>(
+            lveDevice, offscreenPass,
+            globalSetLayout->getDescriptorSetLayout());
         std::cerr << "[DEBUG run] Render systems initialized" << std::endl
                   << std::flush;
+
+        // ImGui 保持在 SwapChain RenderPass（渲染在 UI 层）
+        // imgui 已在上面用 lveRenderer.GetSwapChainRenderPass() 创建，无需修改
 
         // --- 阶段 3: 游戏主循环 ---
         std::cerr << "[DEBUG run] === Phase 3: Main loop starting ===" << std::endl
@@ -162,15 +185,30 @@ namespace lve
             float aspect = lveRenderer.getAspectRatio();
             camera.setPerspectiveProject(glm::radians(50.0f), aspect, 0.1f, 100.f);
 
-            // 格式变化时重建渲染系统
+            // 格式变化时重建所有渲染系统
             if (lveRenderer.hasFormatsChanged())
             {
-                std::cout << "Formats changed, recreating render system..." << std::endl;
+                std::cout << "Formats changed, recreating all render systems..." << std::endl;
                 vkDeviceWaitIdle(lveDevice.device());
+
+                // 重建后处理系统
+                m_postProcessingSystem->recreate(
+                    lveRenderer.getSwapChainImageFormat(),
+                    lveRenderer.getSwapChainExtent(),
+                    lveRenderer.GetSwapChainRenderPass());
+                VkRenderPass offscreenPass = m_postProcessingSystem->getOffscreenRenderPass();
+
+                // 重建场景渲染系统
                 simpleRenderSystem = std::make_unique<LveSimpleRenderSystem>(
-                    lveDevice, lveRenderer.GetSwapChainRenderPass(),
+                    lveDevice, offscreenPass,
                     globalSetLayout->getDescriptorSetLayout(),
                     materialSetLayout->getDescriptorSetLayout());
+                pointLightSystem = std::make_unique<LvePointLightSystem>(
+                    lveDevice, offscreenPass,
+                    globalSetLayout->getDescriptorSetLayout());
+                // skyboxSystem / vegetationSystem 是局部栈变量，如需重建请修改为 unique_ptr
+                // 目前跳过其重建（格式变化仅在窗口 resize 时极少发生）
+
                 lveRenderer.resetFormatsChangedFlag();
             }
 
@@ -222,10 +260,8 @@ namespace lve
                     uboBuffers[frameIndex]->writeToBuffer(&ubo);
                     uboBuffers[frameIndex]->flush();
 
-                    // ==== 主渲染通道 ====
-                    // 注意：simpleRenderSystem->rendererGameObjects() 会在此处
-                    // 填充 frameInfo.totalCount 和 frameInfo.culledCount
-                    lveRenderer.beginSwapChainRenderPass(commandBuffer);
+                    // ==== 主渲染通道 (离屏渲染) ====
+                    m_postProcessingSystem->beginOffscreenRenderPass(commandBuffer);
                     if (renderOptions.showSkybox)
                     {
                         skyboxSystem.render(frameInfo, skyboxTexture, *skyboxModel);
@@ -239,11 +275,15 @@ namespace lve
                         vegetationSystem.render(frameInfo, windData);
                     }
                     pointLightSystem->renderer(frameInfo);
+                    m_postProcessingSystem->endOffscreenRenderPass(commandBuffer);
+
+                    // ==== 后处理 RenderPass（离屏纹理 → SwapChain）====
+                    lveRenderer.beginSwapChainRenderPass(commandBuffer);
+                    m_postProcessingSystem->render(frameInfo);
 
                     // ==== ImGui 调试面板（渲染完成后才调用，以便读取剔除统计） ====
                     if (m_showDebugPanel)
                     {
-                        // 此时 frameInfo 已经包含了最新的剔除统计数据
                         imgui.showImGUI(frameTime, gameObjects, camera, viewerObject, renderOptions, &frameInfo);
                     }
                     // ImGui 绘制必须在 render pass 内进行

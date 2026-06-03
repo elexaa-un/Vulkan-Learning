@@ -1,3 +1,6 @@
+// Vulkan学习项目 — ImGui调试界面实现
+// 渲染参数控制面板、性能统计和场景切换UI
+
 #include "lve_imgui.hpp"
 #include "lve_descriptors.hpp"
 #include "lve_frame_info.hpp"

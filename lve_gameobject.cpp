@@ -1,7 +1,13 @@
+// Vulkan学习项目 — 游戏对象实现
+// Transform矩阵计算（模型矩阵和法线矩阵）和点光源工厂方法
+
 #include "lve_gameobject.hpp"
 
 namespace lve
 {
+    // 计算4x4模型矩阵
+    // 顺序：Scale → Rz → Rx → Ry → Translation
+    // 使用Tait-Bryan角（Y, X, Z顺序），公式来自维基百科旋转矩阵
     glm::mat4 LveGameObject::TransformComponent::mat4()
     {
         const float c3 = glm::cos(rotation.z);
@@ -32,6 +38,8 @@ namespace lve
             {translation.x, translation.y, translation.z, 1.0f}};
     }
 
+    // 计算3x3法线矩阵（模型矩阵旋转部分的逆转置，使用逆缩放因子）
+    // 用于将法线从局部空间变换到世界空间
     glm::mat3 LveGameObject::TransformComponent::normalMartix()
     {
         const float c3 = glm::cos(rotation.z);
@@ -60,6 +68,13 @@ namespace lve
             },
         };
     }
+
+    // 工厂方法：创建点光源游戏对象
+    // 执行步骤：
+    //   1. 调用createGameObject()获取自增ID的基础对象
+    //   2. 设置color为光源颜色
+    //   3. 通过scale.x存储光源半径
+    //   4. 创建PointLightComponent并设置强度
     LveGameObject LveGameObject::makePointLight(
         float intensity, float radius, glm::vec3 color)
     {

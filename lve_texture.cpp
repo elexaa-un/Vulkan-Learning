@@ -1,3 +1,6 @@
+// Vulkan学习项目 — 纹理实现
+// 图像创建、布局转换、立方体贴图和等距矩形投影转换
+
 #include "lve_texture.hpp"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
