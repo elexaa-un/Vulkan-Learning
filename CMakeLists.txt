@@ -52,10 +52,11 @@ if(NOT GLSLC)
 endif()
 message(STATUS "Found glslc: ${GLSLC}")
 
-# 收集所有着色器源文件
+# 收集所有着色器源文件（包括计算着色器 .comp）
 file(GLOB SHADER_SOURCES
     "shaders/*.vert"
     "shaders/*.frag"
+    "shaders/*.comp"
 )
 
 # 输出目录
@@ -113,6 +114,18 @@ add_custom_command(TARGET Vulkan_Learning POST_BUILD
     ${CMAKE_SOURCE_DIR}/tt.jpg
     $<TARGET_FILE_DIR:Vulkan_Learning>/tt.jpg
     COMMENT "Copying terrain texture")
+
+add_custom_command(TARGET Vulkan_Learning POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    ${CMAKE_SOURCE_DIR}/rain.png
+    $<TARGET_FILE_DIR:Vulkan_Learning>/rain.png
+    COMMENT "Copying rain particle texture")
+
+add_custom_command(TARGET Vulkan_Learning POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    ${CMAKE_SOURCE_DIR}/snow.png
+    $<TARGET_FILE_DIR:Vulkan_Learning>/snow.png
+    COMMENT "Copying snow particle texture")
 
 # 复制 glfw3.dll 到 build 目录（exe 运行时需要）
 add_custom_command(TARGET Vulkan_Learning POST_BUILD

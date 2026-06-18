@@ -9,6 +9,7 @@
 #include "lve_model.hpp"
 #include "terrain_height_sampler.hpp"
 #include "lve_imgui.hpp"
+#include "lve_weather_state.hpp"
 #include "ImGui/imgui.h"
 #include <GLFW/glfw3.h>
 #include <stdexcept>
@@ -116,6 +117,16 @@ namespace lve
         std::cerr << "[DEBUG run] Vegetation initialized with 3000 instances" << std::endl
                   << std::flush;
 
+        // -------- 创建粒子系统（打包器，雨滴/雪花延迟加载）--------
+        m_particleSystem = std::make_unique<LveParticleSystem>(
+            lveDevice,
+            offscreenPass,
+            globalSetLayout->getDescriptorSetLayout(),
+            10000,  // max rain particles
+            10000); // max snow particles
+        std::cerr << "[DEBUG run] ParticleSystem created" << std::endl
+                  << std::flush;
+
         auto simpleRenderSystem = std::make_unique<LveSimpleRenderSystem>(
             lveDevice, offscreenPass,
             globalSetLayout->getDescriptorSetLayout(),
@@ -179,6 +190,9 @@ namespace lve
             frameTime = glm::min(frameTime, MAX_FRAME_TIME);
             wind.totalTime += frameTime;
 
+            // Phase 1: 更新天气状态管理器（驱动全局时间 + 天气过渡）
+            m_weatherManager.update(frameTime);
+
             cameraController.moveInPlaneXZ(lveWindow.getGLFWwindow(), frameTime, viewerObject);
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
 
@@ -237,6 +251,9 @@ namespace lve
                     ubo.inverseView = camera.getInverseView();
                     pointLightSystem->update(frameInfo, ubo);
 
+                    // Phase 1: 天气管理器写入 GlobalUbo（雾色、太阳方向、时间、环境光等）
+                    m_weatherManager.writeToGlobalUbo(ubo);
+
                     // ==== Shadow Pass ====
                     glm::vec3 lightPos{0.f, 20.f, 0.f};
                     for (auto &kv : gameObjects)
@@ -250,12 +267,14 @@ namespace lve
                     shadowSystem.render(frameInfo, lightPos, glm::vec3{0.f, 0.f, 0.f});
                     ubo.lightViewProj = shadowSystem.getLightViewProj();
 
+                    // Phase 1: 风力参数由天气系统驱动
+                    WeatherPreset weather = m_weatherManager.getBlendedPreset();
                     WindPushConstantData windData{};
                     windData.windTime = wind.totalTime;
-                    windData.windStrength = wind.strength;
-                    windData.windSpeed = wind.speed;
-                    windData.windDirectionX = 1.0f;
-                    windData.windDirectionZ = 0.0f;
+                    windData.windStrength = weather.cloudWindVelocity.x * 4.0f + 0.3f; // 云风速驱动风力
+                    windData.windSpeed = weather.cloudWindVelocity.x * 2.0f + 0.5f;
+                    windData.windDirectionX = weather.cloudWindVelocity.x;
+                    windData.windDirectionZ = weather.cloudWindVelocity.y;
 
                     uboBuffers[frameIndex]->writeToBuffer(&ubo);
                     uboBuffers[frameIndex]->flush();
@@ -274,6 +293,11 @@ namespace lve
                     {
                         vegetationSystem.render(frameInfo, windData);
                     }
+                    // 降水粒子系统（外观模式：内部自动分发雨滴/雪花）
+                    m_particleSystem->updateAndRender(frameInfo,
+                                                      glm::vec3{-50.f, 10.f, -50.f},
+                                                      glm::vec3{50.f, 40.f, 50.f},
+                                                      weather);
                     pointLightSystem->renderer(frameInfo);
                     m_postProcessingSystem->endOffscreenRenderPass(commandBuffer);
 
@@ -284,7 +308,7 @@ namespace lve
                     // ==== ImGui 调试面板（渲染完成后才调用，以便读取剔除统计） ====
                     if (m_showDebugPanel)
                     {
-                        imgui.showImGUI(frameTime, gameObjects, camera, viewerObject, renderOptions, &frameInfo);
+                        imgui.showImGUI(frameTime, gameObjects, camera, viewerObject, renderOptions, &frameInfo, &m_weatherManager);
                     }
                     // ImGui 绘制必须在 render pass 内进行
                     imgui.render(commandBuffer);
@@ -299,7 +323,7 @@ namespace lve
                     lveRenderer.beginSwapChainRenderPass(commandBuffer);
                     if (m_showDebugPanel)
                     {
-                        imgui.showImGUI(frameTime, gameObjects, camera, viewerObject, renderOptions, &frameInfo);
+                        imgui.showImGUI(frameTime, gameObjects, camera, viewerObject, renderOptions, &frameInfo, &m_weatherManager);
                     }
                     imgui.render(commandBuffer);
                     lveRenderer.endSwapChainRenderPass(commandBuffer);

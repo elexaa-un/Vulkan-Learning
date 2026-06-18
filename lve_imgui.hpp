@@ -25,6 +25,8 @@ namespace lve
         bool wireframe = false;       // 是否以线框模式渲染
     };
 
+    class WeatherStateManager; // 前向声明
+
     // ImGui集成类：封装初始化、帧更新和渲染提交
     class LveImgui
     {
@@ -45,13 +47,14 @@ namespace lve
         void newFrame();
 
         // 显示完整的ImGui控制面板
-        // 包含：性能信息、场景控制（天空盒/地形/植被开关）、光照参数、摄像机信息等
+        // 包含：性能信息、场景控制（天空盒/地形/植被开关）、光照参数、摄像机信息、天气控制等
         void showImGUI(float frameTime,
                        LveGameObject::Map &gameObjects,
                        LveCamera &camera,
                        LveGameObject &viewerObject,
                        RenderOptions &options,
-                       class FrameInfo* frameInfo = nullptr);
+                       class FrameInfo* frameInfo = nullptr,
+                       class WeatherStateManager* weatherManager = nullptr);
 
         // 在每帧结束时调用，将ImGui绘制命令提交到命令缓冲区
         // 必须在 render pass 结束之后调用

@@ -4,6 +4,7 @@
 #include "lve_imgui.hpp"
 #include "lve_descriptors.hpp"
 #include "lve_frame_info.hpp"
+#include "lve_weather_state.hpp"
 #include <iostream>
 #include <stdexcept>
 #define GLM_FORCE_RADIANS
@@ -123,7 +124,16 @@ namespace lve
         ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), commandBuffer);
     }
 
-    void LveImgui::showImGUI(float frameTime, LveGameObject::Map &gameObjects, LveCamera &camera, LveGameObject &viewerObject, RenderOptions &options, FrameInfo* frameInfo)
+    // Weather type name lookup table
+    static const char* kWeatherTypeNames[] = {
+        "Clear",
+        "Cloudy",
+        "Rain",
+        "Storm",
+        "Snow"
+    };
+
+    void LveImgui::showImGUI(float frameTime, LveGameObject::Map &gameObjects, LveCamera &camera, LveGameObject &viewerObject, RenderOptions &options, FrameInfo* frameInfo, WeatherStateManager* weatherManager)
     {
         // ============================================================
         // 调试面板
@@ -216,6 +226,87 @@ namespace lve
                     break; // 只处理第一个点光源
                 }
             }
+        }
+
+        // ---------- Weather Control (Phase 1 新增) ----------
+        if (weatherManager && ImGui::CollapsingHeader("Weather Control", ImGuiTreeNodeFlags_DefaultOpen))
+        {
+            WeatherPreset blended = weatherManager->getBlendedPreset();
+
+            // Current weather state
+            ImGui::TextColored(ImVec4(0.4f, 0.9f, 1.0f, 1.0f), "=== Current Weather ===");
+            const char* currentName = kWeatherTypeNames[static_cast<int>(weatherManager->getCurrentType())];
+            ImGui::Text("Weather: %s", currentName);
+
+            if (weatherManager->isTransitioning())
+            {
+                const char* targetName = kWeatherTypeNames[static_cast<int>(weatherManager->getTargetType())];
+                ImGui::Text("Transition to: %s", targetName);
+                ImGui::ProgressBar(weatherManager->getTransitionProgress(), ImVec2(-1.f, 0.f),
+                                   "Transitioning...");
+            }
+
+            // Weather type selection
+            ImGui::Separator();
+            ImGui::Text("=== Switch Weather ===");
+            static int selectedWeatherType = 0;
+            ImGui::Combo("Target Weather", &selectedWeatherType, kWeatherTypeNames, 5);
+
+            static float transitionDuration = 3.0f;
+            ImGui::SliderFloat("Transition Duration (s)", &transitionDuration, 0.5f, 30.0f, "%.1f");
+
+            if (ImGui::Button("Trigger Transition"))
+            {
+                WeatherType target = static_cast<WeatherType>(selectedWeatherType);
+                weatherManager->transitionTo(target, transitionDuration);
+            }
+
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel Transition"))
+            {
+                weatherManager->cancelTransition();
+            }
+
+            // Real-time blended parameters
+            ImGui::Separator();
+            ImGui::TextColored(ImVec4(0.4f, 0.9f, 1.0f, 1.0f), "=== Blended Parameters ===");
+            ImGui::Text("Cloud Coverage: %.2f", blended.cloudCoverage);
+            ImGui::Text("Cloud Density: %.2f", blended.cloudDensity);
+            ImGui::Text("Fog Density: %.3f", blended.fogDensity);
+            ImGui::Text("Visibility: %.0f m", blended.visibility);
+            ImGui::Text("Precipitation Rate: %.2f", blended.precipitationRate);
+            ImGui::Text("Precipitation Type: %s", blended.isSnow ? "Snow" : "Rain");
+            ImGui::Text("Droplet Size: %.2f", blended.dropletSize);
+            ImGui::Text("Droplet Speed: %.2f", blended.dropletSpeed);
+            ImGui::Text("Sun Intensity: %.2f", blended.sunIntensity);
+            ImGui::Text("Ambient Intensity: %.2f", blended.ambientIntensity);
+            ImGui::Text("Ambient Color: (%.2f, %.2f, %.2f)",
+                        blended.ambientColor.r, blended.ambientColor.g, blended.ambientColor.b);
+            ImGui::Text("Ground Wetness: %.2f", blended.groundWetness);
+            ImGui::Text("Snow Accumulation: %.2f", blended.snowAccumulation);
+            ImGui::Text("Lightning Frequency: %.2f/s", blended.lightningFrequency);
+
+            // ---- Global Time Control ----
+            ImGui::Separator();
+            ImGui::TextColored(ImVec4(0.4f, 0.9f, 1.0f, 1.0f), "=== Global Time ===");
+            ImGui::Text("Simulation Time: %.1f s", weatherManager->getSimulationTime());
+
+            float tod = weatherManager->getTimeOfDay();
+            ImGui::SliderFloat("Time of Day (0-24h)", &tod, 0.0f, 24.0f, "%.1f h");
+            weatherManager->setTimeOfDay(tod);
+
+            // Formatted clock display
+            int hours = static_cast<int>(tod);
+            int minutes = static_cast<int>((tod - hours) * 60.0f);
+            ImGui::Text("Clock: %02d:%02d", hours % 24, minutes);
+
+            float cycleSpeed = weatherManager->getDayNightCycleSpeed();
+            ImGui::SliderFloat("Day/Night Cycle Speed (h/s)", &cycleSpeed, 0.0f, 0.5f, "%.3f");
+            weatherManager->setDayNightCycleSpeed(cycleSpeed);
+
+            float simScale = weatherManager->getSimulationTimeScale();
+            ImGui::SliderFloat("Simulation Time Scale", &simScale, 0.0f, 10.0f, "%.1fx");
+            weatherManager->setSimulationTimeScale(simScale);
         }
 
         // ---------- Render Options ----------

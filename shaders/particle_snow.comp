@@ -1,0 +1,116 @@
+#version 450
+// 计算着色器：雪花物理更新
+// 专门处理雪花粒子：缓慢飘落、大幅度水平漂移、湍流飘动效果
+
+// 粒子数据结构（与CPU端的Particle结构体保持一致）
+struct Particle
+{
+    vec4 position;     // 世界空间位置 (xyz) + 当前生命值 (w)
+    vec4 velocity;     // 速度 (xyz) + 粒子年龄 (w)
+    vec4 color;        // 颜色 (rgb) + 大小 (w)
+    vec4 startColor;   // 初始颜色 (rgb) + 初始大小 (w)
+    vec4 endColor;     // 结束颜色 (rgb) + 总生命周期 (w)
+};
+
+// binding 0: 粒子数据SSBO（读写）
+layout(std430, set = 0, binding = 0) buffer ParticleBuffer
+{
+    Particle particles[];
+} particleBuffer;
+
+// binding 1: 粒子系统参数UBO（只读，不含isSnow）
+layout(set = 0, binding = 1) uniform ParticleParams
+{
+    vec3 emitterPositionMin;  // 发射器区域最小点
+    float deltaTime;          // 帧时间增量
+    vec3 emitterPositionMax;  // 发射器区域最大点
+    float gravity;            // 重力加速度（负值表示向下）
+    vec3 windDirection;       // 风向（归一化向量）
+    float windStrength;       // 风力强度
+    vec3 cameraPosition;      // 摄像机位置
+    uint particleCount;       // 粒子总数
+    float time;               // 累计总时间
+    float dropletSize;        // 雪花基础大小
+    float dropletSpeed;       // 下落速度系数
+} params;
+
+// 雪花计算量大（湍流），使用较小的工作组以减轻寄存器压力
+layout(local_size_x = 128, local_size_y = 1, local_size_z = 1) in;
+
+float hash(float n)
+{
+    return fract(sin(n) * 43758.5453123);
+}
+
+float hash3(vec3 p)
+{
+    return fract(sin(dot(p, vec3(127.1, 311.7, 74.7))) * 43758.5453);
+}
+
+void main()
+{
+    uint index = gl_GlobalInvocationID.x;
+    if (index >= params.particleCount)
+        return;
+
+    Particle p = particleBuffer.particles[index];
+
+    // ========== 生命周期管理 ==========
+    p.velocity.w += params.deltaTime;
+    float lifetime = p.endColor.w;
+
+    if (p.velocity.w >= lifetime)
+    {
+        float rx = hash3(vec3(float(index), params.time, 1.0));
+        float ry = hash3(vec3(float(index), params.time, 2.0));
+        float rz = hash3(vec3(float(index), params.time, 3.0));
+
+        p.position.x = mix(params.emitterPositionMin.x, params.emitterPositionMax.x, rx);
+        p.position.y = mix(params.emitterPositionMin.y, params.emitterPositionMax.y, ry);
+        p.position.z = mix(params.emitterPositionMin.z, params.emitterPositionMax.z, rz);
+
+        p.velocity.w = 0.0;
+
+        // 雪花初始速度：缓慢飘落，较大水平漂移
+        float r4 = hash3(vec3(float(index), params.time, 4.0));
+        float r5 = hash3(vec3(float(index), params.time, 5.0));
+        float r6 = hash3(vec3(float(index), params.time, 6.0));
+        float vx = (r4 - 0.5) * 2.0;
+        float vy = -1.5 - r5 * 2.0 * params.dropletSpeed;
+        float vz = (r6 - 0.5) * 2.0;
+        p.velocity.xyz = vec3(vx, vy, vz);
+        p.color = p.startColor;
+        p.position.w = p.startColor.w;
+    }
+
+    // ========== 物理更新 ==========
+    p.velocity.y += params.gravity * params.deltaTime;
+    p.velocity.x += params.windDirection.x * params.windStrength * params.deltaTime;
+    p.velocity.z += params.windDirection.z * params.windStrength * params.deltaTime;
+
+    // 雪花特有：大幅度湍流，模拟飘动效果
+    float turbulenceX = sin(params.time * 3.0 + float(index) * 0.1) * cos(params.time * 2.3) * 0.4;
+    float turbulenceZ = cos(params.time * 2.7 + float(index) * 0.13) * sin(params.time * 3.1) * 0.4;
+    p.velocity.x += turbulenceX * params.deltaTime;
+    p.velocity.z += turbulenceZ * params.deltaTime;
+
+    // 雪花下落速度限制
+    p.velocity.y = clamp(p.velocity.y, -4.0, 0.5);
+
+    // 更新位置
+    p.position.xyz += p.velocity.xyz * params.deltaTime;
+
+    // ========== 颜色和大小插值 ==========
+    float lifeRatio = p.velocity.w / lifetime;
+    p.color.rgb = mix(p.startColor.rgb, p.endColor.rgb, lifeRatio);
+    p.color.w = mix(p.startColor.w, p.endColor.w, lifeRatio);
+    p.position.w = p.color.w;
+
+    // 边界检查：掉出场景下方立即重置
+    if (p.position.y < -30.0)
+    {
+        p.velocity.w = lifetime;
+    }
+
+    particleBuffer.particles[index] = p;
+}

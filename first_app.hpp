@@ -13,10 +13,12 @@
 #include "systems\lve_point_light_system.hpp"
 #include "systems\lve_skybox_system.hpp"
 #include "systems\lve_vegetation_system.hpp"
+#include "systems\lve_particle_system.hpp"
 #include "systems\lve_shadow_system.hpp"
 #include "systems\lve_post_processing_system.hpp"
 #include "lve_resource_manager.hpp"
 #include "lve_texture_manager.hpp"
+#include "lve_weather_state.hpp"
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <glm/glm.hpp>
@@ -90,5 +92,7 @@ namespace lve
         std::vector<std::unique_ptr<LveBuffer>> uboBuffers;       // 飞行帧UBO缓冲区
         std::shared_ptr<LveTexture> skyboxTexture;                // 天空盒纹理
         std::unique_ptr<LvePostProcessingSystem> m_postProcessingSystem; // 后处理系统
+        std::unique_ptr<LveParticleSystem> m_particleSystem;           // 粒子系统打包器（延迟加载雨滴/雪花）
+        WeatherStateManager m_weatherManager;                          // 天气状态管理器（Phase 1）
     };
 }

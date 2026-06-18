@@ -31,6 +31,16 @@ namespace lve
         uint32_t totalCount = 0;    // 场景中总对象数量
     };
 
+    // 天气参数子结构体（vec4对齐，用于GlobalUbo中的天气数据打包）
+    // 使用alignas(16)确保在Uniform Buffer中的16字节对齐
+    struct WeatherData
+    {
+        alignas(16) glm::vec4 fogColor{0.8f, 0.85f, 0.9f, 0.0f};       // 雾颜色（RGB）+ 雾密度（A）
+        alignas(16) glm::vec4 sunDirection{0.0f, 1.0f, 0.0f, 1.0f};    // 太阳方向（XYZ）+ 太阳强度（W）
+        alignas(16) glm::vec4 sunColor{1.0f, 0.95f, 0.85f, 0.0f};      // 太阳光颜色（RGB）+ 填充
+        alignas(16) glm::vec4 weatherParams{0.05f, 0.0f, 12.0f, 0.0f}; // 云覆盖率(X) 降水强度(Y) 时间(W=0~24)
+    };
+
     // 全局Uniform缓冲区对象：包含每帧传递给所有着色器的全局数据
     struct GlobalUbo
     {
@@ -41,6 +51,7 @@ namespace lve
         glm::vec4 ambientColor{1.f, 1.f, 1.f, .02f}; // 环境光颜色（RGB）+ 环境光强度（A）
         int numLights;                   // 当前激活的点光源数量
         PointLight pointLights[MAX_LIGHTS]; // 点光源数组
+        WeatherData weather;             // 天气系统数据（Phase 1 新增）
     };
 
 }

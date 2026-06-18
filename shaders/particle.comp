@@ -1,0 +1,192 @@
+#version 450
+// 计算着色器：粒子物理更新
+// 每帧更新所有粒子的位置、速度、生命周期、颜色等属性
+// 支持雨滴和雪花两种粒子类型，由 isSnow 参数控制
+// 使用SSBO存储粒子数组，支持读写操作
+
+// 粒子数据结构（必须与CPU端的Particle结构体保持一致）
+struct Particle
+{
+    vec4 position;     // 世界空间位置 (xyz) + 当前生命值 (w)
+    vec4 velocity;     // 速度 (xyz) + 粒子年龄 (w)
+    vec4 color;        // 颜色 (rgb) + 大小 (w)
+    vec4 startColor;   // 初始颜色 (rgb) + 初始大小 (w)
+    vec4 endColor;     // 结束颜色 (rgb) + 总生命周期 (w)
+};
+
+// binding 0: 粒子数据SSBO（读写）
+layout(std430, set = 0, binding = 0) buffer ParticleBuffer
+{
+    Particle particles[];
+} particleBuffer;
+
+// binding 1: 粒子系统参数UBO（只读）
+layout(set = 0, binding = 1) uniform ParticleParams
+{
+    vec3 emitterPositionMin;  // 发射器区域最小点
+    float deltaTime;          // 帧时间增量
+    vec3 emitterPositionMax;  // 发射器区域最大点
+    float gravity;            // 重力加速度（负值表示向下）
+    vec3 windDirection;       // 风向（归一化向量）
+    float windStrength;       // 风力强度
+    vec3 cameraPosition;      // 摄像机位置
+    uint particleCount;       // 粒子总数
+    float time;               // 累计总时间
+    float isSnow;             // 1.0=雪花, 0.0=雨滴
+    float dropletSize;        // 水滴/雪花基础大小
+    float dropletSpeed;       // 下落速度系数
+} params;
+
+// 每个工作组处理256个粒子
+layout(local_size_x = 256, local_size_y = 1, local_size_z = 1) in;
+
+// 简单伪随机数生成器（基于位置和时间的哈希）
+float hash(float n)
+{
+    return fract(sin(n) * 43758.5453123);
+}
+
+// 二维哈希
+float hash2(vec2 p)
+{
+    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+}
+
+// 三维哈希
+float hash3(vec3 p)
+{
+    return fract(sin(dot(p, vec3(127.1, 311.7, 74.7))) * 43758.5453);
+}
+
+void main()
+{
+    // 获取当前处理的粒子索引
+    uint index = gl_GlobalInvocationID.x;
+
+    // 边界检查：超出粒子总数的线程直接返回
+    if (index >= params.particleCount)
+        return;
+
+    // 从SSBO读取粒子数据
+    Particle p = particleBuffer.particles[index];
+
+    // ========== 生命周期管理 ==========
+    // 粒子年龄增加
+    p.velocity.w += params.deltaTime; // velocity.w存储粒子年龄
+
+    // 总生命周期存储在endColor.w中
+    float lifetime = p.endColor.w;
+
+    // 如果粒子超过生命周期，重置为新粒子
+    if (p.velocity.w >= lifetime)
+    {
+        // 在发射区域内随机生成新位置
+        float rx = hash3(vec3(float(index), params.time, 1.0));
+        float ry = hash3(vec3(float(index), params.time, 2.0));
+        float rz = hash3(vec3(float(index), params.time, 3.0));
+
+        p.position.x = mix(params.emitterPositionMin.x, params.emitterPositionMax.x, rx);
+        p.position.y = mix(params.emitterPositionMin.y, params.emitterPositionMax.y, ry);
+        p.position.z = mix(params.emitterPositionMin.z, params.emitterPositionMax.z, rz);
+
+        // 重置粒子年龄
+        p.velocity.w = 0.0;
+
+        // 初始速度：根据雨或雪使用不同的速度范围
+        float r4 = hash3(vec3(float(index), params.time, 4.0));
+        float r5 = hash3(vec3(float(index), params.time, 5.0));
+        float r6 = hash3(vec3(float(index), params.time, 6.0));
+
+        if (params.isSnow > 0.5)
+        {
+            // 雪花：缓慢飘落，较大水平漂移
+            float vx = (r4 - 0.5) * 2.0;
+            float vy = -1.5 - r5 * 2.0 * params.dropletSpeed;
+            float vz = (r6 - 0.5) * 2.0;
+            p.velocity.xyz = vec3(vx, vy, vz);
+        }
+        else
+        {
+            // 雨滴：快速下坠，水平漂移较小，速度受dropletSpeed影响
+            float vx = (r4 - 0.5) * 0.3;
+            float vy = -5.0 - r5 * 10.0 * params.dropletSpeed;
+            float vz = (r6 - 0.5) * 0.3;
+            p.velocity.xyz = vec3(vx, vy, vz);
+        }
+
+        // 重置颜色为起始颜色（根据天气类型在GPU端设置）
+        if (params.isSnow > 0.5)
+        {
+            // 雪花：白色，大小 0.15-0.3
+            float size = 0.15 + hash3(vec3(float(index), params.time, 7.0)) * 0.15;
+            p.startColor = vec4(1.0, 1.0, 1.0, size);
+            p.endColor = vec4(0.8, 0.85, 1.0, 0.05 + hash3(vec3(float(index), params.time, 8.0)) * 0.05);
+        }
+        else
+        {
+            // 雨滴：蓝白色，细长型，大小更小
+            float size = 0.02 + hash3(vec3(float(index), params.time, 7.0)) * 0.03 * params.dropletSize;
+            float blueShift = hash3(vec3(float(index), params.time, 8.0)) * 0.15;
+            p.startColor = vec4(0.75, 0.82, 0.95 + blueShift, size);
+            p.endColor = vec4(0.55, 0.62, 0.78, 0.01 + hash3(vec3(float(index), params.time, 9.0)) * 0.02);
+        }
+        p.color = p.startColor;
+        p.position.w = p.startColor.w; // position.w存储当前粒子大小
+    }
+
+    // ========== 物理更新 ==========
+    // 重力影响（向下加速，雨滴重力更强）
+    p.velocity.y += params.gravity * params.deltaTime;
+
+    // 风力影响（水平方向加速）
+    p.velocity.x += params.windDirection.x * params.windStrength * params.deltaTime;
+    p.velocity.z += params.windDirection.z * params.windStrength * params.deltaTime;
+
+    if (params.isSnow > 0.5)
+    {
+        // 雪花特有：大幅度湍流，模拟飘动效果
+        float turbulenceX = sin(params.time * 3.0 + float(index) * 0.1) * cos(params.time * 2.3) * 0.4;
+        float turbulenceZ = cos(params.time * 2.7 + float(index) * 0.13) * sin(params.time * 3.1) * 0.4;
+        p.velocity.x += turbulenceX * params.deltaTime;
+        p.velocity.z += turbulenceZ * params.deltaTime;
+
+        // 雪花下落速度限制（不要太快）
+        p.velocity.y = clamp(p.velocity.y, -4.0, 0.5);
+    }
+    else
+    {
+        // 雨滴特有：微小湍流，模拟雨丝抖动
+        float turbulenceX = sin(params.time * 8.0 + float(index) * 0.5) * cos(params.time * 7.3) * 0.1;
+        float turbulenceZ = cos(params.time * 7.7 + float(index) * 0.6) * sin(params.time * 8.1) * 0.1;
+        p.velocity.x += turbulenceX * params.deltaTime;
+        p.velocity.z += turbulenceZ * params.deltaTime;
+
+        // 雨滴下落速度限制（比雪花快很多）
+        p.velocity.y = clamp(p.velocity.y, -25.0, 2.0);
+    }
+
+    // 更新位置
+    p.position.xyz += p.velocity.xyz * params.deltaTime;
+
+    // ========== 颜色和大小插值 ==========
+    // 计算生命周期比例（0.0 = 新生, 1.0 = 死亡）
+    float lifeRatio = p.velocity.w / lifetime;
+
+    // 颜色从起始色过渡到结束色
+    p.color.rgb = mix(p.startColor.rgb, p.endColor.rgb, lifeRatio);
+
+    // 粒子大小从起始大小过渡到结束大小
+    p.color.w = mix(p.startColor.w, p.endColor.w, lifeRatio);
+    p.position.w = p.color.w; // 同步大小到position.w
+
+    // ========== 边界检查 ==========
+    // 如果粒子掉出场景下方，立即重置
+    float bottomLimit = params.isSnow > 0.5 ? -30.0 : -10.0;
+    if (p.position.y < bottomLimit)
+    {
+        p.velocity.w = lifetime; // 强制在下一帧重置
+    }
+
+    // 写回粒子数据到SSBO
+    particleBuffer.particles[index] = p;
+}
